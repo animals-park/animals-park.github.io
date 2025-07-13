@@ -15,28 +15,63 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background: linear-gradient(135deg, #ff0000, #ff9900, #00ff00, #0099ff, #ff00ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
             transition: background 0.5s ease;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         .telegram-app {
             width: 100%;
-            max-width: 450px;
+            height: 100vh;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            height: 95vh;
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .neon-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .glow-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
+            transform: translate(-50%, -50%);
+            animation: glowPulse 4s infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes glowPulse {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2); }
         }
         
         .header {
@@ -47,6 +82,7 @@
             align-items: center;
             position: relative;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 2;
         }
         
         .settings-btn {
@@ -63,6 +99,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            z-index: 3;
         }
         
         .clicker-btn {
@@ -79,6 +116,8 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            z-index: 3;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
         }
         
         .clicker-btn:hover {
@@ -97,6 +136,7 @@
             text-align: center;
             flex-grow: 1;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 3;
         }
         
         .stats-container {
@@ -106,6 +146,7 @@
             border-bottom: 1px solid #e6e6e6;
             justify-content: space-between;
             backdrop-filter: blur(5px);
+            z-index: 2;
         }
         
         .stat-box {
@@ -119,6 +160,7 @@
             flex-direction: column;
             align-items: center;
             transition: transform 0.3s ease;
+            z-index: 3;
         }
         
         .stat-box:hover {
@@ -158,6 +200,7 @@
             border-top: 1px solid #e6e6e6;
             border-bottom: 1px solid #e6e6e6;
             backdrop-filter: blur(5px);
+            z-index: 2;
         }
         
         .tab {
@@ -170,6 +213,7 @@
             transition: all 0.2s;
             position: relative;
             font-size: 14px;
+            z-index: 3;
         }
         
         .tab i {
@@ -203,6 +247,7 @@
             padding: 16px;
             background: rgba(249, 249, 249, 0.7);
             backdrop-filter: blur(5px);
+            z-index: 2;
         }
         
         .tab-content {
@@ -222,6 +267,7 @@
             border-bottom: 2px dashed #0088cc;
             display: flex;
             align-items: center;
+            z-index: 3;
         }
         
         .section-title i {
@@ -249,6 +295,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             position: relative;
+            z-index: 3;
         }
         
         .animal-card:hover {
@@ -352,6 +399,24 @@
             margin-top: 10px;
             transition: all 0.2s;
             box-shadow: 0 3px 8px rgba(0, 170, 102, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 3;
+        }
+        
+        .buy-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .buy-button:hover:before {
+            left: 100%;
         }
         
         .buy-button:hover {
@@ -364,6 +429,10 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+        
+        .buy-button:disabled:before {
+            display: none;
         }
         
         .food-grid {
@@ -379,6 +448,7 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
+            z-index: 3;
         }
         
         .food-card:hover {
@@ -437,6 +507,7 @@
             padding: 16px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
+            z-index: 3;
         }
         
         .animal-list {
@@ -492,6 +563,7 @@
             padding: 16px;
             margin-top: 16px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            z-index: 3;
         }
         
         .visitors-container {
@@ -505,6 +577,7 @@
             font-size: 24px;
             animation: appear 0.5s ease-out;
             transition: transform 0.3s;
+            z-index: 3;
         }
         
         .visitor:hover {
@@ -528,6 +601,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            z-index: 10;
         }
         
         .notification.show {
@@ -544,6 +618,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
+            z-index: 3;
         }
         
         .footer-btn {
@@ -559,6 +634,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 3px 8px rgba(0, 136, 204, 0.3);
+            z-index: 3;
         }
         
         .footer-btn:hover {
@@ -613,6 +689,7 @@
             flex-wrap: wrap;
             gap: 10px;
             width: 200px;
+            z-index: 10;
         }
         
         .theme-option {
@@ -644,11 +721,16 @@
             color: #555;
         }
         
-        /* Темы */
+        /* Новые темы */
         .dark-red { background: linear-gradient(135deg, #c62828, #b71c1c); }
         .dark-blue { background: linear-gradient(135deg, #1565c0, #0d47a1); }
         .dark-green { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
         .dark-purple { background: linear-gradient(135deg, #6a1b9a, #4a148c); }
+        .dark-yellow { background: linear-gradient(135deg, #f57f17, #e65100); }
+        
+        .light-red { background: linear-gradient(135deg, #ff8a80, #ff5252); }
+        .light-yellow { background: linear-gradient(135deg, #ffff8d, #ffd54f); }
+        .light-lime { background: linear-gradient(135deg, #ccff90, #76ff03); }
         .light-blue { background: linear-gradient(135deg, #90caf9, #64b5f6); }
         .light-pink { background: linear-gradient(135deg, #f8bbd0, #f48fb1); }
         
@@ -668,10 +750,37 @@
             border-radius: 3px;
             transition: width 0.3s ease;
         }
+        
+        .neon-border {
+            position: relative;
+        }
+        
+        .neon-border:before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #ff9900, #00ff00, #0099ff, #ff00ff);
+            background-size: 400% 400%;
+            animation: neonGlow 3s ease infinite;
+            border-radius: 17px;
+            z-index: -1;
+        }
+        
+        @keyframes neonGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
     </style>
 </head>
 <body>
     <div class="telegram-app">
+        <div class="neon-overlay"></div>
+        <div class="glow-effect"></div>
+        
         <div class="header">
             <button class="settings-btn"><i class="fas fa-cog"></i></button>
             <button class="clicker-btn" id="clicker-btn"><i class="fas fa-bolt"></i></button>
@@ -683,8 +792,12 @@
                 <div class="theme-option dark-blue" data-theme="dark-blue"></div>
                 <div class="theme-option dark-green" data-theme="dark-green"></div>
                 <div class="theme-option dark-purple" data-theme="dark-purple"></div>
+                <div class="theme-option dark-yellow" data-theme="dark-yellow"></div>
                 
                 <div class="theme-label">Светлые темы:</div>
+                <div class="theme-option light-red" data-theme="light-red"></div>
+                <div class="theme-option light-yellow" data-theme="light-yellow"></div>
+                <div class="theme-option light-lime" data-theme="light-lime"></div>
                 <div class="theme-option light-blue" data-theme="light-blue"></div>
                 <div class="theme-option light-pink" data-theme="light-pink"></div>
             </div>
@@ -877,7 +990,7 @@
             setInterval(updateIncome, 1000);
             setInterval(updateVisitors, 3000);
             setInterval(updateFoodConsumption, 5000);
-            setInterval(restoreEnergy, 3000); // Восстановление энергии каждые 3 секунды
+            setInterval(restoreEnergy, 10000); // Восстановление энергии каждые 10 секунд
             setInterval(saveGame, 10000);
         }
         
@@ -928,10 +1041,35 @@
                     clickerBtn.classList.remove('pulse');
                 }, 300);
                 
+                // Свечение при клике
+                createClickEffect(event.clientX, event.clientY);
+                
                 updateUI();
             } else {
                 showNotification("Недостаточно энергии!", "error");
             }
+        }
+        
+        // Создание эффекта при клике
+        function createClickEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.style.position = 'fixed';
+            effect.style.left = `${x - 25}px`;
+            effect.style.top = `${y - 25}px`;
+            effect.style.width = '50px';
+            effect.style.height = '50px';
+            effect.style.borderRadius = '50%';
+            effect.style.background = 'radial-gradient(circle, rgba(255,215,0,0.8) 0%, rgba(255,215,0,0) 70%)';
+            effect.style.pointerEvents = 'none';
+            effect.style.zIndex = '100';
+            effect.style.animation = 'fadeOut 0.5s forwards';
+            
+            document.body.appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 500);
         }
         
         // Восстановление энергии
@@ -968,7 +1106,7 @@
                 const canBuy = gameState.coins >= animal.price;
                 
                 const animalCard = document.createElement('div');
-                animalCard.className = 'animal-card';
+                animalCard.className = 'animal-card neon-border';
                 animalCard.innerHTML = `
                     <div class="animal-avatar">
                         <img src="${animal.image}" alt="${animal.name}">
@@ -1034,7 +1172,7 @@
                 const canBuy = gameState.coins >= food.price;
                 
                 const foodCard = document.createElement('div');
-                foodCard.className = 'food-card';
+                foodCard.className = 'food-card neon-border';
                 foodCard.innerHTML = `
                     <div class="food-image">
                         <img src="${food.image}" alt="${food.name}">
@@ -1109,6 +1247,24 @@
             
             // Рассчитываем общий доход
             gameState.income = incomePerMinute;
+            
+            // Обновляем кнопки покупки
+            updateBuyButtons();
+        }
+        
+        // Обновление состояния кнопок покупки
+        function updateBuyButtons() {
+            document.querySelectorAll('.buy-button').forEach(button => {
+                const itemId = button.dataset.id;
+                const animal = gameState.animals.find(a => a.id === itemId);
+                const food = foods.find(f => f.id === itemId);
+                
+                if (animal) {
+                    button.disabled = gameState.coins < animal.price;
+                } else if (food) {
+                    button.disabled = gameState.coins < food.price;
+                }
+            });
         }
         
         // Покупка животного
@@ -1272,7 +1428,7 @@
                     gameState.coins += incomePerSecond * timeDiff;
                     
                     // Восстанавливаем энергию за время отсутствия
-                    const energyPerSecond = 20 / 60; // 20 ед/мин = 1/3 ед/сек
+                    const energyPerSecond = 6 / 60; // 6 ед/мин = 0.1 ед/сек
                     gameState.energy += energyPerSecond * timeDiff;
                     if (gameState.energy > gameState.maxEnergy) {
                         gameState.energy = gameState.maxEnergy;
@@ -1309,28 +1465,21 @@
             
             // Определение цветов для разных тем
             const themes = {
-                'dark-red': {
-                    bodyBg: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)'
-                },
-                'dark-blue': {
-                    bodyBg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)'
-                },
-                'dark-green': {
-                    bodyBg: 'linear-gradient(135deg, #00416a, #799f0c, #ffe000)'
-                },
-                'dark-purple': {
-                    bodyBg: 'linear-gradient(135deg, #4b1248, #f0c27b, #7b4397)'
-                },
-                'light-blue': {
-                    bodyBg: 'linear-gradient(135deg, #56ccf2, #2f80ed)'
-                },
-                'light-pink': {
-                    bodyBg: 'linear-gradient(135deg, #f953c6, #b91d73)'
-                }
+                'dark-red': { bodyBg: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)' },
+                'dark-blue': { bodyBg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)' },
+                'dark-green': { bodyBg: 'linear-gradient(135deg, #00416a, #799f0c, #ffe000)' },
+                'dark-purple': { bodyBg: 'linear-gradient(135deg, #4b1248, #f0c27b, #7b4397)' },
+                'dark-yellow': { bodyBg: 'linear-gradient(135deg, #3e2723, #ff6f00, #ffd600)' },
+                'light-red': { bodyBg: 'linear-gradient(135deg, #ffcdd2, #ef9a9a)' },
+                'light-yellow': { bodyBg: 'linear-gradient(135deg, #fff9c4, #fff59d)' },
+                'light-lime': { bodyBg: 'linear-gradient(135deg, #f1f8e9, #dcedc8)' },
+                'light-blue': { bodyBg: 'linear-gradient(135deg, #e3f2fd, #bbdefb)' },
+                'light-pink': { bodyBg: 'linear-gradient(135deg, #fce4ec, #f8bbd0)' }
             };
             
             const theme = themes[themeName] || themes['dark-red'];
             document.body.style.background = theme.bodyBg;
+            document.body.style.animation = 'none';
         }
         
         // Запуск игры при загрузке страницы
