@@ -77,7 +77,7 @@
         .header {
             background: linear-gradient(135deg, #0088cc, #00aaff);
             color: white;
-            padding: 20px 16px;
+            padding: 15px 12px;
             display: flex;
             align-items: center;
             position: relative;
@@ -88,36 +88,36 @@
         .settings-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            margin-right: 15px;
+            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            z-index: 3;
+            z-index: 11; /* Выше темы */
         }
         
         .clicker-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             color: #FFD700;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            margin-right: 15px;
+            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            z-index: 3;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            z-index: 11; /* Выше темы */
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
         }
         
         .clicker-btn:hover {
@@ -131,31 +131,33 @@
         }
         
         .header h1 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             text-align: center;
             flex-grow: 1;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            z-index: 3;
+            z-index: 11; /* Выше темы */
         }
         
         .stats-container {
             display: flex;
             background: rgba(240, 242, 245, 0.9);
-            padding: 15px;
+            padding: 12px;
             border-bottom: 1px solid #e6e6e6;
             justify-content: space-between;
             backdrop-filter: blur(5px);
             z-index: 2;
+            flex-wrap: wrap;
         }
         
         .stat-box {
             background: white;
-            border-radius: 12px;
-            padding: 12px 15px;
+            border-radius: 10px;
+            padding: 10px 12px;
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
             flex: 1;
-            margin: 0 5px;
+            margin: 4px;
+            min-width: 90px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -168,18 +170,19 @@
         }
         
         .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             color: #777;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            text-align: center;
         }
         
         .stat-value {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
         
         .coins-value {
@@ -206,20 +209,20 @@
         .tab {
             flex: 1;
             text-align: center;
-            padding: 16px 5px;
+            padding: 10px 3px;
             font-weight: 500;
             color: #777;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
-            font-size: 14px;
+            font-size: 12px;
             z-index: 3;
         }
         
         .tab i {
             display: block;
-            font-size: 20px;
-            margin-bottom: 5px;
+            font-size: 16px;
+            margin-bottom: 3px;
         }
         
         .tab.active {
@@ -244,7 +247,7 @@
         .zoo-container {
             flex-grow: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 12px;
             background: rgba(249, 249, 249, 0.7);
             backdrop-filter: blur(5px);
             z-index: 2;
@@ -259,11 +262,11 @@
         }
         
         .section-title {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
-            margin: 15px 0;
+            margin: 12px 0;
             color: #0088cc;
-            padding-bottom: 10px;
+            padding-bottom: 6px;
             border-bottom: 2px dashed #0088cc;
             display: flex;
             align-items: center;
@@ -271,28 +274,29 @@
         }
         
         .section-title i {
-            margin-right: 10px;
+            margin-right: 8px;
             background: #e6f7ff;
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 13px;
         }
         
         .animals-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
         }
         
         .animal-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             position: relative;
             z-index: 3;
@@ -300,12 +304,12 @@
         
         .animal-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
         }
         
         .animal-avatar {
             width: 100%;
-            height: 120px;
+            height: 90px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -320,13 +324,13 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             background: #0088cc;
         }
         
         .animal-avatar img {
-            width: 80%;
-            height: 80%;
+            width: 70%;
+            height: 70%;
             object-fit: contain;
             transition: transform 0.3s ease;
         }
@@ -336,40 +340,41 @@
         }
         
         .animal-info {
-            padding: 15px;
+            padding: 10px;
         }
         
         .animal-name {
             font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 8px;
+            font-size: 13px;
+            margin-bottom: 5px;
             color: #333;
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
         }
         
         .animal-price {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             color: #e6b800;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 700;
         }
         
         .buy-controls {
             display: flex;
-            margin-top: 12px;
+            margin-top: 8px;
             border: 1px solid #e0e0e0;
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
         }
         
         .quantity-btn {
             background: #f0f2f5;
             border: none;
-            padding: 8px 12px;
-            font-size: 16px;
+            padding: 5px 8px;
+            font-size: 13px;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -382,23 +387,24 @@
             flex: 1;
             border: none;
             text-align: center;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 500;
+            width: 35px;
         }
         
         .buy-button {
             background: linear-gradient(135deg, #00cc88, #00aa66);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 10px;
+            border-radius: 6px;
+            padding: 7px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 12px;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 6px;
             transition: all 0.2s;
-            box-shadow: 0 3px 8px rgba(0, 170, 102, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 170, 102, 0.3);
             position: relative;
             overflow: hidden;
             z-index: 3;
@@ -421,7 +427,7 @@
         
         .buy-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 170, 102, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 170, 102, 0.4);
         }
         
         .buy-button:disabled {
@@ -437,27 +443,27 @@
         
         .food-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
         }
         
         .food-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             z-index: 3;
         }
         
         .food-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
         }
         
         .food-image {
-            height: 100px;
+            height: 80px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -466,55 +472,55 @@
         }
         
         .food-image img {
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             object-fit: contain;
         }
         
         .food-info {
-            padding: 15px;
+            padding: 10px;
         }
         
         .food-name {
             font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 8px;
+            font-size: 13px;
+            margin-bottom: 5px;
             color: #333;
         }
         
         .food-price {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             color: #e6b800;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         
         .food-effect {
             background: rgba(86, 204, 242, 0.1);
-            border-radius: 8px;
-            padding: 8px;
-            font-size: 13px;
+            border-radius: 6px;
+            padding: 5px;
+            font-size: 11px;
             color: #0099cc;
-            margin-top: 8px;
+            margin-top: 5px;
         }
         
         .my-animals {
             background: white;
-            border-radius: 15px;
-            padding: 16px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 14px;
             z-index: 3;
         }
         
         .animal-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 12px;
+            gap: 8px;
+            margin-top: 8px;
         }
         
         .animal-item {
@@ -522,22 +528,22 @@
             flex-direction: column;
             align-items: center;
             background: #f0f8ff;
-            padding: 12px;
-            border-radius: 12px;
-            min-width: 90px;
+            padding: 8px;
+            border-radius: 10px;
+            min-width: 70px;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 8px rgba(0, 136, 204, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 136, 204, 0.1);
         }
         
         .animal-item:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2);
         }
         
         .animal-item-icon {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 8px;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -546,35 +552,35 @@
         }
         
         .animal-item-icon img {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             object-fit: contain;
         }
         
         .animal-item-count {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             color: #0088cc;
         }
         
         .visitors {
             background: white;
-            border-radius: 15px;
-            padding: 16px;
-            margin-top: 16px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             z-index: 3;
         }
         
         .visitors-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
+            margin-top: 8px;
         }
         
         .visitor {
-            font-size: 24px;
+            font-size: 20px;
             animation: appear 0.5s ease-out;
             transition: transform 0.3s;
             z-index: 3;
@@ -591,16 +597,16 @@
             transform: translateX(-50%);
             background: #333;
             color: white;
-            padding: 15px 25px;
-            border-radius: 12px;
+            padding: 12px 20px;
+            border-radius: 10px;
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             z-index: 10;
         }
         
@@ -609,15 +615,15 @@
         }
         
         .footer {
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             color: #777;
-            font-size: 12px;
+            font-size: 11px;
             background: rgba(249, 249, 249, 0.8);
             border-top: 1px solid #e6e6e6;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             z-index: 3;
         }
         
@@ -626,20 +632,20 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 8px rgba(0, 136, 204, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 136, 204, 0.3);
             z-index: 3;
         }
         
         .footer-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.4);
         }
         
         @keyframes appear {
@@ -671,14 +677,14 @@
         
         .coin-animation {
             position: absolute;
-            font-size: 20px;
+            font-size: 18px;
             animation: coinFall 1.5s forwards;
             z-index: 10;
         }
         
         .theme-selector {
             position: absolute;
-            top: 70px;
+            top: 60px;
             right: 10px;
             background: white;
             border-radius: 15px;
@@ -689,7 +695,7 @@
             flex-wrap: wrap;
             gap: 10px;
             width: 200px;
-            z-index: 10;
+            z-index: 10; /* Над всем контентом */
         }
         
         .theme-option {
@@ -736,11 +742,11 @@
         
         /* Прогресс бар энергии */
         .energy-bar {
-            height: 5px;
+            height: 4px;
             width: 100%;
             background: #e0e0e0;
             border-radius: 3px;
-            margin-top: 5px;
+            margin-top: 4px;
             overflow: hidden;
         }
         
@@ -774,6 +780,120 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+        
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 10px;
+            }
+            
+            .settings-btn, .clicker-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+                margin-right: 8px;
+            }
+            
+            .header h1 {
+                font-size: 16px;
+            }
+            
+            .stats-container {
+                padding: 10px;
+            }
+            
+            .stat-box {
+                padding: 8px 10px;
+                min-width: 80px;
+            }
+            
+            .stat-label {
+                font-size: 10px;
+            }
+            
+            .stat-value {
+                font-size: 14px;
+            }
+            
+            .tabs {
+                flex-direction: row;
+            }
+            
+            .tab {
+                padding: 8px 2px;
+                font-size: 11px;
+            }
+            
+            .tab i {
+                font-size: 14px;
+                margin-bottom: 2px;
+            }
+            
+            .section-title {
+                font-size: 14px;
+            }
+            
+            .section-title i {
+                width: 22px;
+                height: 22px;
+                font-size: 12px;
+            }
+            
+            .animals-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .animal-avatar {
+                height: 80px;
+            }
+            
+            .animal-name {
+                font-size: 12px;
+            }
+            
+            .animal-price {
+                font-size: 12px;
+            }
+            
+            .quantity-btn {
+                padding: 4px 6px;
+                font-size: 12px;
+            }
+            
+            .quantity-input {
+                font-size: 12px;
+                width: 30px;
+            }
+            
+            .buy-button {
+                font-size: 11px;
+                padding: 6px;
+            }
+            
+            .food-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .food-image {
+                height: 70px;
+            }
+            
+            .food-name {
+                font-size: 12px;
+            }
+            
+            .food-price {
+                font-size: 12px;
+            }
+            
+            .footer-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -781,26 +901,26 @@
         <div class="neon-overlay"></div>
         <div class="glow-effect"></div>
         
+        <div class="theme-selector" id="themeSelector">
+            <div class="theme-label">Темные темы:</div>
+            <div class="theme-option dark-red active" data-theme="dark-red"></div>
+            <div class="theme-option dark-blue" data-theme="dark-blue"></div>
+            <div class="theme-option dark-green" data-theme="dark-green"></div>
+            <div class="theme-option dark-purple" data-theme="dark-purple"></div>
+            <div class="theme-option dark-yellow" data-theme="dark-yellow"></div>
+            
+            <div class="theme-label">Светлые темы:</div>
+            <div class="theme-option light-red" data-theme="light-red"></div>
+            <div class="theme-option light-yellow" data-theme="light-yellow"></div>
+            <div class="theme-option light-lime" data-theme="light-lime"></div>
+            <div class="theme-option light-blue" data-theme="light-blue"></div>
+            <div class="theme-option light-pink" data-theme="light-pink"></div>
+        </div>
+        
         <div class="header">
             <button class="settings-btn"><i class="fas fa-cog"></i></button>
             <button class="clicker-btn" id="clicker-btn"><i class="fas fa-bolt"></i></button>
             <h1>Контактный зоопарк 🐾</h1>
-            
-            <div class="theme-selector" id="themeSelector">
-                <div class="theme-label">Темные темы:</div>
-                <div class="theme-option dark-red active" data-theme="dark-red"></div>
-                <div class="theme-option dark-blue" data-theme="dark-blue"></div>
-                <div class="theme-option dark-green" data-theme="dark-green"></div>
-                <div class="theme-option dark-purple" data-theme="dark-purple"></div>
-                <div class="theme-option dark-yellow" data-theme="dark-yellow"></div>
-                
-                <div class="theme-label">Светлые темы:</div>
-                <div class="theme-option light-red" data-theme="light-red"></div>
-                <div class="theme-option light-yellow" data-theme="light-yellow"></div>
-                <div class="theme-option light-lime" data-theme="light-lime"></div>
-                <div class="theme-option light-blue" data-theme="light-blue"></div>
-                <div class="theme-option light-pink" data-theme="light-pink"></div>
-            </div>
         </div>
         
         <div class="stats-container">
@@ -872,6 +992,7 @@
                 </div>
                 <div class="visitors">
                     <p>Сейчас в зоопарке: <span id="visitor-count">0</span> посетителей</p>
+                    <p>Всего посетителей: <span id="total-visitors">0</span></p>
                     <p>Доход в минуту: <span id="income-per-minute">0</span> монет</p>
                     <div class="visitors-container" id="visitors-container">
                         <!-- Посетители будут появляться здесь -->
@@ -945,6 +1066,7 @@
             lastUpdate: Date.now(),
             animals: JSON.parse(JSON.stringify(animals)),
             visitors: 0,
+            totalVisitors: 0,
             income: 0,
             theme: 'dark-red',
             tab: 'animals'
@@ -959,6 +1081,7 @@
         const foodGridEl = document.getElementById('food-grid');
         const animalListEl = document.getElementById('animal-list');
         const visitorCountEl = document.getElementById('visitor-count');
+        const totalVisitorsEl = document.getElementById('total-visitors');
         const visitorsContainerEl = document.getElementById('visitors-container');
         const notificationEl = document.getElementById('notification');
         const tabs = document.querySelectorAll('.tab');
@@ -1041,35 +1164,10 @@
                     clickerBtn.classList.remove('pulse');
                 }, 300);
                 
-                // Свечение при клике
-                createClickEffect(event.clientX, event.clientY);
-                
                 updateUI();
             } else {
                 showNotification("Недостаточно энергии!", "error");
             }
-        }
-        
-        // Создание эффекта при клике
-        function createClickEffect(x, y) {
-            const effect = document.createElement('div');
-            effect.className = 'click-effect';
-            effect.style.position = 'fixed';
-            effect.style.left = `${x - 25}px`;
-            effect.style.top = `${y - 25}px`;
-            effect.style.width = '50px';
-            effect.style.height = '50px';
-            effect.style.borderRadius = '50%';
-            effect.style.background = 'radial-gradient(circle, rgba(255,215,0,0.8) 0%, rgba(255,215,0,0) 70%)';
-            effect.style.pointerEvents = 'none';
-            effect.style.zIndex = '100';
-            effect.style.animation = 'fadeOut 0.5s forwards';
-            
-            document.body.appendChild(effect);
-            
-            setTimeout(() => {
-                effect.remove();
-            }, 500);
         }
         
         // Восстановление энергии
@@ -1116,8 +1214,8 @@
                             ${animal.name}
                             <span class="animal-price">${animal.price} <i class="fas fa-coins"></i></span>
                         </div>
-                        <div style="font-size: 13px; color: #777; margin-bottom: 10px;">
-                            Доход: ${animal.income} мон/мин | Еда: ${animal.food}/мин
+                        <div style="font-size: 12px; color: #777; margin-bottom: 8px;">
+                            Доход: ${animal.income} мон/животное | Еда: ${animal.food}/мин
                         </div>
                         
                         <div class="buy-controls">
@@ -1180,7 +1278,7 @@
                     <div class="food-info">
                         <div class="food-name">${food.name}</div>
                         <div class="food-price">${food.price} <i class="fas fa-coins"></i></div>
-                        <div style="font-size: 13px; color: #777;">
+                        <div style="font-size: 12px; color: #777;">
                             Количество: ${food.amount} ед.
                         </div>
                         <div class="food-effect">
@@ -1228,8 +1326,8 @@
                             <img src="${animal.image}" alt="${animal.name}">
                         </div>
                         <div class="animal-item-count">${animal.owned}</div>
-                        <div style="font-size: 12px; color: #777; margin-top: 5px;">
-                            ${animal.income * animal.owned}/мин
+                        <div style="font-size: 11px; color: #777; margin-top: 5px;">
+                            ${animal.income * animal.owned}/животное
                         </div>
                     `;
                     animalListEl.appendChild(animalItem);
@@ -1238,15 +1336,18 @@
             
             // Обновляем посетителей
             visitorCountEl.textContent = gameState.visitors;
+            totalVisitorsEl.textContent = gameState.totalVisitors;
             
-            // Обновляем доход в минуту
-            const incomePerMinute = gameState.animals.reduce((sum, animal) => {
+            // Рассчитываем доход в минуту
+            const baseIncome = gameState.animals.reduce((sum, animal) => {
                 return sum + (animal.income * animal.owned);
             }, 0);
+            
+            const incomePerMinute = baseIncome * gameState.visitors;
             incomePerMinuteEl.textContent = incomePerMinute;
             
-            // Рассчитываем общий доход
-            gameState.income = incomePerMinute;
+            // Сохраняем общий доход
+            gameState.income = baseIncome;
             
             // Обновляем кнопки покупки
             updateBuyButtons();
@@ -1306,8 +1407,13 @@
         
         // Обновление дохода
         function updateIncome() {
-            // Добавляем доход каждую секунду
-            gameState.coins += gameState.income / 60;
+            // Рассчитываем базовый доход от животных
+            const baseIncome = gameState.animals.reduce((sum, animal) => {
+                return sum + (animal.income * animal.owned);
+            }, 0);
+            
+            // Добавляем доход (базовый * количество посетителей)
+            gameState.coins += (baseIncome * gameState.visitors) / 60;
             coinsEl.textContent = Math.floor(gameState.coins);
         }
         
@@ -1333,11 +1439,14 @@
             const maxVisitors = gameState.animals.reduce((sum, animal) => sum + animal.owned, 0) * 3;
             
             if (gameState.visitors < maxVisitors) {
-                gameState.visitors += Math.floor(Math.random() * 3) + 1;
+                const newVisitors = Math.floor(Math.random() * 3) + 1;
+                gameState.visitors += newVisitors;
+                gameState.totalVisitors += newVisitors;
                 if (gameState.visitors > maxVisitors) gameState.visitors = maxVisitors;
             }
             
             visitorCountEl.textContent = gameState.visitors;
+            totalVisitorsEl.textContent = gameState.totalVisitors;
             
             // Добавляем визуализацию посетителей
             if (gameState.visitors > 0 && Math.random() > 0.7) {
@@ -1398,6 +1507,8 @@
                 energy: gameState.energy,
                 maxEnergy: gameState.maxEnergy,
                 animals: gameState.animals,
+                visitors: gameState.visitors,
+                totalVisitors: gameState.totalVisitors,
                 lastUpdate: Date.now(),
                 theme: gameState.theme
             };
@@ -1416,16 +1527,18 @@
                     gameState.energy = parsedData.energy || 100;
                     gameState.maxEnergy = parsedData.maxEnergy || 100;
                     gameState.animals = parsedData.animals || JSON.parse(JSON.stringify(animals));
+                    gameState.visitors = parsedData.visitors || 0;
+                    gameState.totalVisitors = parsedData.totalVisitors || 0;
                     gameState.lastUpdate = parsedData.lastUpdate || Date.now();
                     gameState.theme = parsedData.theme || 'dark-red';
                     
                     // Рассчитываем доход за время отсутствия
                     const timeDiff = (Date.now() - gameState.lastUpdate) / 1000; // в секундах
-                    const incomePerSecond = gameState.animals.reduce((sum, animal) => {
+                    const baseIncome = gameState.animals.reduce((sum, animal) => {
                         return sum + (animal.income * animal.owned);
-                    }, 0) / 60;
+                    }, 0);
                     
-                    gameState.coins += incomePerSecond * timeDiff;
+                    gameState.coins += (baseIncome * gameState.visitors * timeDiff) / 60;
                     
                     // Восстанавливаем энергию за время отсутствия
                     const energyPerSecond = 6 / 60; // 6 ед/мин = 0.1 ед/сек
