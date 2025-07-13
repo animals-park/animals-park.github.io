@@ -37,7 +37,6 @@
             flex-direction: column;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         .header {
@@ -64,6 +63,27 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+        }
+        
+        .clicker-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: #FFD700;
+            font-size: 18px;
+            cursor: pointer;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .clicker-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
         }
         
         .settings-btn:hover {
@@ -126,6 +146,10 @@
         
         .food-value {
             color: #e67e22;
+        }
+        
+        .energy-value {
+            color: #00cc66;
         }
         
         .tabs {
@@ -224,7 +248,6 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
-            border: 1px solid #e6e6e6;
             position: relative;
         }
         
@@ -356,7 +379,6 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
-            border: 1px solid #e6e6e6;
         }
         
         .food-card:hover {
@@ -414,7 +436,6 @@
             border-radius: 15px;
             padding: 16px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e6e6e6;
             margin-bottom: 20px;
         }
         
@@ -435,7 +456,6 @@
             min-width: 90px;
             transition: all 0.3s ease;
             box-shadow: 0 3px 8px rgba(0, 136, 204, 0.1);
-            border: 1px solid #cce6ff;
         }
         
         .animal-item:hover {
@@ -472,7 +492,6 @@
             padding: 16px;
             margin-top: 16px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e6e6e6;
         }
         
         .visitors-container {
@@ -632,12 +651,30 @@
         .dark-purple { background: linear-gradient(135deg, #6a1b9a, #4a148c); }
         .light-blue { background: linear-gradient(135deg, #90caf9, #64b5f6); }
         .light-pink { background: linear-gradient(135deg, #f8bbd0, #f48fb1); }
+        
+        /* Прогресс бар энергии */
+        .energy-bar {
+            height: 5px;
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00cc66, #00ff88);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 <body>
     <div class="telegram-app">
         <div class="header">
             <button class="settings-btn"><i class="fas fa-cog"></i></button>
+            <button class="clicker-btn" id="clicker-btn"><i class="fas fa-bolt"></i></button>
             <h1>Контактный зоопарк 🐾</h1>
             
             <div class="theme-selector" id="themeSelector">
@@ -661,6 +698,13 @@
             <div class="stat-box">
                 <div class="stat-label">Еда для животных</div>
                 <div class="stat-value food-value">50 <i class="fas fa-apple-alt"></i></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Энергия</div>
+                <div class="stat-value energy-value">100 <i class="fas fa-bolt"></i></div>
+                <div class="energy-bar">
+                    <div class="energy-fill" id="energy-bar"></div>
+                </div>
             </div>
         </div>
         
@@ -783,6 +827,8 @@
         let gameState = {
             coins: 100,
             food: 50,
+            energy: 100,
+            maxEnergy: 100,
             lastUpdate: Date.now(),
             animals: JSON.parse(JSON.stringify(animals)),
             visitors: 0,
@@ -794,6 +840,8 @@
         // Элементы DOM
         const coinsEl = document.querySelector('.coins-value');
         const foodEl = document.querySelector('.food-value');
+        const energyEl = document.querySelector('.energy-value');
+        const energyBarEl = document.getElementById('energy-bar');
         const animalsGridEl = document.getElementById('animals-grid');
         const foodGridEl = document.getElementById('food-grid');
         const animalListEl = document.getElementById('animal-list');
@@ -807,6 +855,7 @@
             'visitors': document.getElementById('visitors-tab')
         };
         const settingsBtn = document.querySelector('.settings-btn');
+        const clickerBtn = document.getElementById('clicker-btn');
         const themeSelector = document.getElementById('themeSelector');
         const foodConsumptionEl = document.getElementById('food-consumption');
         const incomePerMinuteEl = document.getElementById('income-per-minute');
@@ -828,6 +877,7 @@
             setInterval(updateIncome, 1000);
             setInterval(updateVisitors, 3000);
             setInterval(updateFoodConsumption, 5000);
+            setInterval(restoreEnergy, 3000); // Восстановление энергии каждые 3 секунды
             setInterval(saveGame, 10000);
         }
         
@@ -858,6 +908,38 @@
             helpBtn.addEventListener('click', () => {
                 showNotification('Покупайте животных, кормите их и развивайте зоопарк!', 'info');
             });
+            
+            // Обработчик кликера
+            clickerBtn.addEventListener('click', handleClickerClick);
+        }
+        
+        // Обработка клика по кликеру
+        function handleClickerClick() {
+            if (gameState.energy > 0) {
+                gameState.coins += 1;
+                gameState.energy -= 1;
+                
+                // Анимация монеты
+                createCoinAnimation();
+                
+                // Анимация кнопки
+                clickerBtn.classList.add('pulse');
+                setTimeout(() => {
+                    clickerBtn.classList.remove('pulse');
+                }, 300);
+                
+                updateUI();
+            } else {
+                showNotification("Недостаточно энергии!", "error");
+            }
+        }
+        
+        // Восстановление энергии
+        function restoreEnergy() {
+            if (gameState.energy < gameState.maxEnergy) {
+                gameState.energy += 1;
+                updateUI();
+            }
         }
         
         // Настройка вкладок
@@ -990,6 +1072,11 @@
             // Обновляем баланс
             coinsEl.textContent = Math.floor(gameState.coins);
             foodEl.textContent = Math.floor(gameState.food);
+            energyEl.textContent = Math.floor(gameState.energy);
+            
+            // Обновляем прогресс бар энергии
+            const energyPercent = (gameState.energy / gameState.maxEnergy) * 100;
+            energyBarEl.style.width = `${energyPercent}%`;
             
             // Обновляем список животных
             animalListEl.innerHTML = '';
@@ -1019,10 +1106,6 @@
                 return sum + (animal.income * animal.owned);
             }, 0);
             incomePerMinuteEl.textContent = incomePerMinute;
-            
-            // Перерисовываем магазин
-            renderAnimals();
-            renderFood();
             
             // Рассчитываем общий доход
             gameState.income = incomePerMinute;
@@ -1156,6 +1239,8 @@
             const saveData = {
                 coins: gameState.coins,
                 food: gameState.food,
+                energy: gameState.energy,
+                maxEnergy: gameState.maxEnergy,
                 animals: gameState.animals,
                 lastUpdate: Date.now(),
                 theme: gameState.theme
@@ -1172,6 +1257,8 @@
                     const parsedData = JSON.parse(saveData);
                     gameState.coins = parsedData.coins || 100;
                     gameState.food = parsedData.food || 50;
+                    gameState.energy = parsedData.energy || 100;
+                    gameState.maxEnergy = parsedData.maxEnergy || 100;
                     gameState.animals = parsedData.animals || JSON.parse(JSON.stringify(animals));
                     gameState.lastUpdate = parsedData.lastUpdate || Date.now();
                     gameState.theme = parsedData.theme || 'dark-red';
@@ -1183,6 +1270,13 @@
                     }, 0) / 60;
                     
                     gameState.coins += incomePerSecond * timeDiff;
+                    
+                    // Восстанавливаем энергию за время отсутствия
+                    const energyPerSecond = 20 / 60; // 20 ед/мин = 1/3 ед/сек
+                    gameState.energy += energyPerSecond * timeDiff;
+                    if (gameState.energy > gameState.maxEnergy) {
+                        gameState.energy = gameState.maxEnergy;
+                    }
                     
                     showNotification('Игра загружена!');
                 } catch (e) {
