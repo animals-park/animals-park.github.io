@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Контактный зоопарк</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -14,84 +15,192 @@
         }
         
         body {
-            background-color: #e6ebf5;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            transition: background 0.5s ease;
         }
         
         .telegram-app {
             width: 100%;
-            max-width: 400px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            height: 90vh;
+            height: 95vh;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         .header {
-            background: linear-gradient(135deg, #40a7e3, #0088cc);
+            background: linear-gradient(135deg, #0088cc, #00aaff);
             color: white;
-            padding: 18px 16px;
+            padding: 20px 16px;
             display: flex;
             align-items: center;
             position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .settings-btn:hover {
+            transform: rotate(30deg);
+            background: rgba(255, 255, 255, 0.3);
         }
         
         .header h1 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             text-align: center;
             flex-grow: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
-        .balance-container {
-            background-color: #f0f2f5;
-            padding: 14px 16px;
+        .stats-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: rgba(240, 242, 245, 0.9);
+            padding: 15px;
             border-bottom: 1px solid #e6e6e6;
+            justify-content: space-between;
+            backdrop-filter: blur(5px);
         }
         
-        .balance {
+        .stat-box {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 15px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            margin: 0 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-3px);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #777;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
             font-size: 18px;
             font-weight: 700;
-            color: #0088cc;
-        }
-        
-        .coins {
             display: flex;
             align-items: center;
             gap: 5px;
-            font-weight: 700;
         }
         
-        .coins::before {
-            content: "🪙";
+        .coins-value {
+            color: #e6b800;
+        }
+        
+        .food-value {
+            color: #e67e22;
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(240, 242, 245, 0.9);
+            border-top: 1px solid #e6e6e6;
+            border-bottom: 1px solid #e6e6e6;
+            backdrop-filter: blur(5px);
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 16px 5px;
+            font-weight: 500;
+            color: #777;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            font-size: 14px;
+        }
+        
+        .tab i {
+            display: block;
             font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .tab.active {
+            color: #0088cc;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #0088cc;
+        }
+        
+        .tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.4);
         }
         
         .zoo-container {
             flex-grow: 1;
             overflow-y: auto;
             padding: 16px;
-            background-color: #f9f9f9;
+            background: rgba(249, 249, 249, 0.7);
+            backdrop-filter: blur(5px);
         }
         
         .section-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin: 15px 0;
             color: #0088cc;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e6e6e6;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #0088cc;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            background: #e6f7ff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .animals-grid {
@@ -102,81 +211,203 @@
         }
         
         .animal-card {
-            background-color: white;
-            border-radius: 10px;
+            background: white;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
-            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
             border: 1px solid #e6e6e6;
+            position: relative;
         }
         
         .animal-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
         
         .animal-avatar {
             width: 100%;
-            height: 100px;
+            height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 50px;
-            background-color: #f0f2f5;
+            background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .animal-avatar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: #0088cc;
+        }
+        
+        .animal-avatar img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .animal-card:hover .animal-avatar img {
+            transform: scale(1.1);
         }
         
         .animal-info {
-            padding: 12px;
+            padding: 15px;
         }
         
         .animal-name {
             font-weight: 700;
-            font-size: 15px;
-            margin-bottom: 4px;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
         }
         
         .animal-price {
             display: flex;
             align-items: center;
             gap: 4px;
-            color: #777;
-            font-size: 14px;
+            color: #e6b800;
+            font-size: 15px;
+            font-weight: 700;
         }
         
-        .animal-price::before {
-            content: "🪙";
+        .buy-controls {
+            display: flex;
+            margin-top: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            background: #f0f2f5;
+            border: none;
+            padding: 8px 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .quantity-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .quantity-input {
+            flex: 1;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
         }
         
         .buy-button {
-            background: linear-gradient(135deg, #40a7e3, #0088cc);
+            background: linear-gradient(135deg, #00cc88, #00aa66);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 8px 12px;
+            border-radius: 8px;
+            padding: 10px;
             font-weight: 700;
             font-size: 14px;
             cursor: pointer;
             width: 100%;
-            margin-top: 8px;
-            transition: opacity 0.2s;
+            margin-top: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 8px rgba(0, 170, 102, 0.3);
+        }
+        
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 170, 102, 0.4);
         }
         
         .buy-button:disabled {
             background: #cccccc;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
-        .buy-button:hover:not(:disabled) {
-            opacity: 0.9;
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .food-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e6e6e6;
+        }
+        
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .food-image {
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #fff9db, #ffec99);
+            overflow: hidden;
+        }
+        
+        .food-image img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+        
+        .food-info {
+            padding: 15px;
+        }
+        
+        .food-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .food-price {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #e6b800;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .food-effect {
+            background: rgba(86, 204, 242, 0.1);
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 13px;
+            color: #0099cc;
+            margin-top: 8px;
         }
         
         .my-animals {
-            background-color: white;
-            border-radius: 10px;
+            background: white;
+            border-radius: 15px;
             padding: 16px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
             border: 1px solid #e6e6e6;
+            margin-bottom: 20px;
         }
         
         .animal-list {
@@ -190,56 +421,122 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f0f2f5;
-            padding: 10px;
-            border-radius: 8px;
-            min-width: 80px;
+            background: #f0f8ff;
+            padding: 12px;
+            border-radius: 12px;
+            min-width: 90px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 136, 204, 0.1);
+            border: 1px solid #cce6ff;
+        }
+        
+        .animal-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.2);
         }
         
         .animal-item-icon {
-            font-size: 30px;
-            margin-bottom: 5px;
+            width: 50px;
+            height: 50px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e6f7ff;
+            border-radius: 50%;
+        }
+        
+        .animal-item-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
         }
         
         .animal-item-count {
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
+            color: #0088cc;
         }
         
         .visitors {
-            background-color: white;
-            border-radius: 10px;
+            background: white;
+            border-radius: 15px;
             padding: 16px;
             margin-top: 16px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
             border: 1px solid #e6e6e6;
         }
         
         .visitors-container {
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
+            gap: 10px;
             margin-top: 10px;
         }
         
         .visitor {
             font-size: 24px;
             animation: appear 0.5s ease-out;
+            transition: transform 0.3s;
         }
         
-        .income {
-            background-color: rgba(0, 136, 204, 0.1);
-            border-radius: 18px;
-            padding: 6px 12px;
-            font-size: 14px;
-            font-weight: 500;
-            display: inline-flex;
+        .visitor:hover {
+            transform: scale(1.2);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 10px;
         }
         
-        .income::before {
-            content: "+";
+        .notification.show {
+            opacity: 0.95;
+        }
+        
+        .footer {
+            padding: 15px;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+            background: rgba(249, 249, 249, 0.8);
+            border-top: 1px solid #e6e6e6;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .footer-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 136, 204, 0.3);
+        }
+        
+        .footer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
         }
         
         @keyframes appear {
@@ -253,149 +550,295 @@
             }
         }
         
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         
-        .notification.show {
-            opacity: 0.9;
+        .pulse {
+            animation: pulse 2s infinite;
         }
         
-        .tabs {
-            display: flex;
-            background-color: #f0f2f5;
-            border-top: 1px solid #e6e6e6;
+        /* Анимация монет */
+        @keyframes coinFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100px) rotate(360deg); opacity: 0; }
         }
         
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 16px;
-            font-weight: 500;
-            color: #777;
+        .coin-animation {
+            position: absolute;
+            font-size: 20px;
+            animation: coinFall 1.5s forwards;
+            z-index: 10;
+        }
+        
+        .theme-selector {
+            position: absolute;
+            top: 70px;
+            right: 10px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            z-index: 100;
+            display: none;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 200px;
+        }
+        
+        .theme-option {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
             cursor: pointer;
-            transition: background-color 0.2s;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
         }
         
-        .tab.active {
-            color: #0088cc;
-            border-bottom: 3px solid #0088cc;
+        .theme-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .footer {
-            padding: 16px;
-            text-align: center;
-            color: #777;
+        .theme-option.active {
+            border: 2px solid #333;
+            transform: scale(1.1);
+        }
+        
+        .theme-label {
             font-size: 12px;
-            background-color: #f9f9f9;
-            border-top: 1px solid #e6e6e6;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
         }
+        
+        /* Темы */
+        .dark-red { background: linear-gradient(135deg, #c62828, #b71c1c); }
+        .dark-blue { background: linear-gradient(135deg, #1565c0, #0d47a1); }
+        .dark-green { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
+        .dark-purple { background: linear-gradient(135deg, #6a1b9a, #4a148c); }
+        .light-blue { background: linear-gradient(135deg, #90caf9, #64b5f6); }
+        .light-pink { background: linear-gradient(135deg, #f8bbd0, #f48fb1); }
     </style>
 </head>
 <body>
     <div class="telegram-app">
         <div class="header">
+            <button class="settings-btn"><i class="fas fa-cog"></i></button>
             <h1>Контактный зоопарк 🐾</h1>
+            
+            <div class="theme-selector" id="themeSelector">
+                <div class="theme-label">Темные темы:</div>
+                <div class="theme-option dark-red active" data-theme="dark-red"></div>
+                <div class="theme-option dark-blue" data-theme="dark-blue"></div>
+                <div class="theme-option dark-green" data-theme="dark-green"></div>
+                <div class="theme-option dark-purple" data-theme="dark-purple"></div>
+                
+                <div class="theme-label">Светлые темы:</div>
+                <div class="theme-option light-blue" data-theme="light-blue"></div>
+                <div class="theme-option light-pink" data-theme="light-pink"></div>
+            </div>
         </div>
         
-        <div class="balance-container">
-            <div class="balance">Ваш баланс:</div>
-            <div class="coins">100</div>
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-label">Ваш баланс</div>
+                <div class="stat-value coins-value">100 <i class="fas fa-coins"></i></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Еда для животных</div>
+                <div class="stat-value food-value">50 <i class="fas fa-apple-alt"></i></div>
+            </div>
         </div>
         
         <div class="tabs">
-            <div class="tab active">Магазин</div>
-            <div class="tab">Мои животные</div>
-            <div class="tab">Посетители</div>
+            <div class="tab active"><i class="fas fa-paw"></i> Животные</div>
+            <div class="tab"><i class="fas fa-utensils"></i> Магазин еды</div>
+            <div class="tab"><i class="fas fa-users"></i> Посетители</div>
         </div>
         
         <div class="zoo-container">
-            <div class="section-title">Доступные животные</div>
-            <div class="animals-grid" id="animals-grid">
-                <!-- Животные будут добавлены через JS -->
-            </div>
-            
-            <div class="section-title">Мой зоопарк</div>
-            <div class="my-animals">
-                <div class="animal-list" id="animal-list">
-                    <!-- Купленные животные будут здесь -->
+            <!-- Вкладка Животные -->
+            <div class="tab-content active">
+                <div class="section-title">
+                    <i class="fas fa-shopping-cart"></i>Доступные животные
+                </div>
+                <div class="animals-grid" id="animals-grid">
+                    <!-- Животные будут добавлены через JS -->
+                </div>
+                
+                <div class="section-title">
+                    <i class="fas fa-home"></i>Мой зоопарк
+                </div>
+                <div class="my-animals">
+                    <div class="animal-list" id="animal-list">
+                        <!-- Купленные животные будут здесь -->
+                    </div>
                 </div>
             </div>
             
-            <div class="section-title">Посетители</div>
-            <div class="visitors">
-                <p>Сейчас в зоопарке: <span id="visitor-count">0</span> человек</p>
-                <div class="visitors-container" id="visitors-container">
-                    <!-- Посетители будут появляться здесь -->
+            <!-- Вкладка Магазин еды -->
+            <div class="tab-content">
+                <div class="section-title">
+                    <i class="fas fa-store"></i>Магазин еды для животных
+                </div>
+                <div class="food-grid" id="food-grid">
+                    <!-- Еда будет добавлена через JS -->
+                </div>
+                
+                <div class="section-title">
+                    <i class="fas fa-info-circle"></i>Информация
+                </div>
+                <div class="visitors">
+                    <p>Животные потребляют еду для поддержания здоровья и привлечения посетителей. При недостатке еды животные перестанут приносить доход.</p>
+                    <p style="margin-top: 10px; color: #e74c3c; font-weight: 500;"><i class="fas fa-exclamation-triangle"></i> Текущее потребление: <span id="food-consumption">0</span> ед/мин</p>
+                </div>
+            </div>
+            
+            <!-- Вкладка Посетители -->
+            <div class="tab-content">
+                <div class="section-title">
+                    <i class="fas fa-chart-line"></i>Статистика зоопарка
+                </div>
+                <div class="visitors">
+                    <p>Сейчас в зоопарке: <span id="visitor-count">0</span> посетителей</p>
+                    <p>Доход в минуту: <span id="income-per-minute">0</span> монет</p>
+                    <div class="visitors-container" id="visitors-container">
+                        <!-- Посетители будут появляться здесь -->
+                    </div>
+                </div>
+                
+                <div class="section-title">
+                    <i class="fas fa-trophy"></i>Достижения
+                </div>
+                <div class="my-animals">
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-medal" style="color: #e6b800; font-size: 24px;"></i>
+                            <div>
+                                <div style="font-weight: 700;">Начальный уровень</div>
+                                <div style="font-size: 13px; color: #777;">Купите первое животное</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-medal" style="color: #c0c0c0; font-size: 24px;"></i>
+                            <div>
+                                <div style="font-weight: 700;">Любитель животных</div>
+                                <div style="font-size: 13px; color: #777;">Иметь 5 разных животных</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
         <div class="footer">
-            Игра автоматически сохраняется в вашем браузере
+            <div class="footer-btn"><i class="fas fa-sync-alt"></i></div>
+            <div class="footer-btn"><i class="fas fa-save"></i></div>
+            <div class="footer-btn"><i class="fas fa-question"></i></div>
         </div>
     </div>
     
-    <div class="notification" id="notification">Уведомление</div>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> Уведомление
+    </div>
     
     <script>
         // Игровые данные
         const animals = [
-            { id: 'cat', name: 'Котёнок', price: 100, income: 1, emoji: '🐱', owned: 0 },
-            { id: 'dog', name: 'Щенок', price: 200, income: 3, emoji: '🐶', owned: 0 },
-            { id: 'rabbit', name: 'Кролик', price: 300, income: 5, emoji: '🐰', owned: 0 },
-            { id: 'hamster', name: 'Хомяк', price: 500, income: 8, emoji: '🐹', owned: 0 },
-            { id: 'fox', name: 'Лиса', price: 1000, income: 15, emoji: '🦊', owned: 0 },
-            { id: 'panda', name: 'Панда', price: 2000, income: 30, emoji: '🐼', owned: 0 },
-            { id: 'lion', name: 'Лев', price: 5000, income: 70, emoji: '🦁', owned: 0 },
-            { id: 'unicorn', name: 'Единорог', price: 10000, income: 150, emoji: '🦄', owned: 0 }
+            { id: 'cat', name: 'Котёнок', price: 100, income: 1, image: 'https://cdn-icons-png.flaticon.com/512/616/616430.png', owned: 0, food: 0.2 },
+            { id: 'dog', name: 'Щенок', price: 200, income: 3, image: 'https://cdn-icons-png.flaticon.com/512/616/616408.png', owned: 0, food: 0.5 },
+            { id: 'rabbit', name: 'Кролик', price: 300, income: 5, image: 'https://cdn-icons-png.flaticon.com/512/616/616438.png', owned: 0, food: 0.3 },
+            { id: 'hamster', name: 'Хомяк', price: 500, income: 8, image: 'https://cdn-icons-png.flaticon.com/512/194/194279.png', owned: 0, food: 0.1 },
+            { id: 'fox', name: 'Лиса', price: 1000, income: 15, image: 'https://cdn-icons-png.flaticon.com/512/194/194242.png', owned: 0, food: 1.0 },
+            { id: 'panda', name: 'Панда', price: 2000, income: 30, image: 'https://cdn-icons-png.flaticon.com/512/194/194221.png', owned: 0, food: 2.0 },
+            { id: 'lion', name: 'Лев', price: 5000, income: 70, image: 'https://cdn-icons-png.flaticon.com/512/194/194223.png', owned: 0, food: 3.0 },
+            { id: 'cow', name: 'Корова', price: 3000, income: 40, image: 'https://cdn-icons-png.flaticon.com/512/194/194210.png', owned: 0, food: 2.5 },
+            { id: 'unicorn', name: 'Единорог', price: 10000, income: 150, image: 'https://cdn-icons-png.flaticon.com/512/194/194255.png', owned: 0, food: 4.0 }
+        ];
+        
+        const foods = [
+            { id: 'carrot', name: 'Морковь', price: 20, amount: 10, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327935.png', effect: 'Накормите кроликов' },
+            { id: 'meat', name: 'Мясо', price: 50, amount: 5, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327942.png', effect: 'Для хищных животных' },
+            { id: 'fish', name: 'Рыба', price: 40, amount: 8, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327932.png', effect: 'Кошки будут довольны' },
+            { id: 'hay', name: 'Сено', price: 30, amount: 15, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327938.png', effect: 'Для травоядных животных' },
+            { id: 'fruit', name: 'Фрукты', price: 60, amount: 12, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327937.png', effect: 'Витамины для всех' },
+            { id: 'premium', name: 'Премиум корм', price: 150, amount: 30, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327947.png', effect: '+20% к доходу на 1 час' }
         ];
         
         // Состояние игры
         let gameState = {
             coins: 100,
+            food: 50,
             lastUpdate: Date.now(),
             animals: JSON.parse(JSON.stringify(animals)),
             visitors: 0,
-            income: 0
+            income: 0,
+            theme: 'dark-red',
+            tab: 'animals'
         };
         
         // Элементы DOM
-        const coinsEl = document.querySelector('.coins');
+        const coinsEl = document.querySelector('.coins-value');
+        const foodEl = document.querySelector('.food-value');
         const animalsGridEl = document.getElementById('animals-grid');
+        const foodGridEl = document.getElementById('food-grid');
         const animalListEl = document.getElementById('animal-list');
         const visitorCountEl = document.getElementById('visitor-count');
         const visitorsContainerEl = document.getElementById('visitors-container');
         const notificationEl = document.getElementById('notification');
         const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const settingsBtn = document.querySelector('.settings-btn');
+        const themeSelector = document.getElementById('themeSelector');
+        const foodConsumptionEl = document.getElementById('food-consumption');
+        const incomePerMinuteEl = document.getElementById('income-per-minute');
         
         // Инициализация игры
         function initGame() {
             loadGame();
+            applyTheme();
             renderAnimals();
+            renderFood();
             updateUI();
+            setupTabs();
             
             // Запускаем игровые процессы
             setInterval(updateIncome, 1000);
             setInterval(updateVisitors, 3000);
+            setInterval(updateFoodConsumption, 5000);
             setInterval(saveGame, 10000);
             
-            // Обработчики вкладок
-            tabs.forEach(tab => {
+            // Обработчики тем
+            settingsBtn.addEventListener('click', () => {
+                themeSelector.style.display = themeSelector.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const theme = option.dataset.theme;
+                    setTheme(theme);
+                });
+            });
+        }
+        
+        // Настройка вкладок
+        function setupTabs() {
+            tabs.forEach((tab, index) => {
                 tab.addEventListener('click', () => {
+                    // Убираем активный класс у всех вкладок и контента
                     tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей вкладке и контенту
                     tab.classList.add('active');
+                    tabContents[index].classList.add('active');
+                    gameState.tab = index === 0 ? 'animals' : index === 1 ? 'food' : 'visitors';
                 });
             });
         }
@@ -410,13 +853,27 @@
                 const animalCard = document.createElement('div');
                 animalCard.className = 'animal-card';
                 animalCard.innerHTML = `
-                    <div class="animal-avatar">${animal.emoji}</div>
+                    <div class="animal-avatar">
+                        <img src="${animal.image}" alt="${animal.name}">
+                    </div>
                     <div class="animal-info">
-                        <div class="animal-name">${animal.name}</div>
-                        <div class="animal-price">${animal.price}</div>
+                        <div class="animal-name">
+                            ${animal.name}
+                            <span class="animal-price">${animal.price} <i class="fas fa-coins"></i></span>
+                        </div>
+                        <div style="font-size: 13px; color: #777; margin-bottom: 10px;">
+                            Доход: ${animal.income} мон/мин | Еда: ${animal.food}/мин
+                        </div>
+                        
+                        <div class="buy-controls">
+                            <button class="quantity-btn minus" data-id="${animal.id}">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" max="10" data-id="${animal.id}">
+                            <button class="quantity-btn plus" data-id="${animal.id}">+</button>
+                        </div>
+                        
                         <button class="buy-button" ${canBuy ? '' : 'disabled'} 
                                 data-id="${animal.id}">
-                            Купить
+                            Купить <i class="fas fa-shopping-cart"></i>
                         </button>
                     </div>
                 `;
@@ -424,11 +881,71 @@
                 animalsGridEl.appendChild(animalCard);
             });
             
+            // Обработчики кнопок количества
+            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const animalId = e.target.dataset.id;
+                    const input = document.querySelector(`.quantity-input[data-id="${animalId}"]`);
+                    if (input.value > 1) input.value = parseInt(input.value) - 1;
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const animalId = e.target.dataset.id;
+                    const input = document.querySelector(`.quantity-input[data-id="${animalId}"]`);
+                    if (input.value < 10) input.value = parseInt(input.value) + 1;
+                });
+            });
+            
             // Обработчики кнопок покупки
             document.querySelectorAll('.buy-button').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const animalId = e.target.dataset.id;
-                    buyAnimal(animalId);
+                    const input = document.querySelector(`.quantity-input[data-id="${animalId}"]`);
+                    const quantity = parseInt(input.value) || 1;
+                    buyAnimal(animalId, quantity);
+                });
+            });
+        }
+        
+        // Отрисовка еды в магазине
+        function renderFood() {
+            foodGridEl.innerHTML = '';
+            
+            foods.forEach(food => {
+                const canBuy = gameState.coins >= food.price;
+                
+                const foodCard = document.createElement('div');
+                foodCard.className = 'food-card';
+                foodCard.innerHTML = `
+                    <div class="food-image">
+                        <img src="${food.image}" alt="${food.name}">
+                    </div>
+                    <div class="food-info">
+                        <div class="food-name">${food.name}</div>
+                        <div class="food-price">${food.price} <i class="fas fa-coins"></i></div>
+                        <div style="font-size: 13px; color: #777;">
+                            Количество: ${food.amount} ед.
+                        </div>
+                        <div class="food-effect">
+                            <i class="fas fa-star"></i> ${food.effect}
+                        </div>
+                        <button class="buy-button" ${canBuy ? '' : 'disabled'} 
+                                data-id="${food.id}">
+                            Купить <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                `;
+                
+                foodGridEl.appendChild(foodCard);
+            });
+            
+            // Обработчики кнопок покупки еды
+            document.querySelectorAll('.buy-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const foodId = e.target.dataset.id;
+                    buyFood(foodId);
                 });
             });
         }
@@ -437,6 +954,7 @@
         function updateUI() {
             // Обновляем баланс
             coinsEl.textContent = Math.floor(gameState.coins);
+            foodEl.textContent = Math.floor(gameState.food);
             
             // Обновляем список животных
             animalListEl.innerHTML = '';
@@ -446,8 +964,13 @@
                     const animalItem = document.createElement('div');
                     animalItem.className = 'animal-item';
                     animalItem.innerHTML = `
-                        <div class="animal-item-icon">${animal.emoji}</div>
+                        <div class="animal-item-icon">
+                            <img src="${animal.image}" alt="${animal.name}">
+                        </div>
                         <div class="animal-item-count">${animal.owned}</div>
+                        <div style="font-size: 12px; color: #777; margin-top: 5px;">
+                            ${animal.income * animal.owned}/мин
+                        </div>
                     `;
                     animalListEl.appendChild(animalItem);
                 }
@@ -456,28 +979,54 @@
             // Обновляем посетителей
             visitorCountEl.textContent = gameState.visitors;
             
-            // Перерисовываем магазин
-            renderAnimals();
-            
-            // Рассчитываем общий доход
-            gameState.income = gameState.animals.reduce((sum, animal) => {
+            // Обновляем доход в минуту
+            const incomePerMinute = gameState.animals.reduce((sum, animal) => {
                 return sum + (animal.income * animal.owned);
             }, 0);
+            incomePerMinuteEl.textContent = incomePerMinute;
+            
+            // Перерисовываем магазин
+            renderAnimals();
+            renderFood();
+            
+            // Рассчитываем общий доход
+            gameState.income = incomePerMinute;
         }
         
         // Покупка животного
-        function buyAnimal(animalId) {
+        function buyAnimal(animalId, quantity) {
             const animal = gameState.animals.find(a => a.id === animalId);
+            const totalPrice = animal.price * quantity;
             
-            if (animal && gameState.coins >= animal.price) {
-                gameState.coins -= animal.price;
-                animal.owned++;
+            if (animal && gameState.coins >= totalPrice) {
+                gameState.coins -= totalPrice;
+                animal.owned += quantity;
                 
-                showNotification(`Вы купили ${animal.name.toLowerCase()}!`);
+                // Анимация монет
+                createCoinAnimation();
+                
+                showNotification(`Вы купили ${quantity} ${animal.name.toLowerCase()}!`);
                 updateUI();
                 
                 // Увеличиваем цену для следующей покупки
-                animal.price = Math.floor(animal.price * 1.15);
+                animal.price = Math.floor(animal.price * 1.1);
+            } else {
+                showNotification(`Недостаточно монет для покупки!`, 'error');
+            }
+        }
+        
+        // Покупка еды
+        function buyFood(foodId) {
+            const food = foods.find(f => f.id === foodId);
+            
+            if (food && gameState.coins >= food.price) {
+                gameState.coins -= food.price;
+                gameState.food += food.amount;
+                
+                showNotification(`Вы купили ${food.name}!`);
+                updateUI();
+            } else {
+                showNotification(`Недостаточно монет для покупки!`, 'error');
             }
         }
         
@@ -486,6 +1035,22 @@
             // Добавляем доход каждую секунду
             gameState.coins += gameState.income / 60;
             coinsEl.textContent = Math.floor(gameState.coins);
+        }
+        
+        // Обновление потребления еды
+        function updateFoodConsumption() {
+            const foodConsumption = gameState.animals.reduce((sum, animal) => {
+                return sum + (animal.food * animal.owned);
+            }, 0);
+            
+            foodConsumptionEl.textContent = foodConsumption.toFixed(1);
+            
+            // Уменьшаем еду каждые 5 секунд
+            if (gameState.food > 0) {
+                gameState.food -= foodConsumption / 12;
+                if (gameState.food < 0) gameState.food = 0;
+                foodEl.textContent = Math.floor(gameState.food);
+            }
         }
         
         // Обновление посетителей
@@ -515,23 +1080,51 @@
         }
         
         // Показать уведомление
-        function showNotification(message) {
+        function showNotification(message, type = 'success') {
             notificationEl.textContent = message;
-            notificationEl.classList.add('show');
+            notificationEl.className = 'notification show';
+            notificationEl.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+            
+            if (type === 'error') {
+                notificationEl.style.background = '#e74c3c';
+            } else {
+                notificationEl.style.background = '#2ecc71';
+            }
             
             setTimeout(() => {
                 notificationEl.classList.remove('show');
             }, 2000);
         }
         
+        // Создать анимацию монет
+        function createCoinAnimation() {
+            const coins = ['🪙', '💰', '💵', '💸'];
+            for (let i = 0; i < 5; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin-animation';
+                coin.textContent = coins[Math.floor(Math.random() * coins.length)];
+                coin.style.left = `${Math.random() * 100}%`;
+                coin.style.fontSize = `${Math.random() * 10 + 20}px`;
+                coin.style.animationDuration = `${Math.random() * 0.5 + 1}s`;
+                document.body.appendChild(coin);
+                
+                setTimeout(() => {
+                    coin.remove();
+                }, 1500);
+            }
+        }
+        
         // Сохранение игры
         function saveGame() {
             const saveData = {
                 coins: gameState.coins,
+                food: gameState.food,
                 animals: gameState.animals,
-                lastUpdate: Date.now()
+                lastUpdate: Date.now(),
+                theme: gameState.theme
             };
             localStorage.setItem('zooGameSave', JSON.stringify(saveData));
+            showNotification('Игра сохранена!');
         }
         
         // Загрузка игры
@@ -541,8 +1134,10 @@
             if (saveData) {
                 const parsedData = JSON.parse(saveData);
                 gameState.coins = parsedData.coins;
+                gameState.food = parsedData.food;
                 gameState.animals = parsedData.animals;
                 gameState.lastUpdate = parsedData.lastUpdate;
+                gameState.theme = parsedData.theme || 'dark-red';
                 
                 // Рассчитываем доход за время отсутствия
                 const timeDiff = (Date.now() - gameState.lastUpdate) / 1000; // в секундах
@@ -556,6 +1151,53 @@
             } else {
                 showNotification('Начните новую игру!');
             }
+        }
+        
+        // Применить тему
+        function applyTheme() {
+            // Установка активной темы в селекторе
+            document.querySelectorAll('.theme-option').forEach(option => {
+                if (option.dataset.theme === gameState.theme) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+            
+            // Применение стилей для темы
+            setTheme(gameState.theme);
+        }
+        
+        // Установка темы
+        function setTheme(themeName) {
+            gameState.theme = themeName;
+            
+            // Определение цветов для разных тем
+            const themes = {
+                'dark-red': {
+                    bodyBg: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)'
+                },
+                'dark-blue': {
+                    bodyBg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)'
+                },
+                'dark-green': {
+                    bodyBg: 'linear-gradient(135deg, #00416a, #799f0c, #ffe000)'
+                },
+                'dark-purple': {
+                    bodyBg: 'linear-gradient(135deg, #4b1248, #f0c27b, #7b4397)'
+                },
+                'light-blue': {
+                    bodyBg: 'linear-gradient(135deg, #56ccf2, #2f80ed)'
+                },
+                'light-pink': {
+                    bodyBg: 'linear-gradient(135deg, #f953c6, #b91d73)'
+                }
+            };
+            
+            const theme = themes[themeName] || themes['dark-red'];
+            document.body.style.background = theme.bodyBg;
+            
+            saveGame();
         }
         
         // Запуск игры при загрузке страницы
