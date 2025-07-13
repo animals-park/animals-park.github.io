@@ -309,7 +309,7 @@
         
         .animal-avatar {
             width: 100%;
-            height: 90px;
+            height: 120px; /* Увеличенная высота */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -329,8 +329,8 @@
         }
         
         .animal-avatar img {
-            width: 70%;
-            height: 70%;
+            width: 80%; /* Увеличенный размер */
+            height: 80%; /* Увеличенный размер */
             object-fit: contain;
             transition: transform 0.3s ease;
         }
@@ -443,7 +443,7 @@
         
         .food-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr); /* 4 колонки для десктопов */
             gap: 10px;
             margin-bottom: 16px;
         }
@@ -463,7 +463,7 @@
         }
         
         .food-image {
-            height: 80px;
+            height: 144px; /* Увеличенная высота */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -472,8 +472,8 @@
         }
         
         .food-image img {
-            width: 45px;
-            height: 45px;
+            width: 80px; /* Увеличенный размер */
+            height: 80px; /* Увеличенный размер */
             object-fit: contain;
         }
         
@@ -845,7 +845,12 @@
             }
             
             .animal-avatar {
-                height: 80px;
+                height: 110px; /* Увеличенная высота для мобильных */
+            }
+            
+            .animal-avatar img {
+                width: 70px; /* Увеличенный размер для мобильных */
+                height: 70px; /* Увеличенный размер для мобильных */
             }
             
             .animal-name {
@@ -871,13 +876,19 @@
                 padding: 6px;
             }
             
+            /* Сетка еды 4×2 для мобильных */
             .food-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 8px;
             }
             
             .food-image {
-                height: 70px;
+                height: 144px; /* Увеличенная высота */
+            }
+            
+            .food-image img {
+                width: 70px; /* Увеличенный размер */
+                height: 70px; /* Увеличенный размер */
             }
             
             .food-name {
