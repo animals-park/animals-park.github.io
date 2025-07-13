@@ -181,6 +181,14 @@
             backdrop-filter: blur(5px);
         }
         
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
         .section-title {
             font-size: 18px;
             font-weight: 700;
@@ -657,14 +665,14 @@
         </div>
         
         <div class="tabs">
-            <div class="tab active"><i class="fas fa-paw"></i> Животные</div>
-            <div class="tab"><i class="fas fa-utensils"></i> Магазин еды</div>
-            <div class="tab"><i class="fas fa-users"></i> Посетители</div>
+            <div class="tab active" data-tab="animals"><i class="fas fa-paw"></i> Животные</div>
+            <div class="tab" data-tab="food"><i class="fas fa-utensils"></i> Магазин еды</div>
+            <div class="tab" data-tab="visitors"><i class="fas fa-users"></i> Посетители</div>
         </div>
         
         <div class="zoo-container">
             <!-- Вкладка Животные -->
-            <div class="tab-content active">
+            <div class="tab-content active" id="animals-tab">
                 <div class="section-title">
                     <i class="fas fa-shopping-cart"></i>Доступные животные
                 </div>
@@ -683,7 +691,7 @@
             </div>
             
             <!-- Вкладка Магазин еды -->
-            <div class="tab-content">
+            <div class="tab-content" id="food-tab">
                 <div class="section-title">
                     <i class="fas fa-store"></i>Магазин еды для животных
                 </div>
@@ -701,7 +709,7 @@
             </div>
             
             <!-- Вкладка Посетители -->
-            <div class="tab-content">
+            <div class="tab-content" id="visitors-tab">
                 <div class="section-title">
                     <i class="fas fa-chart-line"></i>Статистика зоопарка
                 </div>
@@ -738,9 +746,9 @@
         </div>
         
         <div class="footer">
-            <div class="footer-btn"><i class="fas fa-sync-alt"></i></div>
-            <div class="footer-btn"><i class="fas fa-save"></i></div>
-            <div class="footer-btn"><i class="fas fa-question"></i></div>
+            <div class="footer-btn" id="refresh-btn"><i class="fas fa-sync-alt"></i></div>
+            <div class="footer-btn" id="save-btn"><i class="fas fa-save"></i></div>
+            <div class="footer-btn" id="help-btn"><i class="fas fa-question"></i></div>
         </div>
     </div>
     
@@ -751,24 +759,24 @@
     <script>
         // Игровые данные
         const animals = [
-            { id: 'cat', name: 'Котёнок', price: 100, income: 1, image: 'https://cdn-icons-png.flaticon.com/512/616/616430.png', owned: 0, food: 0.2 },
-            { id: 'dog', name: 'Щенок', price: 200, income: 3, image: 'https://cdn-icons-png.flaticon.com/512/616/616408.png', owned: 0, food: 0.5 },
-            { id: 'rabbit', name: 'Кролик', price: 300, income: 5, image: 'https://cdn-icons-png.flaticon.com/512/616/616438.png', owned: 0, food: 0.3 },
-            { id: 'hamster', name: 'Хомяк', price: 500, income: 8, image: 'https://cdn-icons-png.flaticon.com/512/194/194279.png', owned: 0, food: 0.1 },
-            { id: 'fox', name: 'Лиса', price: 1000, income: 15, image: 'https://cdn-icons-png.flaticon.com/512/194/194242.png', owned: 0, food: 1.0 },
-            { id: 'panda', name: 'Панда', price: 2000, income: 30, image: 'https://cdn-icons-png.flaticon.com/512/194/194221.png', owned: 0, food: 2.0 },
-            { id: 'lion', name: 'Лев', price: 5000, income: 70, image: 'https://cdn-icons-png.flaticon.com/512/194/194223.png', owned: 0, food: 3.0 },
-            { id: 'cow', name: 'Корова', price: 3000, income: 40, image: 'https://cdn-icons-png.flaticon.com/512/194/194210.png', owned: 0, food: 2.5 },
-            { id: 'unicorn', name: 'Единорог', price: 10000, income: 150, image: 'https://cdn-icons-png.flaticon.com/512/194/194255.png', owned: 0, food: 4.0 }
+            { id: 'cat', name: 'Котёнок', price: 100, income: 1, image: 'cat.gif', owned: 0, food: 0.2 },
+            { id: 'dog', name: 'Щенок', price: 200, income: 3, image: 'dog.gif', owned: 0, food: 0.5 },
+            { id: 'rabbit', name: 'Кролик', price: 300, income: 5, image: 'bunny.gif', owned: 0, food: 0.3 },
+            { id: 'hamster', name: 'Хомяк', price: 500, income: 8, image: 'hamster.gif', owned: 0, food: 0.1 },
+            { id: 'fox', name: 'Лиса', price: 1000, income: 15, image: 'fox.gif', owned: 0, food: 1.0 },
+            { id: 'panda', name: 'Панда', price: 2000, income: 30, image: 'panda.gif', owned: 0, food: 2.0 },
+            { id: 'lion', name: 'Лев', price: 5000, income: 70, image: 'lev.gif', owned: 0, food: 3.0 },
+            { id: 'cow', name: 'Корова', price: 3000, income: 40, image: 'cow.gif', owned: 0, food: 2.5 },
+            { id: 'unicorn', name: 'Единорог', price: 10000, income: 150, image: 'unicorn.gif', owned: 0, food: 4.0 }
         ];
         
         const foods = [
-            { id: 'carrot', name: 'Морковь', price: 20, amount: 10, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327935.png', effect: 'Накормите кроликов' },
-            { id: 'meat', name: 'Мясо', price: 50, amount: 5, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327942.png', effect: 'Для хищных животных' },
-            { id: 'fish', name: 'Рыба', price: 40, amount: 8, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327932.png', effect: 'Кошки будут довольны' },
-            { id: 'hay', name: 'Сено', price: 30, amount: 15, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327938.png', effect: 'Для травоядных животных' },
-            { id: 'fruit', name: 'Фрукты', price: 60, amount: 12, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327937.png', effect: 'Витамины для всех' },
-            { id: 'premium', name: 'Премиум корм', price: 150, amount: 30, image: 'https://cdn-icons-png.flaticon.com/512/2327/2327947.png', effect: '+20% к доходу на 1 час' }
+            { id: 'carrot', name: 'Морковь', price: 20, amount: 10, image: 'morcov.gif', effect: 'Накормите кроликов' },
+            { id: 'meat', name: 'Мясо', price: 50, amount: 5, image: 'meat.gif', effect: 'Для хищных животных' },
+            { id: 'fish', name: 'Рыба', price: 40, amount: 8, image: 'fish.gif', effect: 'Кошки будут довольны' },
+            { id: 'hay', name: 'Сено', price: 30, amount: 15, image: 'seno.gif', effect: 'Для травоядных животных' },
+            { id: 'fruit', name: 'Фрукты', price: 60, amount: 12, image: 'banana.gif', effect: 'Витамины для всех' },
+            { id: 'premium', name: 'Премиум корм', price: 150, amount: 30, image: 'premi.gif', effect: '+20% к доходу на 1 час' }
         ];
         
         // Состояние игры
@@ -793,11 +801,18 @@
         const visitorsContainerEl = document.getElementById('visitors-container');
         const notificationEl = document.getElementById('notification');
         const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
+        const tabContents = {
+            'animals': document.getElementById('animals-tab'),
+            'food': document.getElementById('food-tab'),
+            'visitors': document.getElementById('visitors-tab')
+        };
         const settingsBtn = document.querySelector('.settings-btn');
         const themeSelector = document.getElementById('themeSelector');
         const foodConsumptionEl = document.getElementById('food-consumption');
         const incomePerMinuteEl = document.getElementById('income-per-minute');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const helpBtn = document.getElementById('help-btn');
         
         // Инициализация игры
         function initGame() {
@@ -807,13 +822,17 @@
             renderFood();
             updateUI();
             setupTabs();
+            setupEventListeners();
             
             // Запускаем игровые процессы
             setInterval(updateIncome, 1000);
             setInterval(updateVisitors, 3000);
             setInterval(updateFoodConsumption, 5000);
             setInterval(saveGame, 10000);
-            
+        }
+        
+        // Настройка обработчиков событий
+        function setupEventListeners() {
             // Обработчики тем
             settingsBtn.addEventListener('click', () => {
                 themeSelector.style.display = themeSelector.style.display === 'flex' ? 'none' : 'flex';
@@ -825,20 +844,36 @@
                     setTheme(theme);
                 });
             });
+            
+            // Обработчики кнопок в футере
+            refreshBtn.addEventListener('click', () => {
+                location.reload();
+            });
+            
+            saveBtn.addEventListener('click', () => {
+                saveGame();
+                showNotification('Игра сохранена!');
+            });
+            
+            helpBtn.addEventListener('click', () => {
+                showNotification('Покупайте животных, кормите их и развивайте зоопарк!', 'info');
+            });
         }
         
         // Настройка вкладок
         function setupTabs() {
-            tabs.forEach((tab, index) => {
+            tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    // Убираем активный класс у всех вкладок и контента
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
+                    const tabId = tab.dataset.tab;
                     
-                    // Добавляем активный класс текущей вкладке и контенту
+                    // Убираем активный класс у всех вкладок
+                    tabs.forEach(t => t.classList.remove('active'));
+                    Object.values(tabContents).forEach(c => c.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей вкладке
                     tab.classList.add('active');
-                    tabContents[index].classList.add('active');
-                    gameState.tab = index === 0 ? 'animals' : index === 1 ? 'food' : 'visitors';
+                    tabContents[tabId].classList.add('active');
+                    gameState.tab = tabId;
                 });
             });
         }
@@ -1087,6 +1122,8 @@
             
             if (type === 'error') {
                 notificationEl.style.background = '#e74c3c';
+            } else if (type === 'info') {
+                notificationEl.style.background = '#3498db';
             } else {
                 notificationEl.style.background = '#2ecc71';
             }
@@ -1124,7 +1161,6 @@
                 theme: gameState.theme
             };
             localStorage.setItem('zooGameSave', JSON.stringify(saveData));
-            showNotification('Игра сохранена!');
         }
         
         // Загрузка игры
@@ -1132,22 +1168,27 @@
             const saveData = localStorage.getItem('zooGameSave');
             
             if (saveData) {
-                const parsedData = JSON.parse(saveData);
-                gameState.coins = parsedData.coins;
-                gameState.food = parsedData.food;
-                gameState.animals = parsedData.animals;
-                gameState.lastUpdate = parsedData.lastUpdate;
-                gameState.theme = parsedData.theme || 'dark-red';
-                
-                // Рассчитываем доход за время отсутствия
-                const timeDiff = (Date.now() - gameState.lastUpdate) / 1000; // в секундах
-                const incomePerSecond = gameState.animals.reduce((sum, animal) => {
-                    return sum + (animal.income * animal.owned);
-                }, 0) / 60;
-                
-                gameState.coins += incomePerSecond * timeDiff;
-                
-                showNotification('Игра загружена!');
+                try {
+                    const parsedData = JSON.parse(saveData);
+                    gameState.coins = parsedData.coins || 100;
+                    gameState.food = parsedData.food || 50;
+                    gameState.animals = parsedData.animals || JSON.parse(JSON.stringify(animals));
+                    gameState.lastUpdate = parsedData.lastUpdate || Date.now();
+                    gameState.theme = parsedData.theme || 'dark-red';
+                    
+                    // Рассчитываем доход за время отсутствия
+                    const timeDiff = (Date.now() - gameState.lastUpdate) / 1000; // в секундах
+                    const incomePerSecond = gameState.animals.reduce((sum, animal) => {
+                        return sum + (animal.income * animal.owned);
+                    }, 0) / 60;
+                    
+                    gameState.coins += incomePerSecond * timeDiff;
+                    
+                    showNotification('Игра загружена!');
+                } catch (e) {
+                    console.error('Ошибка загрузки игры:', e);
+                    showNotification('Ошибка загрузки. Начните новую игру!', 'error');
+                }
             } else {
                 showNotification('Начните новую игру!');
             }
@@ -1196,8 +1237,6 @@
             
             const theme = themes[themeName] || themes['dark-red'];
             document.body.style.background = theme.bodyBg;
-            
-            saveGame();
         }
         
         // Запуск игры при загрузке страницы
