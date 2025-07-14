@@ -1110,6 +1110,7 @@
         .tetris-cell {
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1/1; /* Делаем ячейки квадратными */
         }
         
         .tetris-cell.filled {
@@ -1263,6 +1264,75 @@
                 display: none;
             }
         }
+        
+        /* Стили для игры Парные карточки */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 10px auto;
+            max-width: 500px;
+        }
+        
+        .memory-card {
+            aspect-ratio: 1/1;
+            background: linear-gradient(135deg, #64b5f6, #90caf9);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card .front, .memory-card .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+        }
+        
+        .memory-card .front {
+            background: linear-gradient(135deg, #2196F3, #0D47A1);
+            font-size: 24px;
+            color: white;
+        }
+        
+        .memory-card .back {
+            transform: rotateY(180deg);
+            padding: 10px;
+        }
+        
+        .memory-card .back img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .memory-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .memory-moves, .memory-pairs {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
     </style>
 </head>
 <body>
@@ -1411,6 +1481,30 @@
                     <i class="fas fa-gamepad"></i>Игровая зона
                 </div>
                 
+                <!-- Игра Парные карточки -->
+                <div class="game-container" id="memory-game">
+                    <div class="game-title">
+                        <i class="fas fa-clone"></i>Парные карточки с животными
+                    </div>
+                    <div class="game-description">
+                        Найди пары животных! За каждую найденную пару получай 3 монеты.
+                    </div>
+                    <div class="game-board">
+                        <div class="memory-stats">
+                            <div class="memory-moves">Ходы: <span id="memory-moves">0</span></div>
+                            <div class="memory-pairs">Пары: <span id="memory-pairs">0</span>/8</div>
+                        </div>
+                        <div class="memory-grid" id="memory-grid">
+                            <!-- Карточки будут добавлены через JS -->
+                        </div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-button" id="memory-start">
+                            <i class="fas fa-play"></i>Начать игру
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Игра Suika Game -->
                 <div class="game-container" id="suika-game">
                     <div class="game-title">
@@ -1542,7 +1636,8 @@
             ],
             visitors: ['visitor1.gif', 'visitor2.gif', 'visitor3.gif'],
             suika: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif', 'unicorn.gif'],
-            tetris: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif']
+            tetris: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif'],
+            memory: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif']
         };
         
         // Промокоды
@@ -1567,6 +1662,7 @@
             tab: 'animals',
             lastActiveTime: Date.now(),
             games: {
+                memory: { active: false, cards: [], flippedCards: [], matchedPairs: 0, moves: 0 },
                 suika: { active: false, cooldown: 0, score: 0, objects: [], currentAnimal: null },
                 catch: { active: false, cooldown: 0, score: 0 },
                 tetris: { active: false, cooldown: 0, score: 0 }
@@ -1606,6 +1702,11 @@
         const headerPromoBtn = document.getElementById('header-promo-btn');
         
         // Элементы игр
+        const memoryGridEl = document.getElementById('memory-grid');
+        const memoryMovesEl = document.getElementById('memory-moves');
+        const memoryPairsEl = document.getElementById('memory-pairs');
+        const memoryStartBtn = document.getElementById('memory-start');
+        
         const suikaGameBoard = document.getElementById('suika-game-board');
         const suikaStartBtn = document.getElementById('suika-start');
         const suikaTimerEl = document.getElementById('suika-timer');
@@ -1660,6 +1761,7 @@
         
         // Инициализация игр
         function initGames() {
+            setupMemoryGame();
             setupSuikaGame();
             setupCatchGame();
             setupTetrisGame();
@@ -2171,7 +2273,7 @@
                 games: gameState.games,
                 usedPromoCodes: gameState.usedPromoCodes
             };
-            localStorage.setItem('pups', JSON.stringify(saveData));
+            localStorage.setItem('zooGameSave', JSON.stringify(saveData));
         }
         
         // Загрузка игры
@@ -2192,6 +2294,7 @@
                     gameState.lastUpdate = parsedData.lastUpdate || Date.now();
                     gameState.theme = parsedData.theme || 'dark-red';
                     gameState.games = parsedData.games || {
+                        memory: { active: false, cards: [], flippedCards: [], matchedPairs: 0, moves: 0 },
                         suika: { active: false, cooldown: 0, score: 0, objects: [], currentAnimal: null },
                         catch: { active: false, cooldown: 0, score: 0 },
                         tetris: { active: false, cooldown: 0, score: 0 }
@@ -2488,6 +2591,122 @@
             document.documentElement.style.setProperty('--energy-color1', theme.energyColor1);
             document.documentElement.style.setProperty('--energy-color2', theme.energyColor2);
             document.documentElement.style.setProperty('--neon-effect-color', theme.neonEffectColor);
+        }
+        
+        // Игра Парные карточки
+        function setupMemoryGame() {
+            function createCard(image, index) {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <div class="front">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <div class="back">
+                        <img src="${image}" alt="Animal">
+                    </div>
+                `;
+                card.addEventListener('click', flipCard);
+                return card;
+            }
+            
+            function flipCard() {
+                if (!gameState.games.memory.active) return;
+                
+                const card = this;
+                const index = card.dataset.index;
+                
+                // Не переворачивать уже совпавшие карточки
+                if (card.classList.contains('flipped') || gameState.games.memory.flippedCards.includes(index)) {
+                    return;
+                }
+                
+                // Переворачиваем карточку
+                card.classList.add('flipped');
+                gameState.games.memory.flippedCards.push(index);
+                
+                // Проверяем совпадение
+                if (gameState.games.memory.flippedCards.length === 2) {
+                    gameState.games.memory.moves++;
+                    memoryMovesEl.textContent = gameState.games.memory.moves;
+                    
+                    const firstIndex = gameState.games.memory.flippedCards[0];
+                    const secondIndex = gameState.games.memory.flippedCards[1];
+                    
+                    const firstCard = document.querySelector(`.memory-card[data-index="${firstIndex}"]`);
+                    const secondCard = document.querySelector(`.memory-card[data-index="${secondIndex}"]`);
+                    
+                    const firstImage = gameState.games.memory.cards[firstIndex];
+                    const secondImage = gameState.games.memory.cards[secondIndex];
+                    
+                    if (firstImage === secondImage) {
+                        // Совпадение
+                        gameState.games.memory.matchedPairs++;
+                        memoryPairsEl.textContent = `${gameState.games.memory.matchedPairs}/8`;
+                        
+                        // Награда за пару
+                        gameState.coins += 3;
+                        updateUI();
+                        
+                        // Очищаем массив перевернутых карточек
+                        gameState.games.memory.flippedCards = [];
+                        
+                        // Проверяем завершение игры
+                        if (gameState.games.memory.matchedPairs === 8) {
+                            setTimeout(endMemoryGame, 500);
+                        }
+                    } else {
+                        // Не совпали - переворачиваем обратно
+                        setTimeout(() => {
+                            firstCard.classList.remove('flipped');
+                            secondCard.classList.remove('flipped');
+                            gameState.games.memory.flippedCards = [];
+                        }, 1000);
+                    }
+                }
+            }
+            
+            function endMemoryGame() {
+                gameState.games.memory.active = false;
+                memoryStartBtn.disabled = false;
+                showNotification(`Игра окончена! Вы нашли все пары за ${gameState.games.memory.moves} ходов!`);
+            }
+            
+            function startMemoryGame() {
+                gameState.games.memory.active = true;
+                memoryStartBtn.disabled = true;
+                
+                // Сброс игры
+                memoryGridEl.innerHTML = '';
+                gameState.games.memory.cards = [];
+                gameState.games.memory.flippedCards = [];
+                gameState.games.memory.matchedPairs = 0;
+                gameState.games.memory.moves = 0;
+                
+                memoryMovesEl.textContent = '0';
+                memoryPairsEl.textContent = '0/8';
+                
+                // Создаем пары карточек
+                const cardImages = [...gameImages.memory, ...gameImages.memory];
+                
+                // Перемешиваем карточки
+                for (let i = cardImages.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cardImages[i], cardImages[j]] = [cardImages[j], cardImages[i]];
+                }
+                
+                // Сохраняем порядок карточек
+                gameState.games.memory.cards = cardImages;
+                
+                // Создаем карточки в сетке
+                cardImages.forEach((image, index) => {
+                    const card = createCard(image, index);
+                    memoryGridEl.appendChild(card);
+                });
+            }
+            
+            memoryStartBtn.addEventListener('click', startMemoryGame);
         }
         
         // Игра Suika Game с улучшенной физикой
@@ -3239,6 +3458,8 @@
         
         // Обновление перезарядки игр
         function updateGameCooldowns() {
+            // Memory Game - без перезарядки
+            
             // Suika Game
             if (gameState.games.suika.cooldown > 0) {
                 gameState.games.suika.cooldown--;
