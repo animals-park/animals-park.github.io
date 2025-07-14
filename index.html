@@ -34,7 +34,6 @@
         
         .telegram-app {
             width: 100%;
-            max-width: 500px;
             height: 100vh;
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -93,14 +92,38 @@
             transition: background 0.5s ease;
         }
         
-        .header-buttons {
+        .header-promo {
             display: flex;
-            gap: 8px;
+            margin-left: auto;
             align-items: center;
-            margin-right: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 4px 8px;
+            height: 36px;
         }
         
-        .settings-btn, .clicker-btn, .promo-btn {
+        #header-promo-input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100px;
+            padding: 4px;
+            outline: none;
+        }
+        
+        #header-promo-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        #header-promo-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        .settings-btn, .promo-btn, .clicker-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             width: 36px;
@@ -109,6 +132,7 @@
             color: white;
             font-size: 16px;
             cursor: pointer;
+            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,7 +146,8 @@
         }
         
         .promo-btn {
-            background: rgba(255, 215, 0, 0.3);
+            color: #FF69B4;
+            box-shadow: 0 0 12px rgba(255, 105, 180, 0.7);
         }
         
         .stats-container {
@@ -710,20 +735,6 @@
             transform: scale(0.95);
         }
         
-        /* Эффект заполнения колбы для кликера */
-        .clicker-btn::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: calc(var(--energy-level, 0) * 1%);
-            background: rgba(255, 215, 0, 0.5);
-            border-radius: 0 0 18px 18px;
-            transition: height 0.3s ease;
-            z-index: -1;
-        }
-        
         /* Мобильная адаптация */
         @media (max-width: 768px) {
             .header {
@@ -734,6 +745,7 @@
                 width: 32px;
                 height: 32px;
                 font-size: 14px;
+                margin-right: 8px;
             }
             
             .header h1 {
@@ -891,7 +903,7 @@
             margin: 10px 0;
             position: relative;
             overflow: hidden;
-            height: 400px;
+            height: 450px; /* Увеличили высоту */
         }
         
         .suika-container {
@@ -1097,54 +1109,27 @@
         
         .tetris-cell {
             background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
         
         .tetris-cell.filled {
-            background-size: cover;
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
+            border: 1px solid rgba(0, 0, 0, 0.3);
         }
         
-        /* Мобильные кнопки для тетриса */
-        .mobile-tetris-controls {
-            display: none;
-            justify-content: center;
-            margin-top: 15px;
-            gap: 10px;
-        }
-        
-        .mobile-tetris-btn {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--button-color1), var(--button-color2));
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-tetris-controls {
-                display: flex;
-            }
-        }
-        
-        /* Модальное окно для промокода */
+        /* Модальное окно для промокодов */
         .promo-modal {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.7);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
@@ -1156,22 +1141,24 @@
             pointer-events: all;
         }
         
-        .modal-content {
+        .promo-content {
             background: white;
-            padding: 20px;
             border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            max-width: 90%;
-            width: 350px;
             text-align: center;
         }
         
-        .modal-content h3 {
+        .promo-title {
+            font-size: 18px;
+            font-weight: 700;
             margin-bottom: 15px;
             color: #333;
         }
         
-        #promo-input {
+        .promo-input {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #ddd;
@@ -1179,50 +1166,102 @@
             font-size: 16px;
             margin-bottom: 15px;
             transition: border-color 0.3s;
+            text-align: center;
         }
         
-        #promo-input:focus {
-            border-color: #3498db;
+        .promo-input:focus {
+            border-color: #4CAF50;
             outline: none;
         }
         
-        #promo-submit, #promo-close {
-            padding: 10px 20px;
+        .promo-submit {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
             border: none;
             border-radius: 10px;
+            padding: 12px 25px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
-            margin: 5px;
+            width: 100%;
         }
         
-        #promo-submit {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        .promo-submit:hover {
+            transform: scale(1.05);
+        }
+        
+        .promo-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f44336;
             color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
         }
         
-        #promo-close {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-        }
-        
-        .promo-result {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 10px;
+        /* Кнопки управления для мобильного тетриса */
+        .mobile-controls {
             display: none;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+            align-items: center;
         }
         
-        .promo-result.success {
-            background: rgba(46, 204, 113, 0.2);
-            color: #27ae60;
-            display: block;
+        .mobile-btn {
+            background: linear-gradient(135deg, #2196F3, #0D47A1);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
-        .promo-result.error {
-            background: rgba(231, 76, 60, 0.2);
-            color: #c0392b;
-            display: block;
+        .mobile-btn.rotate {
+            grid-column: 2;
+            grid-row: 1;
+        }
+        
+        .mobile-btn.down {
+            grid-column: 2;
+            grid-row: 2;
+        }
+        
+        .mobile-btn.left {
+            grid-column: 1;
+            grid-row: 2;
+        }
+        
+        .mobile-btn.right {
+            grid-column: 3;
+            grid-row: 2;
+        }
+        
+        /* Для мобильных устройств показываем кнопки управления */
+        @media (max-width: 768px) {
+            .mobile-controls {
+                display: grid;
+            }
+            .header-promo {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -1230,6 +1269,16 @@
     <div class="telegram-app">
         <div class="neon-overlay"></div>
         <div class="glow-effect"></div>
+        
+        <!-- Модальное окно для промокодов -->
+        <div class="promo-modal" id="promoModal">
+            <div class="promo-content">
+                <div class="promo-close" id="promoClose">&times;</div>
+                <div class="promo-title">Активировать промокод</div>
+                <input type="text" class="promo-input" id="promoInput" placeholder="Введите промокод">
+                <button class="promo-submit" id="promoSubmit">Активировать</button>
+            </div>
+        </div>
         
         <div class="theme-selector" id="themeSelector">
             <div class="theme-label">Темные темы:</div>
@@ -1248,12 +1297,15 @@
         </div>
         
         <div class="header">
-            <div class="header-buttons">
-                <button class="settings-btn"><i class="fas fa-cog"></i></button>
-                <button class="clicker-btn" id="clicker-btn"><i class="fas fa-bolt"></i></button>
-                <button class="promo-btn" id="promo-btn"><i class="fas fa-gift"></i></button>
-            </div>
+            <button class="settings-btn"><i class="fas fa-cog"></i></button>
+            <button class="promo-btn" id="promo-btn"><i class="fas fa-gift"></i></button>
+            <button class="clicker-btn" id="clicker-btn"><i class="fas fa-bolt"></i></button>
             <h1>Контактный зоопарк 🐾</h1>
+            
+            <div class="header-promo">
+                <input type="text" id="header-promo-input" placeholder="Промокод">
+                <button id="header-promo-btn"><i class="fas fa-gift"></i></button>
+            </div>
         </div>
         
         <div class="stats-container">
@@ -1374,8 +1426,7 @@
                         <div class="suika-score">Очки: <span id="suika-score">0</span></div>
                     </div>
                     <div class="controls-hint">
-                        На телефоне: двигайте пальцем для перемещения<br>
-                        На компьютере: ← → для перемещения, Shift для сброса
+                        На телефоне: двигайте пальцем для перемещения, Shift для сброса
                     </div>
                     <div class="game-controls">
                         <button class="game-button" id="suika-start">
@@ -1429,15 +1480,11 @@
                     <div class="controls-hint">
                         Управление: ← → для движения, ↑ для поворота, ↓ для ускорения
                     </div>
-                    <div class="mobile-tetris-controls">
-                        <div>
-                            <button class="mobile-tetris-btn up"><i class="fas fa-arrow-up"></i></button>
-                        </div>
-                        <div>
-                            <button class="mobile-tetris-btn left"><i class="fas fa-arrow-left"></i></button>
-                            <button class="mobile-tetris-btn down"><i class="fas fa-arrow-down"></i></button>
-                            <button class="mobile-tetris-btn right"><i class="fas fa-arrow-right"></i></button>
-                        </div>
+                    <div class="mobile-controls">
+                        <button class="mobile-btn rotate" id="tetris-rotate"><i class="fas fa-redo"></i></button>
+                        <button class="mobile-btn down" id="tetris-down"><i class="fas fa-arrow-down"></i></button>
+                        <button class="mobile-btn left" id="tetris-left"><i class="fas fa-arrow-left"></i></button>
+                        <button class="mobile-btn right" id="tetris-right"><i class="fas fa-arrow-right"></i></button>
                     </div>
                     <div class="game-controls">
                         <button class="game-button" id="tetris-start">
@@ -1462,17 +1509,6 @@
     
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i> Уведомление
-    </div>
-    
-    <!-- Модальное окно для промокодов -->
-    <div class="promo-modal" id="promo-modal">
-        <div class="modal-content">
-            <h3>Введите промокод</h3>
-            <input type="text" id="promo-input" placeholder="Промокод">
-            <button id="promo-submit">Активировать</button>
-            <button id="promo-close">Закрыть</button>
-            <div class="promo-result" id="promo-result"></div>
-        </div>
     </div>
     
     <script>
@@ -1509,6 +1545,12 @@
             tetris: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif']
         };
         
+        // Промокоды
+        const promoCodes = {
+            'l0-0l': { coins: 100, food: 20, used: false },
+            'l0_ol': { coins: 84, food: 48, used: false }
+        };
+        
         // Состояние игры
         let gameState = {
             coins: 100,
@@ -1529,7 +1571,7 @@
                 catch: { active: false, cooldown: 0, score: 0 },
                 tetris: { active: false, cooldown: 0, score: 0 }
             },
-            usedPromoCodes: [] // Сохраняем использованные промокоды
+            usedPromoCodes: []
         };
         
         // Элементы DOM
@@ -1552,14 +1594,16 @@
             'games': document.getElementById('games-tab')
         };
         const settingsBtn = document.querySelector('.settings-btn');
-        const clickerBtn = document.getElementById('clicker-btn');
         const promoBtn = document.getElementById('promo-btn');
+        const clickerBtn = document.getElementById('clicker-btn');
         const themeSelector = document.getElementById('themeSelector');
         const foodConsumptionEl = document.getElementById('food-consumption');
         const incomePerMinuteEl = document.getElementById('income-per-minute');
         const refreshBtn = document.getElementById('refresh-btn');
         const saveBtn = document.getElementById('save-btn');
         const helpBtn = document.getElementById('help-btn');
+        const headerPromoInput = document.getElementById('header-promo-input');
+        const headerPromoBtn = document.getElementById('header-promo-btn');
         
         // Элементы игр
         const suikaGameBoard = document.getElementById('suika-game-board');
@@ -1583,12 +1627,11 @@
         const tetrisCooldownEl = document.getElementById('tetris-cooldown');
         const tetrisCooldownTimer = document.getElementById('tetris-cooldown-timer');
         
-        // Промокоды
-        const promoModal = document.getElementById('promo-modal');
-        const promoInput = document.getElementById('promo-input');
-        const promoSubmit = document.getElementById('promo-submit');
-        const promoClose = document.getElementById('promo-close');
-        const promoResult = document.getElementById('promo-result');
+        // Элементы для промокодов
+        const promoModal = document.getElementById('promoModal');
+        const promoInput = document.getElementById('promoInput');
+        const promoSubmit = document.getElementById('promoSubmit');
+        const promoClose = document.getElementById('promoClose');
         
         // Инициализация игры
         function initGame() {
@@ -1674,60 +1717,71 @@
             // Обработчик кликера
             clickerBtn.addEventListener('click', handleClickerClick);
             
-            // Обработчик промокода
+            // Обработчик промокодов
             promoBtn.addEventListener('click', () => {
                 promoModal.classList.add('active');
             });
             
-            promoSubmit.addEventListener('click', activatePromoCode);
             promoClose.addEventListener('click', () => {
                 promoModal.classList.remove('active');
+            });
+            
+            promoSubmit.addEventListener('click', activatePromoCode);
+            
+            promoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    activatePromoCode();
+                }
+            });
+            
+            // Обработчик промокода в заголовке
+            headerPromoBtn.addEventListener('click', () => {
+                activatePromoCode(headerPromoInput.value);
+            });
+            
+            headerPromoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    activatePromoCode(headerPromoInput.value);
+                }
             });
         }
         
         // Активация промокода
-        function activatePromoCode() {
-            const code = promoInput.value.trim();
-            promoResult.style.display = 'none';
+        function activatePromoCode(code = null) {
+            const promoCode = code || promoInput.value.trim();
             
-            if (!code) {
-                promoResult.textContent = "Введите промокод!";
-                promoResult.className = "promo-result error";
-                promoResult.style.display = 'block';
+            if (!promoCode) {
+                showNotification('Введите промокод', 'error');
                 return;
             }
             
-            // Проверка на использование промокода
-            if (gameState.usedPromoCodes.includes(code)) {
-                promoResult.textContent = "Промокод уже использован!";
-                promoResult.className = "promo-result error";
-                promoResult.style.display = 'block';
+            // Проверяем, был ли уже использован этот промокод
+            if (gameState.usedPromoCodes.includes(promoCode)) {
+                showNotification('Этот промокод уже использован', 'error');
                 return;
             }
             
-            // Проверка промокодов
-            if (code === 'l0-0l') {
-                gameState.coins += 100;
-                gameState.food += 20;
-                gameState.usedPromoCodes.push(code);
-                promoResult.textContent = "Промокод активирован! Получено 100 монет и 20 еды.";
-                promoResult.className = "promo-result success";
-                promoResult.style.display = 'block';
+            // Проверяем существование промокода
+            if (promoCodes[promoCode]) {
+                // Проверяем, не использован ли он глобально
+                if (promoCodes[promoCode].used) {
+                    showNotification('Этот промокод уже был использован', 'error');
+                    return;
+                }
+                
+                // Активируем промокод
+                gameState.coins += promoCodes[promoCode].coins;
+                gameState.food += promoCodes[promoCode].food;
+                promoCodes[promoCode].used = true;
+                gameState.usedPromoCodes.push(promoCode);
+                
+                showNotification(`Промокод активирован! Получено: ${promoCodes[promoCode].coins} монет и ${promoCodes[promoCode].food} еды`);
+                promoModal.classList.remove('active');
+                promoInput.value = '';
+                headerPromoInput.value = '';
                 updateUI();
-                saveGame();
-            } else if (code === 'l0_ol') {
-                gameState.coins += 84;
-                gameState.food += 48;
-                gameState.usedPromoCodes.push(code);
-                promoResult.textContent = "Промокод активирован! Получено 84 монеты и 48 еды.";
-                promoResult.className = "promo-result success";
-                promoResult.style.display = 'block';
-                updateUI();
-                saveGame();
             } else {
-                promoResult.textContent = "Неверный промокод!";
-                promoResult.className = "promo-result error";
-                promoResult.style.display = 'block';
+                showNotification('Неверный промокод', 'error');
             }
         }
         
@@ -1745,9 +1799,6 @@
                 setTimeout(() => {
                     clickerBtn.classList.remove('pulse');
                 }, 300);
-                
-                // Обновляем уровень заполнения
-                clickerBtn.style.setProperty('--energy-level', (gameState.energy / gameState.maxEnergy) * 100);
                 
                 updateUI();
             } else {
@@ -1930,9 +1981,6 @@
             // Обновляем прогресс бар энергии
             const energyPercent = (gameState.energy / gameState.maxEnergy) * 100;
             energyBarEl.style.width = `${energyPercent}%`;
-            
-            // Обновляем уровень заполнения кнопки кликера
-            clickerBtn.style.setProperty('--energy-level', energyPercent);
             
             // Обновляем список животных
             animalListEl.innerHTML = '';
@@ -2128,7 +2176,7 @@
         
         // Загрузка игры
         function loadGame() {
-            const saveData = localStorage.getItem('locals');
+            const saveData = localStorage.getItem('zooGameSave');
             
             if (saveData) {
                 try {
@@ -2442,7 +2490,7 @@
             document.documentElement.style.setProperty('--neon-effect-color', theme.neonEffectColor);
         }
         
-        // Игра Suika Game с фиксированными размерами и начислением монет
+        // Игра Suika Game с улучшенной физикой
         function setupSuikaGame() {
             // Порядок животных от маленького к большому
             const suikaAnimalOrder = [
@@ -2452,6 +2500,7 @@
             
             // Фиксированные размеры для каждого животного
             const suikaSizes = [30, 40, 50, 60, 70, 80, 90, 100, 110];
+            const suikaMass = [1, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 4.0, 5.0];
             
             let suikaObjects = [];
             let currentAnimal = null;
@@ -2471,12 +2520,16 @@
                 const level = initialLevels[Math.floor(Math.random() * initialLevels.length)];
                 const animalType = suikaAnimalOrder[level];
                 const size = suikaSizes[level];
+                const mass = suikaMass[level];
                 
                 currentAnimal = {
                     type: animalType,
                     x: 50,
                     y: 10,
                     size: size,
+                    mass: mass,
+                    vx: 0,
+                    vy: 0,
                     element: document.createElement('div')
                 };
                 
@@ -2494,44 +2547,64 @@
                 if (!currentAnimal || isDropping) return;
                 
                 isDropping = true;
+                const gravity = 0.2;
+                const friction = 0.98;
+                const bounceFactor = 0.7;
+                
                 let dropInterval = setInterval(() => {
-                    currentAnimal.y += 2;
+                    // Применяем гравитацию
+                    currentAnimal.vy += gravity;
+                    currentAnimal.y += currentAnimal.vy;
+                    
+                    // Применяем трение
+                    currentAnimal.vx *= friction;
+                    currentAnimal.x += currentAnimal.vx;
+                    
+                    // Обновляем позицию
                     currentAnimal.element.style.top = `${currentAnimal.y}%`;
+                    currentAnimal.element.style.left = `${currentAnimal.x}%`;
                     
                     // Проверка столкновения с другими объектами
+                    let collision = false;
                     for (const obj of suikaObjects) {
-                        const dx = Math.abs(currentAnimal.x - obj.x);
-                        const dy = Math.abs(currentAnimal.y - obj.y);
+                        const dx = currentAnimal.x - obj.x;
+                        const dy = currentAnimal.y - obj.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
+                        const minDistance = (currentAnimal.size + obj.size) / 2 * 0.8; // 80% от суммы радиусов
                         
-                        // Используем радиусы для точного определения столкновения
-                        const currentRadius = currentAnimal.size / 2;
-                        const objRadius = obj.size / 2;
-                        
-                        if (distance < currentRadius + objRadius) {
-                            clearInterval(dropInterval);
-                            isDropping = false;
-                            suikaObjects.push({
-                                type: currentAnimal.type,
-                                x: currentAnimal.x,
-                                y: currentAnimal.y,
-                                size: currentAnimal.size,
-                                element: currentAnimal.element
-                            });
+                        if (distance < minDistance) {
+                            collision = true;
                             
-                            // Проверка на центр другого круга
-                            if (distance < 5) {
-                                showNotification("Game Over! Круг попал в центр другого круга", "error");
-                                endSuikaGame();
-                                return;
-                            }
+                            // Расчет нормали столкновения
+                            const nx = dx / distance;
+                            const ny = dy / distance;
                             
-                            checkMerge();
-                            setTimeout(() => {
-                                currentAnimal = null;
-                                createAnimal();
-                            }, 500);
-                            return;
+                            // Глубина проникновения
+                            const penetration = minDistance - distance;
+                            
+                            // Коррекция позиции
+                            currentAnimal.x += nx * penetration * 0.5;
+                            currentAnimal.y += ny * penetration * 0.5;
+                            obj.x -= nx * penetration * 0.5;
+                            obj.y -= ny * penetration * 0.5;
+                            
+                            // Расчет относительной скорости
+                            const dvx = currentAnimal.vx - obj.vx;
+                            const dvy = currentAnimal.vy - obj.vy;
+                            const dot = dvx * nx + dvy * ny;
+                            
+                            // Импульс столкновения
+                            const impulse = 2 * dot / (currentAnimal.mass + obj.mass);
+                            
+                            // Применение импульса
+                            currentAnimal.vx -= impulse * obj.mass * nx;
+                            currentAnimal.vy -= impulse * obj.mass * ny;
+                            obj.vx += impulse * currentAnimal.mass * nx;
+                            obj.vy += impulse * currentAnimal.mass * ny;
+                            
+                            // Обновление позиций объектов
+                            obj.element.style.left = `${obj.x}%`;
+                            obj.element.style.top = `${obj.y}%`;
                         }
                     }
                     
@@ -2539,17 +2612,41 @@
                     if (currentAnimal.y > 85) {
                         clearInterval(dropInterval);
                         isDropping = false;
-                        suikaObjects.push({
-                            type: currentAnimal.type,
-                            x: currentAnimal.x,
-                            y: currentAnimal.y,
-                            size: currentAnimal.size,
-                            element: currentAnimal.element
-                        });
-                        currentAnimal = null;
-                        createAnimal();
+                        currentAnimal.vy = -Math.abs(currentAnimal.vy) * bounceFactor;
+                        
+                        // Если скорость слишком мала, фиксируем объект
+                        if (Math.abs(currentAnimal.vy) < 0.5) {
+                            currentAnimal.y = 85;
+                            suikaObjects.push({
+                                type: currentAnimal.type,
+                                x: currentAnimal.x,
+                                y: currentAnimal.y,
+                                size: currentAnimal.size,
+                                mass: currentAnimal.mass,
+                                vx: 0,
+                                vy: 0,
+                                element: currentAnimal.element
+                            });
+                            
+                            checkMerge();
+                            setTimeout(() => {
+                                currentAnimal = null;
+                                createAnimal();
+                            }, 500);
+                        }
                     }
-                }, 50);
+                    
+                    // Проверка столкновения со стенами
+                    if (currentAnimal.x < 5) {
+                        currentAnimal.x = 5;
+                        currentAnimal.vx = Math.abs(currentAnimal.vx) * bounceFactor;
+                    }
+                    
+                    if (currentAnimal.x > 95) {
+                        currentAnimal.x = 95;
+                        currentAnimal.vx = -Math.abs(currentAnimal.vx) * bounceFactor;
+                    }
+                }, 16); // ~60 FPS
             }
             
             function checkMerge() {
@@ -2557,21 +2654,20 @@
                 for (let i = 0; i < suikaObjects.length; i++) {
                     for (let j = i + 1; j < suikaObjects.length; j++) {
                         if (suikaObjects[i].type === suikaObjects[j].type) {
-                            const dx = Math.abs(suikaObjects[i].x - suikaObjects[j].x);
-                            const dy = Math.abs(suikaObjects[i].y - suikaObjects[j].y);
+                            const dx = suikaObjects[i].x - suikaObjects[j].x;
+                            const dy = suikaObjects[i].y - suikaObjects[j].y;
                             const distance = Math.sqrt(dx * dx + dy * dy);
                             
-                            // Используем радиусы для точного определения столкновения
-                            const radiusI = suikaObjects[i].size / 2;
-                            const radiusJ = suikaObjects[j].size / 2;
+                            const minDistance = (suikaObjects[i].size + suikaObjects[j].size) / 2 * 0.8;
                             
-                            if (distance < radiusI + radiusJ) {
+                            if (distance < minDistance) {
                                 const currentType = suikaObjects[i].type;
                                 const currentIndex = suikaAnimalOrder.indexOf(currentType);
                                 
                                 if (currentIndex < suikaAnimalOrder.length - 1) {
                                     const newType = suikaAnimalOrder[currentIndex + 1];
                                     const newSize = suikaSizes[currentIndex + 1];
+                                    const newMass = suikaMass[currentIndex + 1];
                                     
                                     // Координаты нового объекта
                                     const newX = (suikaObjects[i].x + suikaObjects[j].x) / 2;
@@ -2597,6 +2693,9 @@
                                         x: newX,
                                         y: newY,
                                         size: newSize,
+                                        mass: newMass,
+                                        vx: 0,
+                                        vy: 0,
                                         element: newElement
                                     };
                                     
@@ -2625,12 +2724,12 @@
                 switch(e.key) {
                     case 'ArrowLeft':
                     case 'a':
-                        currentAnimal.x = Math.max(10, currentAnimal.x - 5);
+                        currentAnimal.x = Math.max(5, currentAnimal.x - 1);
                         currentAnimal.element.style.left = `${currentAnimal.x}%`;
                         break;
                     case 'ArrowRight':
                     case 'd':
-                        currentAnimal.x = Math.min(90, currentAnimal.x + 5);
+                        currentAnimal.x = Math.min(95, currentAnimal.x + 1);
                         currentAnimal.element.style.left = `${currentAnimal.x}%`;
                         break;
                     case 'Shift':
@@ -2655,7 +2754,7 @@
                 const deltaX = touchX - touchStartX;
                 const screenWidth = window.innerWidth;
                 
-                currentAnimal.x = Math.max(10, Math.min(90, currentAnimal.x + (deltaX / screenWidth * 100)));
+                currentAnimal.x = Math.max(5, Math.min(95, currentAnimal.x + (deltaX / screenWidth * 100)));
                 currentAnimal.element.style.left = `${currentAnimal.x}%`;
                 
                 touchStartX = touchX;
@@ -2714,7 +2813,7 @@
             }
         }
         
-        // Игра "Лови животных" - рабочая версия
+        // Игра "Лови животных"
         function setupCatchGame() {
             let catchInterval;
             let spawnInterval;
@@ -2840,7 +2939,7 @@
             }
         }
         
-        // Игра Тетрис с животными
+        // Игра Тетрис
         function setupTetrisGame() {
             const tetrisShapes = [
                 [[1, 1, 1, 1]], // I
@@ -3078,11 +3177,11 @@
                 }
             });
             
-            // Мобильные кнопки
-            document.querySelector('.mobile-tetris-btn.up').addEventListener('click', rotate);
-            document.querySelector('.mobile-tetris-btn.left').addEventListener('click', () => move(-1));
-            document.querySelector('.mobile-tetris-btn.right').addEventListener('click', () => move(1));
-            document.querySelector('.mobile-tetris-btn.down').addEventListener('click', moveDown);
+            // Мобильные кнопки управления
+            document.getElementById('tetris-left').addEventListener('click', () => move(-1));
+            document.getElementById('tetris-right').addEventListener('click', () => move(1));
+            document.getElementById('tetris-down').addEventListener('click', moveDown);
+            document.getElementById('tetris-rotate').addEventListener('click', rotate);
             
             tetrisStartBtn.addEventListener('click', () => {
                 if (gameState.games.tetris.cooldown > 0) return;
