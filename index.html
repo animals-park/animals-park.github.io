@@ -34,6 +34,7 @@
         
         .telegram-app {
             width: 100%;
+            max-width: 500px;
             height: 100vh;
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -92,7 +93,14 @@
             transition: background 0.5s ease;
         }
         
-        .settings-btn {
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-right: 12px;
+        }
+        
+        .settings-btn, .clicker-btn, .promo-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             width: 36px;
@@ -101,7 +109,6 @@
             color: white;
             font-size: 16px;
             cursor: pointer;
-            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -110,21 +117,12 @@
         }
         
         .clicker-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
             color: #FFD700;
-            font-size: 16px;
-            cursor: pointer;
-            margin-right: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 11;
             box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+        }
+        
+        .promo-btn {
+            background: rgba(255, 215, 0, 0.3);
         }
         
         .stats-container {
@@ -712,17 +710,30 @@
             transform: scale(0.95);
         }
         
+        /* Эффект заполнения колбы для кликера */
+        .clicker-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: calc(var(--energy-level, 0) * 1%);
+            background: rgba(255, 215, 0, 0.5);
+            border-radius: 0 0 18px 18px;
+            transition: height 0.3s ease;
+            z-index: -1;
+        }
+        
         /* Мобильная адаптация */
         @media (max-width: 768px) {
             .header {
                 padding: 12px 10px;
             }
             
-            .settings-btn, .clicker-btn {
+            .settings-btn, .clicker-btn, .promo-btn {
                 width: 32px;
                 height: 32px;
                 font-size: 14px;
-                margin-right: 8px;
             }
             
             .header h1 {
@@ -1090,9 +1101,128 @@
         }
         
         .tetris-cell.filled {
-            background-size: contain;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+        }
+        
+        /* Мобильные кнопки для тетриса */
+        .mobile-tetris-controls {
+            display: none;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        
+        .mobile-tetris-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--button-color1), var(--button-color2));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-tetris-controls {
+                display: flex;
+            }
+        }
+        
+        /* Модальное окно для промокода */
+        .promo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .promo-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 350px;
+            text-align: center;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        #promo-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        #promo-input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        #promo-submit, #promo-close {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        #promo-submit {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        #promo-close {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .promo-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .promo-result.success {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+            display: block;
+        }
+        
+        .promo-result.error {
+            background: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+            display: block;
         }
     </style>
 </head>
@@ -1118,8 +1248,11 @@
         </div>
         
         <div class="header">
-            <button class="settings-btn"><i class="fas fa-cog"></i></button>
-            <button class="clicker-btn" id="clicker-btn"><i class="fas fa-bolt"></i></button>
+            <div class="header-buttons">
+                <button class="settings-btn"><i class="fas fa-cog"></i></button>
+                <button class="clicker-btn" id="clicker-btn"><i class="fas fa-bolt"></i></button>
+                <button class="promo-btn" id="promo-btn"><i class="fas fa-gift"></i></button>
+            </div>
             <h1>Контактный зоопарк 🐾</h1>
         </div>
         
@@ -1241,7 +1374,8 @@
                         <div class="suika-score">Очки: <span id="suika-score">0</span></div>
                     </div>
                     <div class="controls-hint">
-                        На телефоне: двигайте пальцем для перемещения
+                        На телефоне: двигайте пальцем для перемещения<br>
+                        На компьютере: ← → для перемещения, Shift для сброса
                     </div>
                     <div class="game-controls">
                         <button class="game-button" id="suika-start">
@@ -1295,6 +1429,16 @@
                     <div class="controls-hint">
                         Управление: ← → для движения, ↑ для поворота, ↓ для ускорения
                     </div>
+                    <div class="mobile-tetris-controls">
+                        <div>
+                            <button class="mobile-tetris-btn up"><i class="fas fa-arrow-up"></i></button>
+                        </div>
+                        <div>
+                            <button class="mobile-tetris-btn left"><i class="fas fa-arrow-left"></i></button>
+                            <button class="mobile-tetris-btn down"><i class="fas fa-arrow-down"></i></button>
+                            <button class="mobile-tetris-btn right"><i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
                     <div class="game-controls">
                         <button class="game-button" id="tetris-start">
                             <i class="fas fa-play"></i>Начать игру
@@ -1318,6 +1462,17 @@
     
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i> Уведомление
+    </div>
+    
+    <!-- Модальное окно для промокодов -->
+    <div class="promo-modal" id="promo-modal">
+        <div class="modal-content">
+            <h3>Введите промокод</h3>
+            <input type="text" id="promo-input" placeholder="Промокод">
+            <button id="promo-submit">Активировать</button>
+            <button id="promo-close">Закрыть</button>
+            <div class="promo-result" id="promo-result"></div>
+        </div>
     </div>
     
     <script>
@@ -1373,7 +1528,8 @@
                 suika: { active: false, cooldown: 0, score: 0, objects: [], currentAnimal: null },
                 catch: { active: false, cooldown: 0, score: 0 },
                 tetris: { active: false, cooldown: 0, score: 0 }
-            }
+            },
+            usedPromoCodes: [] // Сохраняем использованные промокоды
         };
         
         // Элементы DOM
@@ -1397,6 +1553,7 @@
         };
         const settingsBtn = document.querySelector('.settings-btn');
         const clickerBtn = document.getElementById('clicker-btn');
+        const promoBtn = document.getElementById('promo-btn');
         const themeSelector = document.getElementById('themeSelector');
         const foodConsumptionEl = document.getElementById('food-consumption');
         const incomePerMinuteEl = document.getElementById('income-per-minute');
@@ -1425,6 +1582,13 @@
         const tetrisScoreEl = document.getElementById('tetris-score');
         const tetrisCooldownEl = document.getElementById('tetris-cooldown');
         const tetrisCooldownTimer = document.getElementById('tetris-cooldown-timer');
+        
+        // Промокоды
+        const promoModal = document.getElementById('promo-modal');
+        const promoInput = document.getElementById('promo-input');
+        const promoSubmit = document.getElementById('promo-submit');
+        const promoClose = document.getElementById('promo-close');
+        const promoResult = document.getElementById('promo-result');
         
         // Инициализация игры
         function initGame() {
@@ -1509,6 +1673,62 @@
             
             // Обработчик кликера
             clickerBtn.addEventListener('click', handleClickerClick);
+            
+            // Обработчик промокода
+            promoBtn.addEventListener('click', () => {
+                promoModal.classList.add('active');
+            });
+            
+            promoSubmit.addEventListener('click', activatePromoCode);
+            promoClose.addEventListener('click', () => {
+                promoModal.classList.remove('active');
+            });
+        }
+        
+        // Активация промокода
+        function activatePromoCode() {
+            const code = promoInput.value.trim();
+            promoResult.style.display = 'none';
+            
+            if (!code) {
+                promoResult.textContent = "Введите промокод!";
+                promoResult.className = "promo-result error";
+                promoResult.style.display = 'block';
+                return;
+            }
+            
+            // Проверка на использование промокода
+            if (gameState.usedPromoCodes.includes(code)) {
+                promoResult.textContent = "Промокод уже использован!";
+                promoResult.className = "promo-result error";
+                promoResult.style.display = 'block';
+                return;
+            }
+            
+            // Проверка промокодов
+            if (code === 'l0-0l') {
+                gameState.coins += 100;
+                gameState.food += 20;
+                gameState.usedPromoCodes.push(code);
+                promoResult.textContent = "Промокод активирован! Получено 100 монет и 20 еды.";
+                promoResult.className = "promo-result success";
+                promoResult.style.display = 'block';
+                updateUI();
+                saveGame();
+            } else if (code === 'l0_ol') {
+                gameState.coins += 84;
+                gameState.food += 48;
+                gameState.usedPromoCodes.push(code);
+                promoResult.textContent = "Промокод активирован! Получено 84 монеты и 48 еды.";
+                promoResult.className = "promo-result success";
+                promoResult.style.display = 'block';
+                updateUI();
+                saveGame();
+            } else {
+                promoResult.textContent = "Неверный промокод!";
+                promoResult.className = "promo-result error";
+                promoResult.style.display = 'block';
+            }
         }
         
         // Обработка клика по кликеру
@@ -1525,6 +1745,9 @@
                 setTimeout(() => {
                     clickerBtn.classList.remove('pulse');
                 }, 300);
+                
+                // Обновляем уровень заполнения
+                clickerBtn.style.setProperty('--energy-level', (gameState.energy / gameState.maxEnergy) * 100);
                 
                 updateUI();
             } else {
@@ -1707,6 +1930,9 @@
             // Обновляем прогресс бар энергии
             const energyPercent = (gameState.energy / gameState.maxEnergy) * 100;
             energyBarEl.style.width = `${energyPercent}%`;
+            
+            // Обновляем уровень заполнения кнопки кликера
+            clickerBtn.style.setProperty('--energy-level', energyPercent);
             
             // Обновляем список животных
             animalListEl.innerHTML = '';
@@ -1894,14 +2120,15 @@
                 totalVisitors: gameState.totalVisitors,
                 lastUpdate: Date.now(),
                 theme: gameState.theme,
-                games: gameState.games
+                games: gameState.games,
+                usedPromoCodes: gameState.usedPromoCodes
             };
-            localStorage.setItem('local', JSON.stringify(saveData));
+            localStorage.setItem('zooGameSave', JSON.stringify(saveData));
         }
         
         // Загрузка игры
         function loadGame() {
-            const saveData = localStorage.getItem('hello local');
+            const saveData = localStorage.getItem('locals');
             
             if (saveData) {
                 try {
@@ -1921,6 +2148,7 @@
                         catch: { active: false, cooldown: 0, score: 0 },
                         tetris: { active: false, cooldown: 0, score: 0 }
                     };
+                    gameState.usedPromoCodes = parsedData.usedPromoCodes || [];
                     
                     // Рассчитываем доход за время отсутствия
                     const timeDiff = (Date.now() - gameState.lastUpdate) / 1000;
@@ -2277,8 +2505,8 @@
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         
                         // Используем радиусы для точного определения столкновения
-                        const currentRadius = currentAnimal.size / 200 * 100; 
-                        const objRadius = obj.size / 200 * 100;
+                        const currentRadius = currentAnimal.size / 2;
+                        const objRadius = obj.size / 2;
                         
                         if (distance < currentRadius + objRadius) {
                             clearInterval(dropInterval);
@@ -2290,6 +2518,13 @@
                                 size: currentAnimal.size,
                                 element: currentAnimal.element
                             });
+                            
+                            // Проверка на центр другого круга
+                            if (distance < 5) {
+                                showNotification("Game Over! Круг попал в центр другого круга", "error");
+                                endSuikaGame();
+                                return;
+                            }
                             
                             checkMerge();
                             setTimeout(() => {
@@ -2327,8 +2562,8 @@
                             const distance = Math.sqrt(dx * dx + dy * dy);
                             
                             // Используем радиусы для точного определения столкновения
-                            const radiusI = suikaObjects[i].size / 200 * 100;
-                            const radiusJ = suikaObjects[j].size / 200 * 100;
+                            const radiusI = suikaObjects[i].size / 2;
+                            const radiusJ = suikaObjects[j].size / 2;
                             
                             if (distance < radiusI + radiusJ) {
                                 const currentType = suikaObjects[i].type;
@@ -2398,7 +2633,7 @@
                         currentAnimal.x = Math.min(90, currentAnimal.x + 5);
                         currentAnimal.element.style.left = `${currentAnimal.x}%`;
                         break;
-                    case ' ':
+                    case 'Shift':
                         if (!isDropping) dropAnimal();
                         break;
                 }
@@ -2842,6 +3077,12 @@
                         break;
                 }
             });
+            
+            // Мобильные кнопки
+            document.querySelector('.mobile-tetris-btn.up').addEventListener('click', rotate);
+            document.querySelector('.mobile-tetris-btn.left').addEventListener('click', () => move(-1));
+            document.querySelector('.mobile-tetris-btn.right').addEventListener('click', () => move(1));
+            document.querySelector('.mobile-tetris-btn.down').addEventListener('click', moveDown);
             
             tetrisStartBtn.addEventListener('click', () => {
                 if (gameState.games.tetris.cooldown > 0) return;
