@@ -842,7 +842,7 @@
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
         }
 
-        /* Стили для Suika Game */
+        /* Стили для игр */
         .game-container {
             background: rgba(var(--card-bg-rgb), 0.8);
             border-radius: 15px;
@@ -1038,6 +1038,62 @@
             50% { transform: scale(1.5); opacity: 0.7; }
             100% { transform: scale(1); opacity: 1; }
         }
+        
+        /* Стили для игры Лови животных */
+        .catch-area {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .catch-object {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.1s;
+            z-index: 5;
+        }
+        
+        .catch-object img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .catch-animation {
+            animation: catchEffect 0.5s forwards;
+        }
+        
+        @keyframes catchEffect {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        
+        /* Стили для Тетриса */
+        .tetris-container {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(20, 1fr);
+            gap: 1px;
+            width: 100%;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .tetris-cell {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .tetris-cell.filled {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
     </style>
 </head>
 <body>
@@ -1164,7 +1220,7 @@
                 </div>
             </div>
             
-            <!-- Новая вкладка для игр -->
+            <!-- Вкладка игр -->
             <div class="tab-content" id="games-tab">
                 <div class="section-title">
                     <i class="fas fa-gamepad"></i>Игровая зона
@@ -1176,7 +1232,7 @@
                         <i class="fas fa-dice"></i>Suika Game с животными
                     </div>
                     <div class="game-description">
-                        Объединяйте одинаковых животных, чтобы получить более редких! Управление: стрелки или A/D.
+                        Объединяйте одинаковых животных, чтобы получить более редких! За каждое объединение +1 монета.
                     </div>
                     <div class="game-board">
                         <div class="suika-container">
@@ -1191,35 +1247,11 @@
                         <button class="game-button" id="suika-start">
                             <i class="fas fa-play"></i>Начать игру
                         </button>
-                        <div class="game-timer" id="suika-timer">02:00</div>
+                        <div class="game-timer" id="suika-timer">02:30</div>
                     </div>
                     <div class="game-cooldown" id="suika-cooldown" style="display: none;">
                         <div>Перезарядка</div>
                         <div id="suika-cooldown-timer">03:00</div>
-                    </div>
-                </div>
-                
-                <!-- Игра "Найди пару" -->
-                <div class="game-container" id="memory-game">
-                    <div class="game-title">
-                        <i class="fas fa-clone"></i>Найди пару
-                    </div>
-                    <div class="game-description">
-                        Найдите все пары животных. Игра длится 60 секунд. 
-                        За каждую найденную пару вы получите монеты!
-                    </div>
-                    <div class="game-board">
-                        <div class="memory-grid" id="memory-grid"></div>
-                    </div>
-                    <div class="game-controls">
-                        <button class="game-button" id="memory-start">
-                            <i class="fas fa-play"></i>Начать игру
-                        </button>
-                        <div class="game-timer" id="memory-timer">01:00</div>
-                    </div>
-                    <div class="game-cooldown" id="memory-cooldown" style="display: none;">
-                        <div>Перезарядка</div>
-                        <div id="memory-cooldown-timer">03:00</div>
                     </div>
                 </div>
                 
@@ -1230,7 +1262,7 @@
                     </div>
                     <div class="game-description">
                         Кликайте на животных, чтобы поймать их (+1 монета). 
-                        Избегайте смайликов посетителей (-10 монет). Игра длится 60 секунд.
+                        Избегайте посетителей (-10 монет). Соотношение: 80% животных, 20% посетителей.
                     </div>
                     <div class="game-board">
                         <div class="catch-area" id="catch-area"></div>
@@ -1245,6 +1277,33 @@
                     <div class="game-cooldown" id="catch-cooldown" style="display: none;">
                         <div>Перезарядка</div>
                         <div id="catch-cooldown-timer">03:00</div>
+                    </div>
+                </div>
+                
+                <!-- Игра Тетрис -->
+                <div class="game-container" id="tetris-game">
+                    <div class="game-title">
+                        <i class="fas fa-shapes"></i>Тетрис с животными
+                    </div>
+                    <div class="game-description">
+                        Собирайте линии из животных! За каждую линию вы получите 3 монеты.
+                    </div>
+                    <div class="game-board">
+                        <div class="tetris-container" id="tetris-grid"></div>
+                        <div class="tetris-score">Очки: <span id="tetris-score">0</span></div>
+                    </div>
+                    <div class="controls-hint">
+                        Управление: ← → для движения, ↑ для поворота, ↓ для ускорения
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-button" id="tetris-start">
+                            <i class="fas fa-play"></i>Начать игру
+                        </button>
+                        <div class="game-timer" id="tetris-timer">02:00</div>
+                    </div>
+                    <div class="game-cooldown" id="tetris-cooldown" style="display: none;">
+                        <div>Перезарядка</div>
+                        <div id="tetris-cooldown-timer">03:00</div>
                     </div>
                 </div>
             </div>
@@ -1291,7 +1350,8 @@
                 'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif'
             ],
             visitors: ['visitor1.gif', 'visitor2.gif', 'visitor3.gif'],
-            suika: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif', 'unicorn.gif']
+            suika: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif', 'unicorn.gif'],
+            tetris: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif']
         };
         
         // Состояние игры
@@ -1311,8 +1371,8 @@
             lastActiveTime: Date.now(),
             games: {
                 suika: { active: false, cooldown: 0, score: 0, objects: [], currentAnimal: null },
-                memory: { active: false, cooldown: 0, score: 0, flippedCards: [], matchedPairs: 0 },
-                catch: { active: false, cooldown: 0, score: 0 }
+                catch: { active: false, cooldown: 0, score: 0 },
+                tetris: { active: false, cooldown: 0, score: 0 }
             }
         };
         
@@ -1352,18 +1412,19 @@
         const suikaCooldownEl = document.getElementById('suika-cooldown');
         const suikaCooldownTimer = document.getElementById('suika-cooldown-timer');
         
-        const memoryGridEl = document.getElementById('memory-grid');
-        const memoryStartBtn = document.getElementById('memory-start');
-        const memoryTimerEl = document.getElementById('memory-timer');
-        const memoryCooldownEl = document.getElementById('memory-cooldown');
-        const memoryCooldownTimer = document.getElementById('memory-cooldown-timer');
-        
         const catchAreaEl = document.getElementById('catch-area');
         const catchStartBtn = document.getElementById('catch-start');
         const catchTimerEl = document.getElementById('catch-timer');
         const catchScoreEl = document.getElementById('catch-score');
         const catchCooldownEl = document.getElementById('catch-cooldown');
         const catchCooldownTimer = document.getElementById('catch-cooldown-timer');
+        
+        const tetrisGridEl = document.getElementById('tetris-grid');
+        const tetrisStartBtn = document.getElementById('tetris-start');
+        const tetrisTimerEl = document.getElementById('tetris-timer');
+        const tetrisScoreEl = document.getElementById('tetris-score');
+        const tetrisCooldownEl = document.getElementById('tetris-cooldown');
+        const tetrisCooldownTimer = document.getElementById('tetris-cooldown-timer');
         
         // Инициализация игры
         function initGame() {
@@ -1393,8 +1454,8 @@
         // Инициализация игр
         function initGames() {
             setupSuikaGame();
-            setupMemoryGame();
             setupCatchGame();
+            setupTetrisGame();
         }
         
         // Рассчитать общее количество животных
@@ -1835,12 +1896,12 @@
                 theme: gameState.theme,
                 games: gameState.games
             };
-            localStorage.setItem('zooGameSave', JSON.stringify(saveData));
+            localStorage.setItem('local', JSON.stringify(saveData));
         }
         
         // Загрузка игры
         function loadGame() {
-            const saveData = localStorage.getItem('localsave');
+            const saveData = localStorage.getItem('hello local');
             
             if (saveData) {
                 try {
@@ -1857,8 +1918,8 @@
                     gameState.theme = parsedData.theme || 'dark-red';
                     gameState.games = parsedData.games || {
                         suika: { active: false, cooldown: 0, score: 0, objects: [], currentAnimal: null },
-                        memory: { active: false, cooldown: 0, score: 0 },
-                        catch: { active: false, cooldown: 0, score: 0 }
+                        catch: { active: false, cooldown: 0, score: 0 },
+                        tetris: { active: false, cooldown: 0, score: 0 }
                     };
                     
                     // Рассчитываем доход за время отсутствия
@@ -1909,7 +1970,7 @@
             // Определение цветов для разных тем
             const themes = {
                 'dark-red': { 
-                    bodyBg: 'linear-gradient(135deg, #ff0000, #ff9900, #00ff00, #0099ff, #ff00ff)',
+                    bodyBg: 'linear-gradient(135deg, #ff6b6b, #ff8e8e, #ffb6b6, #ffcdd2, #ffebee)',
                     headerBg: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
                     cardColor1: '#ffd3d3', cardColor2: '#ffb6b6',
                     headerColor1: '#ff6b6b', headerColor2: '#ff8e8e',
@@ -2153,26 +2214,40 @@
             document.documentElement.style.setProperty('--neon-effect-color', theme.neonEffectColor);
         }
         
-        // Игра Suika Game
+        // Игра Suika Game с фиксированными размерами и начислением монет
         function setupSuikaGame() {
+            // Порядок животных от маленького к большому
+            const suikaAnimalOrder = [
+                'cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 
+                'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif', 'unicorn.gif'
+            ];
+            
+            // Фиксированные размеры для каждого животного
+            const suikaSizes = [30, 40, 50, 60, 70, 80, 90, 100, 110];
+            
             let suikaObjects = [];
             let currentAnimal = null;
-            let currentX = 50; // 50% по горизонтали
             let isDropping = false;
             let gameInterval;
+            let containerRect;
+            
+            function updateContainerRect() {
+                containerRect = suikaGameBoard.getBoundingClientRect();
+            }
             
             function createAnimal() {
                 if (!gameState.games.suika.active) return;
                 
-                // Случайное животное
-                const animals = gameImages.suika;
-                const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
-                const size = 40 + Math.floor(Math.random() * 30);
+                // Создаем только животных начальных уровней
+                const initialLevels = [0, 1, 2, 3];
+                const level = initialLevels[Math.floor(Math.random() * initialLevels.length)];
+                const animalType = suikaAnimalOrder[level];
+                const size = suikaSizes[level];
                 
                 currentAnimal = {
-                    type: randomAnimal,
-                    x: currentX,
-                    y: 10, // верх экрана
+                    type: animalType,
+                    x: 50,
+                    y: 10,
                     size: size,
                     element: document.createElement('div')
                 };
@@ -2180,9 +2255,9 @@
                 currentAnimal.element.className = 'suika-object';
                 currentAnimal.element.style.width = `${size}px`;
                 currentAnimal.element.style.height = `${size}px`;
-                currentAnimal.element.style.left = `${currentX}%`;
+                currentAnimal.element.style.left = `${currentAnimal.x}%`;
                 currentAnimal.element.style.top = `${currentAnimal.y}%`;
-                currentAnimal.element.innerHTML = `<img src="${randomAnimal}" alt="Animal">`;
+                currentAnimal.element.innerHTML = `<img src="${animalType}" alt="Animal">`;
                 
                 suikaGameBoard.appendChild(currentAnimal.element);
             }
@@ -2195,19 +2270,19 @@
                     currentAnimal.y += 2;
                     currentAnimal.element.style.top = `${currentAnimal.y}%`;
                     
-                    // Проверка столкновения
+                    // Проверка столкновения с другими объектами
                     for (const obj of suikaObjects) {
                         const dx = Math.abs(currentAnimal.x - obj.x);
                         const dy = Math.abs(currentAnimal.y - obj.y);
                         const distance = Math.sqrt(dx * dx + dy * dy);
-                        const minDistance = (currentAnimal.size + obj.size) / 4;
                         
-                        if (distance < minDistance) {
-                            // Столкновение
+                        // Используем радиусы для точного определения столкновения
+                        const currentRadius = currentAnimal.size / 200 * 100; 
+                        const objRadius = obj.size / 200 * 100;
+                        
+                        if (distance < currentRadius + objRadius) {
                             clearInterval(dropInterval);
                             isDropping = false;
-                            
-                            // Фиксируем животное
                             suikaObjects.push({
                                 type: currentAnimal.type,
                                 x: currentAnimal.x,
@@ -2216,24 +2291,19 @@
                                 element: currentAnimal.element
                             });
                             
-                            // Проверяем объединение
                             checkMerge();
-                            
-                            // Создаем новое животное
                             setTimeout(() => {
                                 currentAnimal = null;
                                 createAnimal();
                             }, 500);
-                            
                             return;
                         }
                     }
                     
-                    // Достигли дна
+                    // Проверка достижения дна
                     if (currentAnimal.y > 85) {
                         clearInterval(dropInterval);
                         isDropping = false;
-                        
                         suikaObjects.push({
                             type: currentAnimal.type,
                             x: currentAnimal.x,
@@ -2241,7 +2311,6 @@
                             size: currentAnimal.size,
                             element: currentAnimal.element
                         });
-                        
                         currentAnimal = null;
                         createAnimal();
                     }
@@ -2249,29 +2318,35 @@
             }
             
             function checkMerge() {
-                // Простая логика объединения: если два одинаковых рядом
+                // Объединяем только одинаковых животных
                 for (let i = 0; i < suikaObjects.length; i++) {
                     for (let j = i + 1; j < suikaObjects.length; j++) {
                         if (suikaObjects[i].type === suikaObjects[j].type) {
                             const dx = Math.abs(suikaObjects[i].x - suikaObjects[j].x);
                             const dy = Math.abs(suikaObjects[i].y - suikaObjects[j].y);
                             const distance = Math.sqrt(dx * dx + dy * dy);
-                            const minDistance = (suikaObjects[i].size + suikaObjects[j].size) / 4;
                             
-                            if (distance < minDistance) {
-                                // Объединение
-                                const newTypeIndex = gameImages.suika.indexOf(suikaObjects[i].type) + 1;
-                                if (newTypeIndex < gameImages.suika.length) {
-                                    const newType = gameImages.suika[newTypeIndex];
-                                    const newSize = suikaObjects[i].size + 10;
+                            // Используем радиусы для точного определения столкновения
+                            const radiusI = suikaObjects[i].size / 200 * 100;
+                            const radiusJ = suikaObjects[j].size / 200 * 100;
+                            
+                            if (distance < radiusI + radiusJ) {
+                                const currentType = suikaObjects[i].type;
+                                const currentIndex = suikaAnimalOrder.indexOf(currentType);
+                                
+                                if (currentIndex < suikaAnimalOrder.length - 1) {
+                                    const newType = suikaAnimalOrder[currentIndex + 1];
+                                    const newSize = suikaSizes[currentIndex + 1];
+                                    
+                                    // Координаты нового объекта
                                     const newX = (suikaObjects[i].x + suikaObjects[j].x) / 2;
                                     const newY = (suikaObjects[i].y + suikaObjects[j].y) / 2;
                                     
-                                    // Удаляем старые элементы
+                                    // Удаляем старые объекты
                                     suikaObjects[i].element.remove();
                                     suikaObjects[j].element.remove();
                                     
-                                    // Создаем новое животное
+                                    // Создаем новый объект
                                     const newElement = document.createElement('div');
                                     newElement.className = 'suika-object suika-merge';
                                     newElement.style.width = `${newSize}px`;
@@ -2282,21 +2357,25 @@
                                     suikaGameBoard.appendChild(newElement);
                                     
                                     // Добавляем в массив
-                                    suikaObjects.push({
+                                    const newObj = {
                                         type: newType,
                                         x: newX,
                                         y: newY,
                                         size: newSize,
                                         element: newElement
-                                    });
+                                    };
                                     
-                                    // Удаляем старые объекты
+                                    suikaObjects.push(newObj);
                                     suikaObjects.splice(j, 1);
                                     suikaObjects.splice(i, 1);
                                     
                                     // Обновляем счет
                                     gameState.games.suika.score += 10;
                                     suikaScoreEl.textContent = gameState.games.suika.score;
+                                    
+                                    // Начисляем 1 монету за объединение
+                                    gameState.coins += 1;
+                                    updateUI();
                                 }
                             }
                         }
@@ -2327,12 +2406,10 @@
             
             // Сенсорное управление
             let touchStartX = 0;
-            let touchStartTime = 0;
             
             suikaGameBoard.addEventListener('touchstart', (e) => {
                 if (!gameState.games.suika.active) return;
                 touchStartX = e.touches[0].clientX;
-                touchStartTime = Date.now();
             });
             
             suikaGameBoard.addEventListener('touchmove', (e) => {
@@ -2351,11 +2428,7 @@
             
             suikaGameBoard.addEventListener('touchend', (e) => {
                 if (!gameState.games.suika.active || !currentAnimal || isDropping) return;
-                
-                const touchTime = Date.now() - touchStartTime;
-                if (touchTime > 100) {
-                    dropAnimal();
-                }
+                dropAnimal();
             });
             
             suikaStartBtn.addEventListener('click', () => {
@@ -2373,9 +2446,9 @@
                 // Создаем первое животное
                 createAnimal();
                 
-                // Запуск таймера игры
-                let timeLeft = 120;
-                suikaTimerEl.textContent = `02:00`;
+                // Запуск таймера игры (2 минуты 30 секунд)
+                let timeLeft = 150;
+                suikaTimerEl.textContent = `02:30`;
                 
                 gameInterval = setInterval(() => {
                     timeLeft--;
@@ -2406,16 +2479,422 @@
             }
         }
         
-        // Игра "Найди пару"
-        function setupMemoryGame() {
-            // Реализация остается без изменений
-            // ...
-        }
-
-        // Игра "Лови животных"
+        // Игра "Лови животных" - рабочая версия
         function setupCatchGame() {
-            // Реализация остается без изменений
-            // ...
+            let catchInterval;
+            let spawnInterval;
+            let gameTimer;
+            
+            catchStartBtn.addEventListener('click', () => {
+                if (gameState.games.catch.cooldown > 0) return;
+                
+                // Сброс игры
+                catchAreaEl.innerHTML = '';
+                gameState.games.catch.score = 0;
+                catchScoreEl.textContent = '0';
+                
+                gameState.games.catch.active = true;
+                catchStartBtn.disabled = true;
+                
+                // Запуск таймера игры
+                let timeLeft = 60;
+                catchTimerEl.textContent = `01:00`;
+                
+                // Запускаем появление объектов
+                spawnInterval = setInterval(spawnCatchObject, 800);
+                
+                gameTimer = setInterval(() => {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    catchTimerEl.textContent = `00:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        endCatchGame();
+                    }
+                }, 1000);
+            });
+            
+            function spawnCatchObject() {
+                if (!gameState.games.catch.active) return;
+                
+                const rand = Math.random();
+                let object;
+                if (rand < 0.8) { // 80% chance for animal
+                    object = {
+                        type: 'animal',
+                        image: gameImages.animals[Math.floor(Math.random() * gameImages.animals.length)]
+                    };
+                } else { // 20% chance for visitor
+                    const visitorImages = ['visitor1.gif', 'visitor2.gif', 'visitor3.gif'];
+                    object = {
+                        type: 'visitor',
+                        image: visitorImages[Math.floor(Math.random() * visitorImages.length)]
+                    };
+                }
+                
+                const size = object.type === 'animal' ? 60 + Math.floor(Math.random() * 40) : 50;
+                
+                const objectElement = document.createElement('div');
+                objectElement.className = 'catch-object';
+                objectElement.dataset.type = object.type;
+                objectElement.style.width = `${size}px`;
+                objectElement.style.height = `${size}px`;
+                objectElement.style.left = `${10 + Math.random() * 80}%`;
+                objectElement.style.top = `${10 + Math.random() * 70}%`;
+                objectElement.innerHTML = `<img src="${object.image}" alt="${object.type}">`;
+                
+                // Обработчик клика
+                objectElement.addEventListener('click', handleCatchClick);
+                
+                catchAreaEl.appendChild(objectElement);
+                
+                // Автоматическое удаление через 3 секунды
+                setTimeout(() => {
+                    if (objectElement.parentNode) {
+                        objectElement.removeEventListener('click', handleCatchClick);
+                        objectElement.remove();
+                    }
+                }, 3000);
+            }
+            
+            function handleCatchClick(e) {
+                const object = e.currentTarget;
+                const objectType = object.dataset.type;
+                
+                // Анимация при клике
+                object.classList.add('catch-animation');
+                
+                // Обновляем счет
+                if (objectType === 'animal') {
+                    gameState.games.catch.score += 1;
+                    gameState.coins += 1;
+                } else {
+                    gameState.coins -= 10;
+                    if (gameState.coins < 0) gameState.coins = 0;
+                }
+                
+                catchScoreEl.textContent = gameState.games.catch.score;
+                updateUI();
+                
+                // Удаляем объект после анимации
+                setTimeout(() => {
+                    if (object.parentNode) {
+                        object.removeEventListener('click', handleCatchClick);
+                        object.remove();
+                    }
+                }, 500);
+            }
+            
+            function endCatchGame() {
+                gameState.games.catch.active = false;
+                catchStartBtn.disabled = false;
+                
+                clearInterval(spawnInterval);
+                clearInterval(gameTimer);
+                
+                // Начисление бонусных монет
+                const bonus = Math.floor(gameState.games.catch.score * 0.5);
+                gameState.coins += bonus;
+                showNotification(`Игра окончена! Вы поймали ${gameState.games.catch.score} животных. Бонус: ${bonus} монет`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games.catch.cooldown = 180;
+                catchCooldownEl.style.display = 'flex';
+            }
+        }
+        
+        // Игра Тетрис с животными
+        function setupTetrisGame() {
+            const tetrisShapes = [
+                [[1, 1, 1, 1]], // I
+                [[1, 1], [1, 1]], // O
+                [[1, 1, 1], [0, 1, 0]], // T
+                [[1, 1, 1], [1, 0, 0]], // L
+                [[1, 1, 1], [0, 0, 1]], // J
+                [[0, 1, 1], [1, 1, 0]], // S
+                [[1, 1, 0], [0, 1, 1]]  // Z
+            ];
+            
+            const gridWidth = 10;
+            const gridHeight = 20;
+            let tetrisGrid = Array(gridHeight).fill().map(() => Array(gridWidth).fill(0));
+            let currentPiece = null;
+            let gameInterval;
+            let tetrisInterval;
+            
+            // Инициализация сетки тетриса
+            function initTetrisGrid() {
+                tetrisGridEl.innerHTML = '';
+                tetrisGrid = Array(gridHeight).fill().map(() => Array(gridWidth).fill(0));
+                
+                for (let y = 0; y < gridHeight; y++) {
+                    for (let x = 0; x < gridWidth; x++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'tetris-cell';
+                        cell.dataset.x = x;
+                        cell.dataset.y = y;
+                        tetrisGridEl.appendChild(cell);
+                    }
+                }
+            }
+            
+            // Создание новой фигуры
+            function createNewPiece() {
+                const shapeIndex = Math.floor(Math.random() * tetrisShapes.length);
+                const animalIndex = Math.floor(Math.random() * gameImages.tetris.length);
+                const shape = tetrisShapes[shapeIndex];
+                const animal = gameImages.tetris[animalIndex];
+                
+                currentPiece = {
+                    shape: shape,
+                    x: Math.floor(gridWidth / 2) - Math.floor(shape[0].length / 2),
+                    y: 0,
+                    animal: animal
+                };
+                
+                if (checkCollision()) {
+                    // Игра окончена
+                    endTetrisGame();
+                    return false;
+                }
+                
+                drawPiece();
+                return true;
+            }
+            
+            // Отрисовка фигуры
+            function drawPiece() {
+                clearGrid();
+                
+                for (let y = 0; y < currentPiece.shape.length; y++) {
+                    for (let x = 0; x < currentPiece.shape[y].length; x++) {
+                        if (currentPiece.shape[y][x]) {
+                            const posX = currentPiece.x + x;
+                            const posY = currentPiece.y + y;
+                            
+                            if (posY >= 0) {
+                                const cell = document.querySelector(`.tetris-cell[data-x="${posX}"][data-y="${posY}"]`);
+                                if (cell) {
+                                    cell.classList.add('filled');
+                                    cell.style.backgroundImage = `url(${currentPiece.animal})`;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Очистка сетки от текущей фигуры
+            function clearGrid() {
+                document.querySelectorAll('.tetris-cell').forEach(cell => {
+                    cell.classList.remove('filled');
+                    cell.style.backgroundImage = '';
+                });
+                
+                // Отрисовка зафиксированных фигур
+                for (let y = 0; y < gridHeight; y++) {
+                    for (let x = 0; x < gridWidth; x++) {
+                        if (tetrisGrid[y][x]) {
+                            const cell = document.querySelector(`.tetris-cell[data-x="${x}"][data-y="${y}"]`);
+                            if (cell) {
+                                cell.classList.add('filled');
+                                cell.style.backgroundImage = `url(${tetrisGrid[y][x]})`;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Проверка столкновений
+            function checkCollision() {
+                for (let y = 0; y < currentPiece.shape.length; y++) {
+                    for (let x = 0; x < currentPiece.shape[y].length; x++) {
+                        if (currentPiece.shape[y][x]) {
+                            const posX = currentPiece.x + x;
+                            const posY = currentPiece.y + y;
+                            
+                            if (
+                                posX < 0 || 
+                                posX >= gridWidth || 
+                                posY >= gridHeight ||
+                                (posY >= 0 && tetrisGrid[posY][posX])
+                            ) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            
+            // Фиксация фигуры
+            function lockPiece() {
+                for (let y = 0; y < currentPiece.shape.length; y++) {
+                    for (let x = 0; x < currentPiece.shape[y].length; x++) {
+                        if (currentPiece.shape[y][x]) {
+                            const posX = currentPiece.x + x;
+                            const posY = currentPiece.y + y;
+                            
+                            if (posY >= 0) {
+                                tetrisGrid[posY][posX] = currentPiece.animal;
+                            }
+                        }
+                    }
+                }
+                
+                // Проверка линий
+                clearLines();
+                
+                // Создание новой фигуры
+                return createNewPiece();
+            }
+            
+            // Очистка заполненных линий
+            function clearLines() {
+                let linesCleared = 0;
+                
+                for (let y = gridHeight - 1; y >= 0; y--) {
+                    if (tetrisGrid[y].every(cell => cell)) {
+                        // Удаление линии
+                        for (let row = y; row > 0; row--) {
+                            tetrisGrid[row] = [...tetrisGrid[row - 1]];
+                        }
+                        tetrisGrid[0] = Array(gridWidth).fill(0);
+                        
+                        linesCleared++;
+                        y++; // Повторно проверяем текущую позицию
+                    }
+                }
+                
+                if (linesCleared > 0) {
+                    // Начисление монет
+                    const coinsEarned = linesCleared * 3;
+                    gameState.coins += coinsEarned;
+                    gameState.games.tetris.score += linesCleared * 100;
+                    tetrisScoreEl.textContent = gameState.games.tetris.score;
+                    
+                    showNotification(`Удалено ${linesCleared} линий! +${coinsEarned} монет`);
+                    updateUI();
+                    
+                    drawPiece();
+                }
+            }
+            
+            // Движение фигуры вниз
+            function moveDown() {
+                if (!currentPiece) return;
+                
+                currentPiece.y++;
+                if (checkCollision()) {
+                    currentPiece.y--;
+                    lockPiece();
+                }
+                drawPiece();
+            }
+            
+            // Движение влево/вправо
+            function move(direction) {
+                if (!currentPiece) return;
+                
+                currentPiece.x += direction;
+                if (checkCollision()) {
+                    currentPiece.x -= direction;
+                }
+                drawPiece();
+            }
+            
+            // Поворот фигуры
+            function rotate() {
+                if (!currentPiece) return;
+                
+                const oldShape = currentPiece.shape;
+                // Транспонирование матрицы
+                const newShape = currentPiece.shape[0].map((_, i) => 
+                    currentPiece.shape.map(row => row[i])
+                );
+                // Зеркальное отражение
+                currentPiece.shape = newShape.map(row => row.reverse());
+                
+                if (checkCollision()) {
+                    currentPiece.shape = oldShape;
+                }
+                drawPiece();
+            }
+            
+            // Обработчики управления
+            document.addEventListener('keydown', (e) => {
+                if (!gameState.games.tetris.active || !currentPiece) return;
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        move(-1);
+                        break;
+                    case 'ArrowRight':
+                        move(1);
+                        break;
+                    case 'ArrowDown':
+                        moveDown();
+                        break;
+                    case 'ArrowUp':
+                        rotate();
+                        break;
+                }
+            });
+            
+            tetrisStartBtn.addEventListener('click', () => {
+                if (gameState.games.tetris.cooldown > 0) return;
+                
+                // Важно: сначала инициализируем сетку
+                initTetrisGrid();
+                gameState.games.tetris.score = 0;
+                tetrisScoreEl.textContent = '0';
+                
+                gameState.games.tetris.active = true;
+                tetrisStartBtn.disabled = true;
+                
+                // Затем создаем фигуру
+                createNewPiece();
+                
+                // Запуск таймера игры
+                let timeLeft = 120;
+                tetrisTimerEl.textContent = `02:00`;
+                
+                tetrisInterval = setInterval(() => {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    tetrisTimerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        endTetrisGame();
+                    }
+                }, 1000);
+                
+                // Интервал движения фигур
+                gameInterval = setInterval(() => {
+                    moveDown();
+                }, 500);
+            });
+            
+            function endTetrisGame() {
+                gameState.games.tetris.active = false;
+                tetrisStartBtn.disabled = false;
+                
+                clearInterval(gameInterval);
+                clearInterval(tetrisInterval);
+                
+                // Начисление бонусных монет
+                const coinsEarned = Math.floor(gameState.games.tetris.score / 10);
+                gameState.coins += coinsEarned;
+                showNotification(`Игра окончена! Вы заработали ${coinsEarned} монет в Тетрисе!`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games.tetris.cooldown = 180;
+                tetrisCooldownEl.style.display = 'flex';
+            }
         }
         
         // Обновление перезарядки игр
@@ -2432,23 +2911,27 @@
                 }
             }
             
-            // Найди пару
-            if (gameState.games.memory.cooldown > 0) {
-                gameState.games.memory.cooldown--;
-                memoryCooldownTimer.textContent = `00:${gameState.games.memory.cooldown.toString().padStart(2, '0')}`;
-                
-                if (gameState.games.memory.cooldown <= 0) {
-                    memoryCooldownEl.style.display = 'none';
-                }
-            }
-            
             // Лови животных
             if (gameState.games.catch.cooldown > 0) {
                 gameState.games.catch.cooldown--;
-                catchCooldownTimer.textContent = `00:${gameState.games.catch.cooldown.toString().padStart(2, '0')}`;
+                const minutes = Math.floor(gameState.games.catch.cooldown / 60);
+                const seconds = gameState.games.catch.cooldown % 60;
+                catchCooldownTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
                 if (gameState.games.catch.cooldown <= 0) {
                     catchCooldownEl.style.display = 'none';
+                }
+            }
+            
+            // Тетрис
+            if (gameState.games.tetris.cooldown > 0) {
+                gameState.games.tetris.cooldown--;
+                const minutes = Math.floor(gameState.games.tetris.cooldown / 60);
+                const seconds = gameState.games.tetris.cooldown % 60;
+                tetrisCooldownTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (gameState.games.tetris.cooldown <= 0) {
+                    tetrisCooldownEl.style.display = 'none';
                 }
             }
         }
