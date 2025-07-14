@@ -240,23 +240,23 @@
         .animals-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 16px;
         }
         
         .animal-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             z-index: 3;
         }
         
         .animal-avatar {
             width: 100%;
-            height: 120px;
+            height: 180px; /* Увеличено в 3 раза */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -283,13 +283,13 @@
         }
         
         .animal-info {
-            padding: 10px;
+            padding: 12px;
         }
         
         .animal-name {
             font-weight: 700;
-            font-size: 13px;
-            margin-bottom: 5px;
+            font-size: 14px;
+            margin-bottom: 6px;
             color: #333;
             display: flex;
             justify-content: space-between;
@@ -299,9 +299,9 @@
         .animal-price {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             color: #e6b800;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
         }
         
@@ -316,8 +316,8 @@
         .quantity-btn {
             background: #f0f2f5;
             border: none;
-            padding: 5px 8px;
-            font-size: 13px;
+            padding: 6px 10px;
+            font-size: 14px;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -326,22 +326,22 @@
             flex: 1;
             border: none;
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
-            width: 35px;
+            width: 40px;
         }
         
         .buy-button {
             background: linear-gradient(135deg, #00cc88, #00aa66);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 7px;
+            border-radius: 8px;
+            padding: 8px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             width: 100%;
-            margin-top: 6px;
+            margin-top: 8px;
             transition: all 0.2s;
             box-shadow: 0 2px 6px rgba(0, 170, 102, 0.3);
             position: relative;
@@ -352,16 +352,16 @@
         .food-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 16px;
         }
         
         .food-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 3;
         }
         
@@ -381,39 +381,39 @@
         }
         
         .food-info {
-            padding: 10px;
+            padding: 12px;
         }
         
         .food-name {
             font-weight: 700;
-            font-size: 13px;
-            margin-bottom: 5px;
+            font-size: 14px;
+            margin-bottom: 6px;
             color: #333;
         }
         
         .food-price {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             color: #e6b800;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
         
         .food-effect {
             background: rgba(86, 204, 242, 0.1);
-            border-radius: 6px;
-            padding: 5px;
-            font-size: 11px;
+            border-radius: 8px;
+            padding: 6px;
+            font-size: 12px;
             color: #0099cc;
-            margin-top: 5px;
+            margin-top: 6px;
         }
         
         .my-animals {
             background: white;
             border-radius: 12px;
-            padding: 10px;
+            padding: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             margin-bottom: 14px;
             z-index: 3;
@@ -422,8 +422,8 @@
         .animal-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 10px;
+            margin-top: 10px;
         }
         
         .animal-item {
@@ -431,17 +431,17 @@
             flex-direction: column;
             align-items: center;
             background: #f0f8ff;
-            padding: 8px;
+            padding: 10px;
             border-radius: 10px;
-            min-width: 70px;
+            min-width: 80px;
             transition: all 0.3s ease;
             box-shadow: 0 2px 6px rgba(0, 136, 204, 0.1);
         }
         
         .animal-item-icon {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 6px;
+            width: 50px;
+            height: 50px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -450,21 +450,21 @@
         }
         
         .animal-item-icon img {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
         }
         
         .animal-item-count {
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
             color: #0088cc;
         }
         
         .visitors {
             background: white;
             border-radius: 12px;
-            padding: 12px;
+            padding: 14px;
             margin-top: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             z-index: 3;
@@ -473,12 +473,12 @@
         .visitors-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 10px;
+            margin-top: 10px;
         }
         
         .visitor {
-            font-size: 20px;
+            font-size: 24px;
             animation: appear 0.5s ease-out;
             transition: transform 0.3s;
             z-index: 3;
@@ -513,7 +513,7 @@
             border-top: 1px solid #e6e6e6;
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 15px;
             z-index: 3;
         }
         
@@ -522,14 +522,14 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(0, 136, 204, 0.3);
+            box-shadow: 0 3px 8px rgba(0, 136, 204, 0.3);
             z-index: 3;
         }
         
@@ -550,9 +550,25 @@
             100% { transform: scale(1); }
         }
         
+        .coin-animation {
+            position: fixed;
+            z-index: 100;
+            font-size: 24px;
+            animation: coinFall 1.5s forwards;
+            pointer-events: none;
+        }
+        
         @keyframes coinFall {
-            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100px) rotate(360deg); opacity: 0; }
+            0% { 
+                transform: translate(0, 0) scale(1) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(calc(-50px + 100px * var(--random-x)), 
+                           calc(-50px - 100px * var(--random-y))) 
+                           scale(0.5) rotate(360deg); 
+                opacity: 0; 
+            }
         }
         
         .theme-selector {
@@ -605,7 +621,7 @@
         .light-pink { background: linear-gradient(135deg, #f8bbd0, #f48fb1); }
         
         .energy-bar {
-            height: 4px;
+            height: 5px;
             width: 100%;
             background: #e0e0e0;
             border-radius: 3px;
@@ -642,7 +658,7 @@
         body[data-theme^="dark"] .my-animals,
         body[data-theme^="dark"] .visitors,
         body[data-theme^="dark"] .stat-box {
-            background: rgba(40, 40, 50, 0.8);
+            background: rgba(60, 60, 70, 0.7); /* Сделано светлее */
         }
         
         body[data-theme^="light"] .animal-card,
@@ -717,7 +733,7 @@
             }
             
             .animal-avatar {
-                height: 110px;
+                height: 160px; /* Увеличено для мобильных */
             }
             
             .animal-avatar img {
@@ -771,10 +787,16 @@
             }
             
             .footer-btn {
-                width: 32px;
-                height: 32px;
+                width: 35px;
+                height: 35px;
                 font-size: 14px;
             }
+        }
+        
+        /* Анимации для карточек */
+        .animal-card:hover, .food-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
         }
     </style>
 </head>
@@ -1046,6 +1068,35 @@
                 updateUI();
             } else {
                 showNotification("Недостаточно энергии!", "error");
+            }
+        }
+        
+        // Создать анимацию монет
+        function createCoinAnimation() {
+            const coins = ['🪙', '💰', '💵', '💸'];
+            for (let i = 0; i < 3; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin-animation';
+                coin.textContent = coins[Math.floor(Math.random() * coins.length)];
+                
+                // Генерируем случайные параметры
+                const randomX = Math.random() * 2 - 1;
+                const randomY = Math.random() * 0.5 + 0.5;
+                
+                // Устанавливаем начальную позицию у кнопки
+                const rect = clickerBtn.getBoundingClientRect();
+                coin.style.left = `${rect.left + rect.width/2}px`;
+                coin.style.top = `${rect.top + rect.height/2}px`;
+                
+                // Задаем случайные параметры для анимации
+                coin.style.setProperty('--random-x', randomX);
+                coin.style.setProperty('--random-y', randomY);
+                
+                document.body.appendChild(coin);
+                
+                setTimeout(() => {
+                    coin.remove();
+                }, 1500);
             }
         }
         
@@ -1344,7 +1395,7 @@
             totalVisitorsEl.textContent = gameState.totalVisitors;
             
             // Добавляем визуализацию посетителей
-            if (gameState.visitors > 0 && Math.random() > 0.7) {
+            if (gameState.visitors > 0 && Math.random() > 0.5) {
                 const visitor = document.createElement('div');
                 visitor.className = 'visitor';
                 visitor.textContent = '👤';
@@ -1374,24 +1425,6 @@
             setTimeout(() => {
                 notificationEl.classList.remove('show');
             }, 2000);
-        }
-        
-        // Создать анимацию монет
-        function createCoinAnimation() {
-            const coins = ['🪙', '💰', '💵', '💸'];
-            for (let i = 0; i < 5; i++) {
-                const coin = document.createElement('div');
-                coin.className = 'coin-animation';
-                coin.textContent = coins[Math.floor(Math.random() * coins.length)];
-                coin.style.left = `${Math.random() * 100}%`;
-                coin.style.fontSize = `${Math.random() * 10 + 20}px`;
-                coin.style.animationDuration = `${Math.random() * 0.5 + 1}s`;
-                document.body.appendChild(coin);
-                
-                setTimeout(() => {
-                    coin.remove();
-                }, 1500);
-            }
         }
         
         // Сохранение игры
