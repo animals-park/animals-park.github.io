@@ -2213,7 +2213,7 @@
                         gameState.coins += 1;
                         showNotification('+1 монета за животное!');
                     } else {
-                        gameState.coins = Math.max(0, gameState.coins - 10);
+                        gameState.coins = Math.max(0, gameState.coins -= 10);
                         showNotification('-10 монет за посетителя!', 'error');
                     }
                     
