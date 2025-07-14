@@ -801,6 +801,231 @@
             transform: translateY(-8px) scale(1.02);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
         }
+
+        /* Новые стили для игр */
+        .game-container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0088cc;
+            display: flex;
+            align-items: center;
+        }
+        
+        .game-title i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .game-description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .game-board {
+            background: rgba(240, 242, 245, 0.5);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .game-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .game-button {
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .game-button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+        
+        .game-button:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+        
+        .game-timer {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+        
+        .game-cooldown {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            z-index: 10;
+            border-radius: 15px;
+        }
+        
+        /* Стили для игры "Три в ряд" */
+        .match3-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 5px;
+            margin: 10px auto;
+            max-width: 400px;
+        }
+        
+        .match3-cell {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            background: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .match3-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Стили для игры "Найди пару" */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 10px auto;
+            max-width: 400px;
+        }
+        
+        .memory-card {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            background: #e0e0e0;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .memory-card-front {
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+        }
+        
+        .memory-card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Стили для игры "Лови животных" */
+        .catch-area {
+            position: relative;
+            height: 300px;
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 3px solid #4CAF50;
+        }
+        
+        .catch-target {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            z-index: 2;
+        }
+        
+        .catch-target img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .catch-target:hover {
+            transform: scale(1.1);
+        }
+        
+        .catch-score {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* Анимации для игр */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .bounce-animation {
+            animation: bounce 0.5s ease infinite;
+        }
     </style>
 </head>
 <body>
@@ -852,6 +1077,7 @@
             <div class="tab active" data-tab="animals"><i class="fas fa-paw"></i> Животные</div>
             <div class="tab" data-tab="food"><i class="fas fa-utensils"></i> Магазин еды</div>
             <div class="tab" data-tab="visitors"><i class="fas fa-users"></i> Посетители</div>
+            <div class="tab" data-tab="games"><i class="fas fa-gamepad"></i> Игры</div>
         </div>
         
         <div class="zoo-container">
@@ -925,6 +1151,86 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Новая вкладка для игр -->
+            <div class="tab-content" id="games-tab">
+                <div class="section-title">
+                    <i class="fas fa-gamepad"></i>Игровая зона
+                </div>
+                
+                <!-- Игра "Три в ряд" -->
+                <div class="game-container" id="match3-game">
+                    <div class="game-title">
+                        <i class="fas fa-th"></i>Три в ряд
+                    </div>
+                    <div class="game-description">
+                        Соберите линии из трех одинаковых животных. Игра длится 60 секунд. 
+                        За каждую комбинацию вы получите монеты!
+                    </div>
+                    <div class="game-board">
+                        <div class="match3-grid" id="match3-grid"></div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-button" id="match3-start">
+                            <i class="fas fa-play"></i>Начать игру
+                        </button>
+                        <div class="game-timer" id="match3-timer">01:00</div>
+                    </div>
+                    <div class="game-cooldown" id="match3-cooldown" style="display: none;">
+                        <div>Перезарядка</div>
+                        <div id="match3-cooldown-timer">03:00</div>
+                    </div>
+                </div>
+                
+                <!-- Игра "Найди пару" -->
+                <div class="game-container" id="memory-game">
+                    <div class="game-title">
+                        <i class="fas fa-clone"></i>Найди пару
+                    </div>
+                    <div class="game-description">
+                        Найдите все пары животных. Игра длится 60 секунд. 
+                        За каждую найденную пару вы получите монеты!
+                    </div>
+                    <div class="game-board">
+                        <div class="memory-grid" id="memory-grid"></div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-button" id="memory-start">
+                            <i class="fas fa-play"></i>Начать игру
+                        </button>
+                        <div class="game-timer" id="memory-timer">01:00</div>
+                    </div>
+                    <div class="game-cooldown" id="memory-cooldown" style="display: none;">
+                        <div>Перезарядка</div>
+                        <div id="memory-cooldown-timer">03:00</div>
+                    </div>
+                </div>
+                
+                <!-- Игра "Лови животных" -->
+                <div class="game-container" id="catch-game">
+                    <div class="game-title">
+                        <i class="fas fa-hand-paper"></i>Лови животных
+                    </div>
+                    <div class="game-description">
+                        Кликайте на животных, чтобы поймать их (+1 монета). 
+                        Избегайте смайликов посетителей (-10 монет). Игра длится 60 секунд.
+                    </div>
+                    <div class="game-board">
+                        <div class="catch-area" id="catch-area"></div>
+                        <div class="catch-score">Поймано: <span id="catch-score">0</span></div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-button" id="catch-start">
+                            <i class="fas fa-play"></i>Начать игру
+                        </button>
+                        <div class="game-timer" id="catch-timer">01:00</div>
+                    </div>
+                    <div class="game-cooldown" id="catch-cooldown" style="display: none;">
+                        <div>Перезарядка</div>
+                        <div id="catch-cooldown-timer">03:00</div>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="footer">
@@ -960,6 +1266,15 @@
             { id: 'fruit', name: 'Фрукты', basePrice: 60, amount: 12, image: 'banana.gif', effect: 'Витамины для всех' },
             { id: 'premium', name: 'Премиум корм', basePrice: 150, amount: 30, image: 'premi.gif', effect: '+20% к доходу на 1 час' }
         ];
+
+        // Гифки для игр
+        const gameImages = {
+            animals: [
+                'cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif',
+                'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif'
+            ],
+            visitors: ['visitor1.gif', 'visitor2.gif', 'visitor3.gif']
+        };
         
         // Состояние игры
         let gameState = {
@@ -974,7 +1289,13 @@
             totalVisitors: 0,
             income: 0,
             theme: 'dark-red',
-            tab: 'animals'
+            tab: 'animals',
+            lastActiveTime: Date.now(),
+            games: {
+                match3: { active: false, cooldown: 0, score: 0 },
+                memory: { active: false, cooldown: 0, score: 0, flippedCards: [], matchedPairs: 0 },
+                catch: { active: false, cooldown: 0, score: 0 }
+            }
         };
         
         // Элементы DOM
@@ -993,7 +1314,8 @@
         const tabContents = {
             'animals': document.getElementById('animals-tab'),
             'food': document.getElementById('food-tab'),
-            'visitors': document.getElementById('visitors-tab')
+            'visitors': document.getElementById('visitors-tab'),
+            'games': document.getElementById('games-tab')
         };
         const settingsBtn = document.querySelector('.settings-btn');
         const clickerBtn = document.getElementById('clicker-btn');
@@ -1004,6 +1326,26 @@
         const saveBtn = document.getElementById('save-btn');
         const helpBtn = document.getElementById('help-btn');
         
+        // Элементы игр
+        const match3GridEl = document.getElementById('match3-grid');
+        const match3StartBtn = document.getElementById('match3-start');
+        const match3TimerEl = document.getElementById('match3-timer');
+        const match3CooldownEl = document.getElementById('match3-cooldown');
+        const match3CooldownTimer = document.getElementById('match3-cooldown-timer');
+        
+        const memoryGridEl = document.getElementById('memory-grid');
+        const memoryStartBtn = document.getElementById('memory-start');
+        const memoryTimerEl = document.getElementById('memory-timer');
+        const memoryCooldownEl = document.getElementById('memory-cooldown');
+        const memoryCooldownTimer = document.getElementById('memory-cooldown-timer');
+        
+        const catchAreaEl = document.getElementById('catch-area');
+        const catchStartBtn = document.getElementById('catch-start');
+        const catchTimerEl = document.getElementById('catch-timer');
+        const catchScoreEl = document.getElementById('catch-score');
+        const catchCooldownEl = document.getElementById('catch-cooldown');
+        const catchCooldownTimer = document.getElementById('catch-cooldown-timer');
+        
         // Инициализация игры
         function initGame() {
             loadGame();
@@ -1013,6 +1355,7 @@
             updateUI();
             setupTabs();
             setupEventListeners();
+            initGames();
             
             // Запускаем игровые процессы
             setInterval(updateIncome, 1000);
@@ -1020,6 +1363,19 @@
             setInterval(updateFoodConsumption, 5000);
             setInterval(restoreEnergy, 10000);
             setInterval(saveGame, 10000);
+            setInterval(updateGameCooldowns, 1000);
+            
+            // Отслеживаем активность пользователя
+            document.addEventListener('mousemove', resetInactivityTimer);
+            document.addEventListener('keypress', resetInactivityTimer);
+            resetInactivityTimer();
+        }
+        
+        // Инициализация игр
+        function initGames() {
+            setupMatch3Game();
+            setupMemoryGame();
+            setupCatchGame();
         }
         
         // Рассчитать общее количество животных
@@ -1366,7 +1722,8 @@
             }, 0);
             
             // Добавляем доход (базовый * количество посетителей)
-            gameState.coins += (baseIncome * gameState.visitors) / 60;
+            const incomeMultiplier = (Date.now() - gameState.lastActiveTime > 60000) ? 0.033 : 1;
+            gameState.coins += (baseIncome * gameState.visitors * incomeMultiplier) / 60;
             coinsEl.textContent = Math.floor(gameState.coins);
         }
         
@@ -1446,7 +1803,8 @@
                 visitors: gameState.visitors,
                 totalVisitors: gameState.totalVisitors,
                 lastUpdate: Date.now(),
-                theme: gameState.theme
+                theme: gameState.theme,
+                games: gameState.games
             };
             localStorage.setItem('zooGameSave', JSON.stringify(saveData));
         }
@@ -1468,6 +1826,11 @@
                     gameState.totalVisitors = parsedData.totalVisitors || 0;
                     gameState.lastUpdate = parsedData.lastUpdate || Date.now();
                     gameState.theme = parsedData.theme || 'dark-red';
+                    gameState.games = parsedData.games || {
+                        match3: { active: false, cooldown: 0, score: 0 },
+                        memory: { active: false, cooldown: 0, score: 0 },
+                        catch: { active: false, cooldown: 0, score: 0 }
+                    };
                     
                     // Рассчитываем доход за время отсутствия
                     const timeDiff = (Date.now() - gameState.lastUpdate) / 1000;
@@ -1475,7 +1838,8 @@
                         return sum + (animal.income * animal.owned);
                     }, 0);
                     
-                    gameState.coins += (baseIncome * gameState.visitors * timeDiff) / 60;
+                    // Уменьшаем доход в 30 раз за время отсутствия
+                    gameState.coins += (baseIncome * gameState.visitors * timeDiff) / 60 / 30;
                     
                     // Восстанавливаем энергию за время отсутствия
                     const energyPerSecond = 6 / 60;
@@ -1614,6 +1978,337 @@
             document.documentElement.style.setProperty('--button-color1', theme.buttonColor1);
             document.documentElement.style.setProperty('--button-color2', theme.buttonColor2);
             document.documentElement.style.setProperty('--highlight-color', theme.highlightColor);
+        }
+        
+        // Игра "Три в ряд"
+        function setupMatch3Game() {
+            // Создаем игровое поле
+            for (let i = 0; i < 64; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'match3-cell';
+                cell.dataset.index = i;
+                
+                // Случайное животное
+                const randomAnimal = gameImages.animals[
+                    Math.floor(Math.random() * gameImages.animals.length)
+                ];
+                
+                cell.innerHTML = `<img src="${randomAnimal}" alt="Animal">`;
+                match3GridEl.appendChild(cell);
+            }
+
+            match3StartBtn.addEventListener('click', () => {
+                if (gameState.games.match3.cooldown > 0) return;
+                
+                gameState.games.match3.active = true;
+                gameState.games.match3.score = 0;
+                match3StartBtn.disabled = true;
+                
+                // Запуск таймера игры
+                let timeLeft = 60;
+                const gameTimer = setInterval(() => {
+                    timeLeft--;
+                    match3TimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(gameTimer);
+                        endMatch3Game();
+                    }
+                }, 1000);
+            });
+
+            function endMatch3Game() {
+                gameState.games.match3.active = false;
+                match3StartBtn.disabled = false;
+                
+                // Начисление монет
+                const coinsEarned = Math.floor(gameState.games.match3.score * 2);
+                gameState.coins += coinsEarned;
+                showNotification(`Вы заработали ${coinsEarned} монет в игре "Три в ряд"!`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games.match3.cooldown = 180;
+                match3CooldownEl.style.display = 'flex';
+            }
+        }
+        
+        // Игра "Найди пару"
+        function setupMemoryGame() {
+            let cards = [];
+            let flippedCards = [];
+            let matchedPairs = 0;
+
+            // Создаем пары карт
+            function createCards() {
+                memoryGridEl.innerHTML = '';
+                cards = [];
+                flippedCards = [];
+                matchedPairs = 0;
+                
+                // Выбираем 8 уникальных животных
+                const selectedAnimals = [...gameImages.animals]
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 8);
+                
+                // Создаем пары
+                const cardPairs = [...selectedAnimals, ...selectedAnimals]
+                    .sort(() => 0.5 - Math.random());
+                
+                cardPairs.forEach((animal, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'memory-card';
+                    card.dataset.index = index;
+                    card.dataset.animal = animal;
+                    
+                    card.innerHTML = `
+                        <div class="memory-card-face memory-card-front">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <div class="memory-card-face memory-card-back">
+                            <img src="${animal}" alt="Animal">
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', () => {
+                        if (!gameState.games.memory.active || 
+                            flippedCards.length >= 2 || 
+                            card.classList.contains('flipped') || 
+                            card.classList.contains('matched')) return;
+                            
+                        flipCard(card);
+                    });
+                    
+                    memoryGridEl.appendChild(card);
+                    cards.push(card);
+                });
+            }
+
+            function flipCard(card) {
+                card.classList.add('flipped');
+                flippedCards.push(card);
+                
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 500);
+                }
+            }
+
+            function checkMatch() {
+                const [card1, card2] = flippedCards;
+                const isMatch = card1.dataset.animal === card2.dataset.animal;
+                
+                if (isMatch) {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    matchedPairs++;
+                    gameState.games.memory.score++;
+                    
+                    if (matchedPairs === 8) {
+                        // Все пары найдены
+                        endMemoryGame(true);
+                    }
+                } else {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                }
+                
+                flippedCards = [];
+            }
+
+            memoryStartBtn.addEventListener('click', () => {
+                if (gameState.games.memory.cooldown > 0) return;
+                
+                createCards();
+                gameState.games.memory.active = true;
+                gameState.games.memory.score = 0;
+                memoryStartBtn.disabled = true;
+                
+                // Запуск таймера игры
+                let timeLeft = 60;
+                memoryTimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                
+                const gameTimer = setInterval(() => {
+                    timeLeft--;
+                    memoryTimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(gameTimer);
+                        endMemoryGame(false);
+                    }
+                }, 1000);
+            });
+
+            function endMemoryGame(isCompleted) {
+                gameState.games.memory.active = false;
+                memoryStartBtn.disabled = false;
+                
+                // Начисление монет
+                let coinsEarned = gameState.games.memory.score * 5;
+                if (isCompleted) coinsEarned += 20; // Бонус за завершение
+                
+                gameState.coins += coinsEarned;
+                showNotification(`Вы заработали ${coinsEarned} монет в игре "Найди пару"!`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games.memory.cooldown = 180;
+                memoryCooldownEl.style.display = 'flex';
+            }
+        }
+
+        // Игра "Лови животных"
+        function setupCatchGame() {
+            let targets = [];
+            let gameTimer;
+
+            function createTarget(isAnimal) {
+                const target = document.createElement('div');
+                target.className = 'catch-target float-animation';
+                
+                const size = 50 + Math.random() * 30;
+                target.style.width = `${size}px`;
+                target.style.height = `${size}px`;
+                
+                // Позиция
+                const maxX = catchAreaEl.offsetWidth - size;
+                const maxY = catchAreaEl.offsetHeight - size;
+                target.style.left = `${Math.random() * maxX}px`;
+                target.style.top = `${Math.random() * maxY}px`;
+                
+                // Выбор изображения
+                if (isAnimal) {
+                    const animal = gameImages.animals[
+                        Math.floor(Math.random() * gameImages.animals.length)
+                    ];
+                    target.innerHTML = `<img src="${animal}" alt="Animal">`;
+                    target.dataset.type = 'animal';
+                } else {
+                    const visitor = gameImages.visitors[
+                        Math.floor(Math.random() * gameImages.visitors.length)
+                    ];
+                    target.innerHTML = `<img src="${visitor}" alt="Visitor">`;
+                    target.dataset.type = 'visitor';
+                }
+                
+                // Обработчик клика
+                target.addEventListener('click', () => {
+                    if (target.dataset.type === 'animal') {
+                        gameState.games.catch.score++;
+                        catchScoreEl.textContent = gameState.games.catch.score;
+                        gameState.coins += 1;
+                        showNotification('+1 монета за животное!');
+                    } else {
+                        gameState.coins = Math.max(0, gameState.coins - 10);
+                        showNotification('-10 монет за посетителя!', 'error');
+                    }
+                    
+                    target.remove();
+                    updateUI();
+                });
+                
+                // Удаление через время
+                setTimeout(() => {
+                    if (target.parentNode) {
+                        target.remove();
+                    }
+                }, 2000 + Math.random() * 2000);
+                
+                catchAreaEl.appendChild(target);
+                targets.push(target);
+            }
+
+            catchStartBtn.addEventListener('click', () => {
+                if (gameState.games.catch.cooldown > 0) return;
+                
+                // Очистка области
+                catchAreaEl.innerHTML = '';
+                targets = [];
+                gameState.games.catch.score = 0;
+                catchScoreEl.textContent = '0';
+                
+                gameState.games.catch.active = true;
+                catchStartBtn.disabled = true;
+                
+                // Запуск создания целей
+                const targetInterval = setInterval(() => {
+                    if (!gameState.games.catch.active) {
+                        clearInterval(targetInterval);
+                        return;
+                    }
+                    
+                    // 80% животных, 20% посетителей
+                    createTarget(Math.random() < 0.8);
+                }, 800);
+                
+                // Запуск таймера игры
+                let timeLeft = 60;
+                catchTimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                
+                gameTimer = setInterval(() => {
+                    timeLeft--;
+                    catchTimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(gameTimer);
+                        clearInterval(targetInterval);
+                        endCatchGame();
+                    }
+                }, 1000);
+            });
+
+            function endCatchGame() {
+                gameState.games.catch.active = false;
+                catchStartBtn.disabled = false;
+                catchAreaEl.innerHTML = '';
+                
+                // Начисление монет
+                const coinsEarned = gameState.games.catch.score;
+                gameState.coins += coinsEarned;
+                showNotification(`Вы заработали ${coinsEarned} монет в игре "Лови животных"!`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games.catch.cooldown = 180;
+                catchCooldownEl.style.display = 'flex';
+            }
+        }
+        
+        // Обновление перезарядки игр
+        function updateGameCooldowns() {
+            // Три в ряд
+            if (gameState.games.match3.cooldown > 0) {
+                gameState.games.match3.cooldown--;
+                match3CooldownTimer.textContent = `00:${gameState.games.match3.cooldown.toString().padStart(2, '0')}`;
+                
+                if (gameState.games.match3.cooldown <= 0) {
+                    match3CooldownEl.style.display = 'none';
+                }
+            }
+            
+            // Найди пару
+            if (gameState.games.memory.cooldown > 0) {
+                gameState.games.memory.cooldown--;
+                memoryCooldownTimer.textContent = `00:${gameState.games.memory.cooldown.toString().padStart(2, '0')}`;
+                
+                if (gameState.games.memory.cooldown <= 0) {
+                    memoryCooldownEl.style.display = 'none';
+                }
+            }
+            
+            // Лови животных
+            if (gameState.games.catch.cooldown > 0) {
+                gameState.games.catch.cooldown--;
+                catchCooldownTimer.textContent = `00:${gameState.games.catch.cooldown.toString().padStart(2, '0')}`;
+                
+                if (gameState.games.catch.cooldown <= 0) {
+                    catchCooldownEl.style.display = 'none';
+                }
+            }
+        }
+        
+        // Таймер неактивности
+        function resetInactivityTimer() {
+            gameState.lastActiveTime = Date.now();
         }
         
         // Запуск игры при загрузке страницы
