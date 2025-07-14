@@ -1,1 +1,2320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контактный зоопарк</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff0000, #ff9900, #00ff00, #0099ff, #ff00ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .telegram-app {
+            width: 100%;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .neon-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: softPulse 8s infinite alternate;
+        }
+        
+        @keyframes softPulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+        
+        .glow-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            transform: translate(-50%, -50%);
+            animation: glowPulse 4s infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes glowPulse {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+            color: white;
+            padding: 15px 12px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+            transition: background 0.5s ease;
+        }
+        
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 11;
+        }
+        
+        .clicker-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: #FFD700;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 11;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+        }
+        
+        .stats-container {
+            display: flex;
+            background: rgba(240, 242, 245, 0.9);
+            padding: 12px;
+            border-bottom: 1px solid #e6e6e6;
+            justify-content: space-between;
+            backdrop-filter: blur(5px);
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: white;
+            border-radius: 10px;
+            padding: 10px 12px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            margin: 4px;
+            min-width: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+            z-index: 3;
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(240, 242, 245, 0.9);
+            border-top: 1px solid #e6e6e6;
+            border-bottom: 1px solid #e6e6e6;
+            backdrop-filter: blur(5px);
+            z-index: 2;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 3px;
+            font-weight: 500;
+            color: #777;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            font-size: 12px;
+            z-index: 3;
+        }
+        
+        .tab i {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .tab.active {
+            color: #0088cc;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #0088cc;
+        }
+        
+        .zoo-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 12px;
+            background: rgba(249, 249, 249, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 12px 0;
+            color: #0088cc;
+            padding-bottom: 6px;
+            border-bottom: 2px dashed #0088cc;
+            display: flex;
+            align-items: center;
+            z-index: 3;
+        }
+        
+        .section-title i {
+            margin-right: 8px;
+            background: #e6f7ff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+        
+        .animals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .animal-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 3;
+            background: linear-gradient(135deg, var(--card-color1), var(--card-color2));
+            transition: all 0.5s ease;
+        }
+        
+        .animal-avatar {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, var(--header-color1), var(--header-color2));
+            transition: all 0.5s ease;
+        }
+        
+        .animal-avatar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--highlight-color);
+            transition: all 0.5s ease;
+        }
+        
+        .animal-avatar img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .animal-info {
+            padding: 12px;
+        }
+        
+        .animal-name {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .animal-price {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #e6b800;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .buy-controls {
+            display: flex;
+            margin-top: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .quantity-btn {
+            background: #f0f2f5;
+            border: none;
+            padding: 6px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .quantity-input {
+            flex: 1;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            width: 40px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .buy-button {
+            background: linear-gradient(135deg, var(--button-color1), var(--button-color2));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 3;
+        }
+        
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .food-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3;
+            background: linear-gradient(135deg, var(--card-color1), var(--card-color2));
+            transition: all 0.5s ease;
+        }
+        
+        .food-image {
+            height: 144px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--header-color1), var(--header-color2));
+            transition: all 0.5s ease;
+        }
+        
+        .food-image img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+        
+        .food-info {
+            padding: 12px;
+        }
+        
+        .food-name {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #333;
+        }
+        
+        .food-price {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #e6b800;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .food-effect {
+            background: rgba(86, 204, 242, 0.1);
+            border-radius: 8px;
+            padding: 6px;
+            font-size: 12px;
+            color: #0099cc;
+            margin-top: 6px;
+        }
+        
+        .my-animals {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 14px;
+            z-index: 3;
+        }
+        
+        .animal-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .animal-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f0f8ff;
+            padding: 10px;
+            border-radius: 10px;
+            min-width: 80px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 136, 204, 0.1);
+        }
+        
+        .animal-item-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e6f7ff;
+            border-radius: 50%;
+        }
+        
+        .animal-item-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+        
+        .animal-item-count {
+            font-weight: 700;
+            font-size: 16px;
+            color: #0088cc;
+        }
+        
+        .visitors {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            z-index: 3;
+        }
+        
+        .visitors-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .visitor {
+            font-size: 24px;
+            animation: appear 0.5s ease-out;
+            transition: transform 0.3s;
+            z-index: 3;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .footer {
+            padding: 12px;
+            text-align: center;
+            color: #777;
+            font-size: 11px;
+            background: rgba(249, 249, 249, 0.8);
+            border-top: 1px solid #e6e6e6;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 3;
+        }
+        
+        .footer-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 136, 204, 0.3);
+            z-index: 3;
+        }
+        
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .coin-animation {
+            position: fixed;
+            z-index: 100;
+            font-size: 24px;
+            animation: coinFall 1.5s forwards;
+            pointer-events: none;
+        }
+        
+        @keyframes coinFall {
+            0% { 
+                transform: translate(0, 0) scale(1) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(calc(-50px + 100px * var(--random-x)), 
+                           calc(-50px - 100px * var(--random-y))) 
+                           scale(0.5) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+        
+        .theme-selector {
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            z-index: 100;
+            display: none;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 200px;
+            z-index: 10;
+        }
+        
+        .theme-option {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-label {
+            font-size: 12px;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        /* Темные темы */
+        .dark-red { background: linear-gradient(135deg, #c62828, #b71c1c); }
+        .dark-blue { background: linear-gradient(135deg, #1565c0, #0d47a1); }
+        .dark-green { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
+        .dark-purple { background: linear-gradient(135deg, #6a1b9a, #4a148c); }
+        .dark-yellow { background: linear-gradient(135deg, #f57f17, #e65100); }
+        
+        /* Светлые темы */
+        .light-red { background: linear-gradient(135deg, #ff8a80, #ff5252); }
+        .light-yellow { background: linear-gradient(135deg, #ffff8d, #ffd54f); }
+        .light-lime { background: linear-gradient(135deg, #ccff90, #76ff03); }
+        .light-blue { background: linear-gradient(135deg, #90caf9, #64b5f6); }
+        .light-pink { background: linear-gradient(135deg, #f8bbd0, #f48fb1); }
+        
+        .energy-bar {
+            height: 5px;
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00cc66, #00ff88);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        /* Анимации кнопок */
+        button, .footer-btn, .tab, .quantity-btn, .buy-button {
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        
+        button:hover, .footer-btn:hover, .tab:hover, 
+        .quantity-btn:hover, .buy-button:hover {
+            transform: scale(1.05);
+        }
+        
+        button:active, .footer-btn:active, .tab:active, 
+        .quantity-btn:active, .buy-button:active {
+            transform: scale(0.95);
+        }
+        
+        /* Адаптивные цвета слотов */
+        body[data-theme^="dark"] .my-animals,
+        body[data-theme^="dark"] .visitors,
+        body[data-theme^="dark"] .stat-box {
+            background: rgba(60, 60, 70, 0.7);
+        }
+        
+        body[data-theme^="light"] .my-animals,
+        body[data-theme^="light"] .visitors,
+        body[data-theme^="light"] .stat-box {
+            background: rgba(240, 240, 245, 0.9);
+        }
+        
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 10px;
+            }
+            
+            .settings-btn, .clicker-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+                margin-right: 8px;
+            }
+            
+            .header h1 {
+                font-size: 16px;
+            }
+            
+            .stats-container {
+                padding: 10px;
+            }
+            
+            .stat-box {
+                padding: 8px 10px;
+                min-width: 80px;
+            }
+            
+            .stat-label {
+                font-size: 10px;
+            }
+            
+            .stat-value {
+                font-size: 14px;
+            }
+            
+            .tabs {
+                flex-direction: row;
+            }
+            
+            .tab {
+                padding: 8px 2px;
+                font-size: 11px;
+            }
+            
+            .tab i {
+                font-size: 14px;
+                margin-bottom: 2px;
+            }
+            
+            .section-title {
+                font-size: 14px;
+            }
+            
+            .section-title i {
+                width: 22px;
+                height: 22px;
+                font-size: 12px;
+            }
+            
+            .animals-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .animal-avatar {
+                height: 160px;
+            }
+            
+            .animal-avatar img {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .animal-name {
+                font-size: 12px;
+            }
+            
+            .animal-price {
+                font-size: 12px;
+            }
+            
+            .quantity-btn {
+                padding: 4px 6px;
+                font-size: 12px;
+            }
+            
+            .quantity-input {
+                font-size: 12px;
+                width: 30px;
+            }
+            
+            .buy-button {
+                font-size: 11px;
+                padding: 6px;
+            }
+            
+            .food-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .food-image {
+                height: 144px;
+            }
+            
+            .food-image img {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .food-name {
+                font-size: 12px;
+            }
+            
+            .food-price {
+                font-size: 12px;
+            }
+            
+            .footer-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Анимации для карточек */
+        .animal-card:hover, .food-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Новые стили для игр */
+        .game-container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0088cc;
+            display: flex;
+            align-items: center;
+        }
+        
+        .game-title i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .game-description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .game-board {
+            background: rgba(240, 242, 245, 0.5);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .game-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .game-button {
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .game-button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+        
+        .game-button:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+        
+        .game-timer {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+        
+        .game-cooldown {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            z-index: 10;
+            border-radius: 15px;
+        }
+        
+        /* Стили для игры "Три в ряд" */
+        .match3-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 5px;
+            margin: 10px auto;
+            max-width: 400px;
+        }
+        
+        .match3-cell {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            background: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .match3-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Стили для игры "Найди пару" */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 10px auto;
+            max-width: 400px;
+        }
+        
+        .memory-card {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            background: #e0e0e0;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .memory-card-front {
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+        }
+        
+        .memory-card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Стили для игры "Лови животных" */
+        .catch-area {
+            position: relative;
+            height: 300px;
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 3px solid #4CAF50;
+        }
+        
+        .catch-target {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            z-index: 2;
+        }
+        
+        .catch-target img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .catch-target:hover {
+            transform: scale(1.1);
+        }
+        
+        .catch-score {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* Анимации для игр */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .bounce-animation {
+            animation: bounce 0.5s ease infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="telegram-app">
+        <div class="neon-overlay"></div>
+        <div class="glow-effect"></div>
+        
+        <div class="theme-selector" id="themeSelector">
+            <div class="theme-label">Темные темы:</div>
+            <div class="theme-option dark-red active" data-theme="dark-red"></div>
+            <div class="theme-option dark-blue" data-theme="dark-blue"></div>
+            <div class="theme-option dark-green" data-theme="dark-green"></div>
+            <div class="theme-option dark-purple" data-theme="dark-purple"></div>
+            <div class="theme-option dark-yellow" data-theme="dark-yellow"></div>
+            
+            <div class="theme-label">Светлые темы:</div>
+            <div class="theme-option light-red" data-theme="light-red"></div>
+            <div class="theme-option light-yellow" data-theme="light-yellow"></div>
+            <div class="theme-option light-lime" data-theme="light-lime"></div>
+            <div class="theme-option light-blue" data-theme="light-blue"></div>
+            <div class="theme-option light-pink" data-theme="light-pink"></div>
+        </div>
+        
+        <div class="header">
+            <button class="settings-btn"><i class="fas fa-cog"></i></button>
+            <button class="clicker-btn" id="clicker-btn"><i class="fas fa-bolt"></i></button>
+            <h1>Контактный зоопарк 🐾</h1>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-label">Ваш баланс</div>
+                <div class="stat-value coins-value">100 <i class="fas fa-coins"></i></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Еда для животных</div>
+                <div class="stat-value food-value">50 <i class="fas fa-apple-alt"></i></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Энергия</div>
+                <div class="stat-value energy-value">100 <i class="fas fa-bolt"></i></div>
+                <div class="energy-bar">
+                    <div class="energy-fill" id="energy-bar"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="animals"><i class="fas fa-paw"></i> Животные</div>
+            <div class="tab" data-tab="food"><i class="fas fa-utensils"></i> Магазин еды</div>
+            <div class="tab" data-tab="visitors"><i class="fas fa-users"></i> Посетители</div>
+            <div class="tab" data-tab="games"><i class="fas fa-gamepad"></i> Игры</div>
+        </div>
+        
+        <div class="zoo-container">
+            <div class="tab-content active" id="animals-tab">
+                <div class="section-title">
+                    <i class="fas fa-shopping-cart"></i>Доступные животные
+                </div>
+                <div class="animals-grid" id="animals-grid">
+                    <!-- Животные будут добавлены через JS -->
+                </div>
+                
+                <div class="section-title">
+                    <i class="fas fa-home"></i>Мой зоопарк
+                </div>
+                <div class="my-animals">
+                    <div class="animal-list" id="animal-list">
+                        <!-- Купленные животные будут здесь -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="food-tab">
+                <div class="section-title">
+                    <i class="fas fa-store"></i>Магазин еды для животных
+                </div>
+                <div class="food-grid" id="food-grid">
+                    <!-- Еда будет добавлена через JS -->
+                </div>
+                
+                <div class="section-title">
+                    <i class="fas fa-info-circle"></i>Информация
+                </div>
+                <div class="visitors">
+                    <p>Животные потребляют еду для поддержания здоровья и привлечения посетителей. При недостатке еды животные перестанут приносить доход.</p>
+                    <p style="margin-top: 10px; color: #e74c3c; font-weight: 500;"><i class="fas fa-exclamation-triangle"></i> Текущее потребление: <span id="food-consumption">0</span> ед/мин</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="visitors-tab">
+                <div class="section-title">
+                    <i class="fas fa-chart-line"></i>Статистика зоопарка
+                </div>
+                <div class="visitors">
+                    <p>Сейчас в зоопарке: <span id="visitor-count">0</span> посетителей</p>
+                    <p>Всего посетителей: <span id="total-visitors">0</span></p>
+                    <p>Доход в минуту: <span id="income-per-minute">0</span> монет</p>
+                    <div class="visitors-container" id="visitors-container">
+                        <!-- Посетители будут появляться здесь -->
+                    </div>
+                </div>
+                
+                <div class="section-title">
+                    <i class="fas fa-trophy"></i>Достижения
+                </div>
+                <div class="my-animals">
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-medal" style="color: #e6b800; font-size: 24px;"></i>
+                            <div>
+                                <div style="font-weight: 700;">Начальный уровень</div>
+                                <div style="font-size: 13px; color: #777;">Купите первое животное</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-medal" style="color: #c0c0c0; font-size: 24px;"></i>
+                            <div>
+                                <div style="font-weight: 700;">Любитель животных</div>
+                                <div style="font-size: 13px; color: #777;">Иметь 5 разных животных</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Новая вкладка для игр -->
+            <div class="tab-content" id="games-tab">
+                <div class="section-title">
+                    <i class="fas fa-gamepad"></i>Игровая зона
+                </div>
+                
+                <!-- Игра "Три в ряд" -->
+                <div class="game-container" id="match3-game">
+                    <div class="game-title">
+                        <i class="fas fa-th"></i>Три в ряд
+                    </div>
+                    <div class="game-description">
+                        Соберите линии из трех одинаковых животных. Игра длится 60 секунд. 
+                        За каждую комбинацию вы получите монеты!
+                    </div>
+                    <div class="game-board">
+                        <div class="match3-grid" id="match3-grid"></div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-button" id="match3-start">
+                            <i class="fas fa-play"></i>Начать игру
+                        </button>
+                        <div class="game-timer" id="match3-timer">01:00</div>
+                    </div>
+                    <div class="game-cooldown" id="match3-cooldown" style="display: none;">
+                        <div>Перезарядка</div>
+                        <div id="match3-cooldown-timer">03:00</div>
+                    </div>
+                </div>
+                
+                <!-- Игра "Найди пару" -->
+                <div class="game-container" id="memory-game">
+                    <div class="game-title">
+                        <i class="fas fa-clone"></i>Найди пару
+                    </div>
+                    <div class="game-description">
+                        Найдите все пары животных. Игра длится 60 секунд. 
+                        За каждую найденную пару вы получите монеты!
+                    </div>
+                    <div class="game-board">
+                        <div class="memory-grid" id="memory-grid"></div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-button" id="memory-start">
+                            <i class="fas fa-play"></i>Начать игру
+                        </button>
+                        <div class="game-timer" id="memory-timer">01:00</div>
+                    </div>
+                    <div class="game-cooldown" id="memory-cooldown" style="display: none;">
+                        <div>Перезарядка</div>
+                        <div id="memory-cooldown-timer">03:00</div>
+                    </div>
+                </div>
+                
+                <!-- Игра "Лови животных" -->
+                <div class="game-container" id="catch-game">
+                    <div class="game-title">
+                        <i class="fas fa-hand-paper"></i>Лови животных
+                    </div>
+                    <div class="game-description">
+                        Кликайте на животных, чтобы поймать их (+1 монета). 
+                        Избегайте смайликов посетителей (-10 монет). Игра длится 60 секунд.
+                    </div>
+                    <div class="game-board">
+                        <div class="catch-area" id="catch-area"></div>
+                        <div class="catch-score">Поймано: <span id="catch-score">0</span></div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-button" id="catch-start">
+                            <i class="fas fa-play"></i>Начать игру
+                        </button>
+                        <div class="game-timer" id="catch-timer">01:00</div>
+                    </div>
+                    <div class="game-cooldown" id="catch-cooldown" style="display: none;">
+                        <div>Перезарядка</div>
+                        <div id="catch-cooldown-timer">03:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-btn" id="refresh-btn"><i class="fas fa-sync-alt"></i></div>
+            <div class="footer-btn" id="save-btn"><i class="fas fa-save"></i></div>
+            <div class="footer-btn" id="help-btn"><i class="fas fa-question"></i></div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> Уведомление
+    </div>
+    
+    <script>
+        // Игровые данные
+        const animals = [
+            { id: 'cat', name: 'Котёнок', basePrice: 100, income: 1, image: 'cat.gif', owned: 0, food: 0.2 },
+            { id: 'dog', name: 'Щенок', basePrice: 200, income: 3, image: 'dog.gif', owned: 0, food: 0.5 },
+            { id: 'rabbit', name: 'Кролик', basePrice: 300, income: 5, image: 'bunny.gif', owned: 0, food: 0.3 },
+            { id: 'hamster', name: 'Хомяк', basePrice: 500, income: 8, image: 'hamster.gif', owned: 0, food: 0.1 },
+            { id: 'fox', name: 'Лиса', basePrice: 1000, income: 15, image: 'fox.gif', owned: 0, food: 1.0 },
+            { id: 'panda', name: 'Панда', basePrice: 2000, income: 30, image: 'panda.gif', owned: 0, food: 2.0 },
+            { id: 'lion', name: 'Лев', basePrice: 5000, income: 70, image: 'lev.gif', owned: 0, food: 3.0 },
+            { id: 'cow', name: 'Корова', basePrice: 3000, income: 40, image: 'cow.gif', owned: 0, food: 2.5 },
+            { id: 'unicorn', name: 'Единорог', basePrice: 10000, income: 150, image: 'unicorn.gif', owned: 0, food: 4.0 }
+        ];
+        
+        const foods = [
+            { id: 'carrot', name: 'Морковь', basePrice: 20, amount: 10, image: 'morkov.gif', effect: 'Накормите кроликов' },
+            { id: 'meat', name: 'Мясо', basePrice: 50, amount: 5, image: 'meat.gif', effect: 'Для хищных животных' },
+            { id: 'fish', name: 'Рыба', basePrice: 40, amount: 8, image: 'fish.gif', effect: 'Кошки будут довольны' },
+            { id: 'hay', name: 'Сено', basePrice: 30, amount: 15, image: 'seno.gif', effect: 'Для травоядных животных' },
+            { id: 'fruit', name: 'Фрукты', basePrice: 60, amount: 12, image: 'banana.gif', effect: 'Витамины для всех' },
+            { id: 'premium', name: 'Премиум корм', basePrice: 150, amount: 30, image: 'premi.gif', effect: '+20% к доходу на 1 час' }
+        ];
+
+        // Гифки для игр
+        const gameImages = {
+            animals: [
+                'cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif',
+                'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif'
+            ],
+            visitors: ['visitor1.gif', 'visitor2.gif', 'visitor3.gif']
+        };
+        
+        // Состояние игры
+        let gameState = {
+            coins: 100,
+            food: 50,
+            energy: 100,
+            maxEnergy: 100,
+            lastUpdate: Date.now(),
+            animals: JSON.parse(JSON.stringify(animals)),
+            foods: JSON.parse(JSON.stringify(foods)),
+            visitors: 0,
+            totalVisitors: 0,
+            income: 0,
+            theme: 'dark-red',
+            tab: 'animals',
+            lastActiveTime: Date.now(),
+            games: {
+                match3: { active: false, cooldown: 0, score: 0 },
+                memory: { active: false, cooldown: 0, score: 0, flippedCards: [], matchedPairs: 0 },
+                catch: { active: false, cooldown: 0, score: 0 }
+            }
+        };
+        
+        // Элементы DOM
+        const coinsEl = document.querySelector('.coins-value');
+        const foodEl = document.querySelector('.food-value');
+        const energyEl = document.querySelector('.energy-value');
+        const energyBarEl = document.getElementById('energy-bar');
+        const animalsGridEl = document.getElementById('animals-grid');
+        const foodGridEl = document.getElementById('food-grid');
+        const animalListEl = document.getElementById('animal-list');
+        const visitorCountEl = document.getElementById('visitor-count');
+        const totalVisitorsEl = document.getElementById('total-visitors');
+        const visitorsContainerEl = document.getElementById('visitors-container');
+        const notificationEl = document.getElementById('notification');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = {
+            'animals': document.getElementById('animals-tab'),
+            'food': document.getElementById('food-tab'),
+            'visitors': document.getElementById('visitors-tab'),
+            'games': document.getElementById('games-tab')
+        };
+        const settingsBtn = document.querySelector('.settings-btn');
+        const clickerBtn = document.getElementById('clicker-btn');
+        const themeSelector = document.getElementById('themeSelector');
+        const foodConsumptionEl = document.getElementById('food-consumption');
+        const incomePerMinuteEl = document.getElementById('income-per-minute');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const helpBtn = document.getElementById('help-btn');
+        
+        // Элементы игр
+        const match3GridEl = document.getElementById('match3-grid');
+        const match3StartBtn = document.getElementById('match3-start');
+        const match3TimerEl = document.getElementById('match3-timer');
+        const match3CooldownEl = document.getElementById('match3-cooldown');
+        const match3CooldownTimer = document.getElementById('match3-cooldown-timer');
+        
+        const memoryGridEl = document.getElementById('memory-grid');
+        const memoryStartBtn = document.getElementById('memory-start');
+        const memoryTimerEl = document.getElementById('memory-timer');
+        const memoryCooldownEl = document.getElementById('memory-cooldown');
+        const memoryCooldownTimer = document.getElementById('memory-cooldown-timer');
+        
+        const catchAreaEl = document.getElementById('catch-area');
+        const catchStartBtn = document.getElementById('catch-start');
+        const catchTimerEl = document.getElementById('catch-timer');
+        const catchScoreEl = document.getElementById('catch-score');
+        const catchCooldownEl = document.getElementById('catch-cooldown');
+        const catchCooldownTimer = document.getElementById('catch-cooldown-timer');
+        
+        // Инициализация игры
+        function initGame() {
+            loadGame();
+            applyTheme();
+            renderAnimals();
+            renderFood();
+            updateUI();
+            setupTabs();
+            setupEventListeners();
+            initGames();
+            
+            // Запускаем игровые процессы
+            setInterval(updateIncome, 1000);
+            setInterval(updateVisitors, 3000);
+            setInterval(updateFoodConsumption, 5000);
+            setInterval(restoreEnergy, 10000);
+            setInterval(saveGame, 10000);
+            setInterval(updateGameCooldowns, 1000);
+            
+            // Отслеживаем активность пользователя
+            document.addEventListener('mousemove', resetInactivityTimer);
+            document.addEventListener('keypress', resetInactivityTimer);
+            resetInactivityTimer();
+        }
+        
+        // Инициализация игр
+        function initGames() {
+            setupMatch3Game();
+            setupMemoryGame();
+            setupCatchGame();
+        }
+        
+        // Рассчитать общее количество животных
+        function getTotalAnimals() {
+            return gameState.animals.reduce((total, animal) => total + animal.owned, 0);
+        }
+        
+        // Рассчитать цену с учетом инфляции
+        function calculatePrice(basePrice, ownedCount, totalAnimals) {
+            const inflation = 1 + (totalAnimals * 0.005);
+            return Math.floor(basePrice * Math.pow(1.1, ownedCount) * inflation);
+        }
+        
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Обработчики тем
+            settingsBtn.addEventListener('click', () => {
+                themeSelector.style.display = themeSelector.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const theme = option.dataset.theme;
+                    setTheme(theme);
+                });
+            });
+            
+            // Обработчики кнопок в футере
+            refreshBtn.addEventListener('click', () => {
+                location.reload();
+            });
+            
+            saveBtn.addEventListener('click', () => {
+                saveGame();
+                showNotification('Игра сохранена!');
+            });
+            
+            helpBtn.addEventListener('click', () => {
+                showNotification('Покупайте животных, кормите их и развивайте зоопарк!', 'info');
+            });
+            
+            // Обработчик кликера
+            clickerBtn.addEventListener('click', handleClickerClick);
+        }
+        
+        // Обработка клика по кликеру
+        function handleClickerClick() {
+            if (gameState.energy > 0) {
+                gameState.coins += 1;
+                gameState.energy -= 1;
+                
+                // Анимация монеты
+                createCoinAnimation();
+                
+                // Анимация кнопки
+                clickerBtn.classList.add('pulse');
+                setTimeout(() => {
+                    clickerBtn.classList.remove('pulse');
+                }, 300);
+                
+                updateUI();
+            } else {
+                showNotification("Недостаточно энергии!", "error");
+            }
+        }
+        
+        // Создать анимацию монет
+        function createCoinAnimation() {
+            const coins = ['🪙', '💰', '💵', '💸'];
+            for (let i = 0; i < 3; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin-animation';
+                coin.textContent = coins[Math.floor(Math.random() * coins.length)];
+                
+                // Генерируем случайные параметры
+                const randomX = Math.random() * 2 - 1;
+                const randomY = Math.random() * 0.5 + 0.5;
+                
+                // Устанавливаем начальную позицию у кнопки
+                const rect = clickerBtn.getBoundingClientRect();
+                coin.style.left = `${rect.left + rect.width/2}px`;
+                coin.style.top = `${rect.top + rect.height/2}px`;
+                
+                // Задаем случайные параметры для анимации
+                coin.style.setProperty('--random-x', randomX);
+                coin.style.setProperty('--random-y', randomY);
+                
+                document.body.appendChild(coin);
+                
+                setTimeout(() => {
+                    coin.remove();
+                }, 1500);
+            }
+        }
+        
+        // Восстановление энергии
+        function restoreEnergy() {
+            if (gameState.energy < gameState.maxEnergy) {
+                gameState.energy += 1;
+                updateUI();
+            }
+        }
+        
+        // Настройка вкладок
+        function setupTabs() {
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    
+                    // Убираем активный класс у всех вкладок
+                    tabs.forEach(t => t.classList.remove('active'));
+                    Object.values(tabContents).forEach(c => c.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей вкладке
+                    tab.classList.add('active');
+                    tabContents[tabId].classList.add('active');
+                    gameState.tab = tabId;
+                });
+            });
+        }
+        
+        // Отрисовка животных в магазине
+        function renderAnimals() {
+            animalsGridEl.innerHTML = '';
+            
+            const totalAnimals = getTotalAnimals();
+            
+            gameState.animals.forEach(animal => {
+                const currentPrice = calculatePrice(animal.basePrice, animal.owned, totalAnimals);
+                const canBuy = gameState.coins >= currentPrice;
+                
+                const animalCard = document.createElement('div');
+                animalCard.className = 'animal-card';
+                animalCard.innerHTML = `
+                    <div class="animal-avatar">
+                        <img src="${animal.image}" alt="${animal.name}">
+                    </div>
+                    <div class="animal-info">
+                        <div class="animal-name">
+                            ${animal.name}
+                            <span class="animal-price" data-id="${animal.id}">${currentPrice} <i class="fas fa-coins"></i></span>
+                        </div>
+                        <div style="font-size: 12px; color: #777; margin-bottom: 8px;">
+                            Доход: ${animal.income} мон/животное | Еда: ${animal.food}/мин
+                        </div>
+                        
+                        <div class="buy-controls">
+                            <button class="quantity-btn minus" data-id="${animal.id}">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" max="10" data-id="${animal.id}">
+                            <button class="quantity-btn plus" data-id="${animal.id}">+</button>
+                        </div>
+                        
+                        <button class="buy-button" ${canBuy ? '' : 'disabled'} 
+                                data-id="${animal.id}">
+                            Купить <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                `;
+                
+                animalsGridEl.appendChild(animalCard);
+            });
+            
+            // Обработчики кнопок количества
+            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const animalId = e.target.dataset.id;
+                    const input = document.querySelector(`.quantity-input[data-id="${animalId}"]`);
+                    if (input.value > 1) input.value = parseInt(input.value) - 1;
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const animalId = e.target.dataset.id;
+                    const input = document.querySelector(`.quantity-input[data-id="${animalId}"]`);
+                    if (input.value < 10) input.value = parseInt(input.value) + 1;
+                });
+            });
+            
+            // Обработчики кнопок покупки
+            document.querySelectorAll('.buy-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const animalId = e.target.dataset.id;
+                    const input = document.querySelector(`.quantity-input[data-id="${animalId}"]`);
+                    const quantity = parseInt(input.value) || 1;
+                    buyAnimal(animalId, quantity);
+                });
+            });
+        }
+        
+        // Отрисовка еды в магазине
+        function renderFood() {
+            foodGridEl.innerHTML = '';
+            
+            gameState.foods.forEach(food => {
+                const canBuy = gameState.coins >= food.basePrice;
+                
+                const foodCard = document.createElement('div');
+                foodCard.className = 'food-card';
+                foodCard.innerHTML = `
+                    <div class="food-image">
+                        <img src="${food.image}" alt="${food.name}">
+                    </div>
+                    <div class="food-info">
+                        <div class="food-name">${food.name}</div>
+                        <div class="food-price">${food.basePrice} <i class="fas fa-coins"></i></div>
+                        <div style="font-size: 12px; color: #777;">
+                            Количество: ${food.amount} ед.
+                        </div>
+                        <div class="food-effect">
+                            <i class="fas fa-star"></i> ${food.effect}
+                        </div>
+                        <button class="buy-button" ${canBuy ? '' : 'disabled'} 
+                                data-id="${food.id}">
+                            Купить <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                `;
+                
+                foodGridEl.appendChild(foodCard);
+            });
+            
+            // Обработчики кнопок покупки еды
+            document.querySelectorAll('.buy-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const foodId = e.target.dataset.id;
+                    buyFood(foodId);
+                });
+            });
+        }
+        
+        // Обновление интерфейса
+        function updateUI() {
+            // Обновляем баланс
+            coinsEl.textContent = Math.floor(gameState.coins);
+            foodEl.textContent = Math.floor(gameState.food);
+            energyEl.textContent = Math.floor(gameState.energy);
+            
+            // Обновляем прогресс бар энергии
+            const energyPercent = (gameState.energy / gameState.maxEnergy) * 100;
+            energyBarEl.style.width = `${energyPercent}%`;
+            
+            // Обновляем список животных
+            animalListEl.innerHTML = '';
+            
+            gameState.animals.forEach(animal => {
+                if (animal.owned > 0) {
+                    const animalItem = document.createElement('div');
+                    animalItem.className = 'animal-item';
+                    animalItem.innerHTML = `
+                        <div class="animal-item-icon">
+                            <img src="${animal.image}" alt="${animal.name}">
+                        </div>
+                        <div class="animal-item-count">${animal.owned}</div>
+                        <div style="font-size: 11px; color: #777; margin-top: 5px;">
+                            ${animal.income * animal.owned}/животное
+                        </div>
+                    `;
+                    animalListEl.appendChild(animalItem);
+                }
+            });
+            
+            // Обновляем посетителей
+            visitorCountEl.textContent = gameState.visitors;
+            totalVisitorsEl.textContent = gameState.totalVisitors;
+            
+            // Рассчитываем доход в минуту
+            const baseIncome = gameState.animals.reduce((sum, animal) => {
+                return sum + (animal.income * animal.owned);
+            }, 0);
+            
+            const incomePerMinute = baseIncome * gameState.visitors;
+            incomePerMinuteEl.textContent = incomePerMinute;
+            
+            // Сохраняем общий доход
+            gameState.income = baseIncome;
+            
+            // Обновляем кнопки покупки
+            updateBuyButtons();
+        }
+        
+        // Обновление состояния кнопок покупки
+        function updateBuyButtons() {
+            const totalAnimals = getTotalAnimals();
+            
+            document.querySelectorAll('.buy-button').forEach(button => {
+                const itemId = button.dataset.id;
+                const animal = gameState.animals.find(a => a.id === itemId);
+                const food = gameState.foods.find(f => f.id === itemId);
+                
+                if (animal) {
+                    const price = calculatePrice(animal.basePrice, animal.owned, totalAnimals);
+                    button.disabled = gameState.coins < price;
+                } else if (food) {
+                    button.disabled = gameState.coins < food.basePrice;
+                }
+            });
+        }
+        
+        // Покупка животного
+        function buyAnimal(animalId, quantity) {
+            const animal = gameState.animals.find(a => a.id === animalId);
+            const totalAnimals = getTotalAnimals();
+            const currentPrice = calculatePrice(animal.basePrice, animal.owned, totalAnimals);
+            const totalPrice = currentPrice * quantity;
+            
+            if (animal && gameState.coins >= totalPrice) {
+                gameState.coins -= totalPrice;
+                animal.owned += quantity;
+                
+                // Анимация монет
+                createCoinAnimation();
+                
+                showNotification(`Вы купили ${quantity} ${animal.name.toLowerCase()}!`);
+                
+                // Обновляем интерфейс
+                updateUI();
+                renderAnimals();
+            } else {
+                showNotification(`Недостаточно монет для покупки!`, 'error');
+            }
+        }
+        
+        // Покупка еды
+        function buyFood(foodId) {
+            const food = gameState.foods.find(f => f.id === foodId);
+            
+            if (food && gameState.coins >= food.basePrice) {
+                gameState.coins -= food.basePrice;
+                gameState.food += food.amount;
+                
+                showNotification(`Вы купили ${food.name}!`);
+                updateUI();
+            } else {
+                showNotification(`Недостаточно монет для покупки!`, 'error');
+            }
+        }
+        
+        // Обновление дохода
+        function updateIncome() {
+            // Рассчитываем базовый доход от животных
+            const baseIncome = gameState.animals.reduce((sum, animal) => {
+                return sum + (animal.income * animal.owned);
+            }, 0);
+            
+            // Добавляем доход (базовый * количество посетителей)
+            const incomeMultiplier = (Date.now() - gameState.lastActiveTime > 60000) ? 0.033 : 1;
+            gameState.coins += (baseIncome * gameState.visitors * incomeMultiplier) / 60;
+            coinsEl.textContent = Math.floor(gameState.coins);
+        }
+        
+        // Обновление потребления еды
+        function updateFoodConsumption() {
+            const foodConsumption = gameState.animals.reduce((sum, animal) => {
+                return sum + (animal.food * animal.owned);
+            }, 0);
+            
+            foodConsumptionEl.textContent = foodConsumption.toFixed(1);
+            
+            // Уменьшаем еду каждые 5 секунд
+            if (gameState.food > 0) {
+                gameState.food -= foodConsumption / 12;
+                if (gameState.food < 0) gameState.food = 0;
+                foodEl.textContent = Math.floor(gameState.food);
+            }
+        }
+        
+        // Обновление посетителей
+        function updateVisitors() {
+            // Максимальное количество посетителей зависит от количества животных
+            const maxVisitors = gameState.animals.reduce((sum, animal) => sum + animal.owned, 0) * 3;
+            
+            if (gameState.visitors < maxVisitors) {
+                const newVisitors = Math.floor(Math.random() * 3) + 1;
+                gameState.visitors += newVisitors;
+                gameState.totalVisitors += newVisitors;
+                if (gameState.visitors > maxVisitors) gameState.visitors = maxVisitors;
+            }
+            
+            visitorCountEl.textContent = gameState.visitors;
+            totalVisitorsEl.textContent = gameState.totalVisitors;
+            
+            // Добавляем визуализацию посетителей
+            if (gameState.visitors > 0 && Math.random() > 0.5) {
+                const visitor = document.createElement('div');
+                visitor.className = 'visitor';
+                visitor.textContent = '👤';
+                visitorsContainerEl.appendChild(visitor);
+                
+                // Удаляем посетителя через некоторое время
+                setTimeout(() => {
+                    visitor.remove();
+                }, 5000);
+            }
+        }
+        
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            notificationEl.textContent = message;
+            notificationEl.className = 'notification show';
+            notificationEl.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+            
+            if (type === 'error') {
+                notificationEl.style.background = '#e74c3c';
+            } else if (type === 'info') {
+                notificationEl.style.background = '#3498db';
+            } else {
+                notificationEl.style.background = '#2ecc71';
+            }
+            
+            setTimeout(() => {
+                notificationEl.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Сохранение игры
+        function saveGame() {
+            const saveData = {
+                coins: gameState.coins,
+                food: gameState.food,
+                energy: gameState.energy,
+                maxEnergy: gameState.maxEnergy,
+                animals: gameState.animals,
+                foods: gameState.foods,
+                visitors: gameState.visitors,
+                totalVisitors: gameState.totalVisitors,
+                lastUpdate: Date.now(),
+                theme: gameState.theme,
+                games: gameState.games
+            };
+            localStorage.setItem('zooGameSave', JSON.stringify(saveData));
+        }
+        
+        // Загрузка игры
+        function loadGame() {
+            const saveData = localStorage.getItem('zooGameSave');
+            
+            if (saveData) {
+                try {
+                    const parsedData = JSON.parse(saveData);
+                    gameState.coins = parsedData.coins || 100;
+                    gameState.food = parsedData.food || 50;
+                    gameState.energy = parsedData.energy || 100;
+                    gameState.maxEnergy = parsedData.maxEnergy || 100;
+                    gameState.animals = parsedData.animals || JSON.parse(JSON.stringify(animals));
+                    gameState.foods = parsedData.foods || JSON.parse(JSON.stringify(foods));
+                    gameState.visitors = parsedData.visitors || 0;
+                    gameState.totalVisitors = parsedData.totalVisitors || 0;
+                    gameState.lastUpdate = parsedData.lastUpdate || Date.now();
+                    gameState.theme = parsedData.theme || 'dark-red';
+                    gameState.games = parsedData.games || {
+                        match3: { active: false, cooldown: 0, score: 0 },
+                        memory: { active: false, cooldown: 0, score: 0 },
+                        catch: { active: false, cooldown: 0, score: 0 }
+                    };
+                    
+                    // Рассчитываем доход за время отсутствия
+                    const timeDiff = (Date.now() - gameState.lastUpdate) / 1000;
+                    const baseIncome = gameState.animals.reduce((sum, animal) => {
+                        return sum + (animal.income * animal.owned);
+                    }, 0);
+                    
+                    // Уменьшаем доход в 30 раз за время отсутствия
+                    gameState.coins += (baseIncome * gameState.visitors * timeDiff) / 60 / 30;
+                    
+                    // Восстанавливаем энергию за время отсутствия
+                    const energyPerSecond = 6 / 60;
+                    gameState.energy += energyPerSecond * timeDiff;
+                    if (gameState.energy > gameState.maxEnergy) {
+                        gameState.energy = gameState.maxEnergy;
+                    }
+                    
+                    showNotification('Игра загружена!');
+                } catch (e) {
+                    console.error('Ошибка загрузки игры:', e);
+                    showNotification('Ошибка загрузки. Начните новую игру!', 'error');
+                }
+            } else {
+                showNotification('Начните новую игру!');
+            }
+        }
+        
+        // Применить тему
+        function applyTheme() {
+            // Установка активной темы в селекторе
+            document.querySelectorAll('.theme-option').forEach(option => {
+                if (option.dataset.theme === gameState.theme) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+            
+            // Применение стилей для темы
+            setTheme(gameState.theme);
+        }
+        
+        // Установка темы
+        function setTheme(themeName) {
+            gameState.theme = themeName;
+            
+            // Определение цветов для разных тем
+            const themes = {
+                'dark-red': { 
+                    bodyBg: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)',
+                    headerBg: 'linear-gradient(135deg, #8B0000, #B22222)',
+                    cardColor1: '#4a1c1c', cardColor2: '#5c2727',
+                    headerColor1: '#8B0000', headerColor2: '#B22222',
+                    buttonColor1: '#c62828', buttonColor2: '#b71c1c',
+                    highlightColor: '#ff5252'
+                },
+                'dark-blue': { 
+                    bodyBg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+                    headerBg: 'linear-gradient(135deg, #0d47a1, #1976d2)',
+                    cardColor1: '#1a2a40', cardColor2: '#2a3a60',
+                    headerColor1: '#0d47a1', headerColor2: '#1976d2',
+                    buttonColor1: '#1565c0', buttonColor2: '#0d47a1',
+                    highlightColor: '#64b5f6'
+                },
+                'dark-green': { 
+                    bodyBg: 'linear-gradient(135deg, #00416a, #799f0c, #ffe000)',
+                    headerBg: 'linear-gradient(135deg, #1b5e20, #388e3c)',
+                    cardColor1: '#1e3329', cardColor2: '#2a453a',
+                    headerColor1: '#1b5e20', headerColor2: '#388e3c',
+                    buttonColor1: '#2e7d32', buttonColor2: '#1b5e20',
+                    highlightColor: '#76ff03'
+                },
+                'dark-purple': { 
+                    bodyBg: 'linear-gradient(135deg, #4b1248, #f0c27b, #7b4397)',
+                    headerBg: 'linear-gradient(135deg, #4a148c, #7b1fa2)',
+                    cardColor1: '#2d1b3d', cardColor2: '#3d2b4d',
+                    headerColor1: '#4a148c', headerColor2: '#7b1fa2',
+                    buttonColor1: '#6a1b9a', buttonColor2: '#4a148c',
+                    highlightColor: '#ba68c8'
+                },
+                'dark-yellow': { 
+                    bodyBg: 'linear-gradient(135deg, #3e2723, #ff6f00, #ffd600)',
+                    headerBg: 'linear-gradient(135deg, #e65100, #f57c00)',
+                    cardColor1: '#3e2e1f', cardColor2: '#4e3e2f',
+                    headerColor1: '#e65100', headerColor2: '#f57c00',
+                    buttonColor1: '#f57f17', buttonColor2: '#e65100',
+                    highlightColor: '#ffd54f'
+                },
+                'light-red': { 
+                    bodyBg: 'linear-gradient(135deg, #ffcdd2, #ef9a9a)',
+                    headerBg: 'linear-gradient(135deg, #ff5252, #ff867f)',
+                    cardColor1: '#f5e6e7', cardColor2: '#f0d6d7',
+                    headerColor1: '#ff5252', headerColor2: '#ff867f',
+                    buttonColor1: '#ff8a80', buttonColor2: '#ff5252',
+                    highlightColor: '#ff8a80'
+                },
+                'light-yellow': { 
+                    bodyBg: 'linear-gradient(135deg, #fff9c4, #fff59d)',
+                    headerBg: 'linear-gradient(135deg, #ffd54f, #ffec78)',
+                    cardColor1: '#f8f5e4', cardColor2: '#f3f0df',
+                    headerColor1: '#ffd54f', headerColor2: '#ffec78',
+                    buttonColor1: '#ffff8d', buttonColor2: '#ffd54f',
+                    highlightColor: '#ffff8d'
+                },
+                'light-lime': { 
+                    bodyBg: 'linear-gradient(135deg, #f1f8e9, #dcedc8)',
+                    headerBg: 'linear-gradient(135deg, #76ff03, #a7ff56)',
+                    cardColor1: '#f0f5e8', cardColor2: '#ebf0e3',
+                    headerColor1: '#76ff03', headerColor2: '#a7ff56',
+                    buttonColor1: '#ccff90', buttonColor2: '#76ff03',
+                    highlightColor: '#ccff90'
+                },
+                'light-blue': { 
+                    bodyBg: 'linear-gradient(135deg, #e3f2fd, #bbdefb)',
+                    headerBg: 'linear-gradient(135deg, #64b5f6, #90caf9)',
+                    cardColor1: '#e8f2f9', cardColor2: '#e3edf4',
+                    headerColor1: '#64b5f6', headerColor2: '#90caf9',
+                    buttonColor1: '#90caf9', buttonColor2: '#64b5f6',
+                    highlightColor: '#90caf9'
+                },
+                'light-pink': { 
+                    bodyBg: 'linear-gradient(135deg, #fce4ec, #f8bbd0)',
+                    headerBg: 'linear-gradient(135deg, #f48fb1, #f8bbd0)',
+                    cardColor1: '#f9eaf0', cardColor2: '#f4e0e6',
+                    headerColor1: '#f48fb1', headerColor2: '#f8bbd0',
+                    buttonColor1: '#f8bbd0', buttonColor2: '#f48fb1',
+                    highlightColor: '#f8bbd0'
+                }
+            };
+            
+            const theme = themes[themeName] || themes['dark-red'];
+            
+            // Применяем цвета
+            document.body.style.background = theme.bodyBg;
+            document.body.setAttribute('data-theme', themeName);
+            
+            const header = document.querySelector('.header');
+            header.style.background = theme.headerBg;
+            
+            // Устанавливаем CSS переменные
+            document.documentElement.style.setProperty('--card-color1', theme.cardColor1);
+            document.documentElement.style.setProperty('--card-color2', theme.cardColor2);
+            document.documentElement.style.setProperty('--header-color1', theme.headerColor1);
+            document.documentElement.style.setProperty('--header-color2', theme.headerColor2);
+            document.documentElement.style.setProperty('--button-color1', theme.buttonColor1);
+            document.documentElement.style.setProperty('--button-color2', theme.buttonColor2);
+            document.documentElement.style.setProperty('--highlight-color', theme.highlightColor);
+        }
+        
+        // Игра "Три в ряд"
+        function setupMatch3Game() {
+            // Создаем игровое поле
+            for (let i = 0; i < 64; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'match3-cell';
+                cell.dataset.index = i;
+                
+                // Случайное животное
+                const randomAnimal = gameImages.animals[
+                    Math.floor(Math.random() * gameImages.animals.length)
+                ];
+                
+                cell.innerHTML = `<img src="${randomAnimal}" alt="Animal">`;
+                match3GridEl.appendChild(cell);
+            }
+
+            match3StartBtn.addEventListener('click', () => {
+                if (gameState.games.match3.cooldown > 0) return;
+                
+                gameState.games.match3.active = true;
+                gameState.games.match3.score = 0;
+                match3StartBtn.disabled = true;
+                
+                // Запуск таймера игры
+                let timeLeft = 60;
+                const gameTimer = setInterval(() => {
+                    timeLeft--;
+                    match3TimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(gameTimer);
+                        endMatch3Game();
+                    }
+                }, 1000);
+            });
+
+            function endMatch3Game() {
+                gameState.games.match3.active = false;
+                match3StartBtn.disabled = false;
+                
+                // Начисление монет
+                const coinsEarned = Math.floor(gameState.games.match3.score * 2);
+                gameState.coins += coinsEarned;
+                showNotification(`Вы заработали ${coinsEarned} монет в игре "Три в ряд"!`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games.match3.cooldown = 180;
+                match3CooldownEl.style.display = 'flex';
+            }
+        }
+        
+        // Игра "Найди пару"
+        function setupMemoryGame() {
+            let cards = [];
+            let flippedCards = [];
+            let matchedPairs = 0;
+
+            // Создаем пары карт
+            function createCards() {
+                memoryGridEl.innerHTML = '';
+                cards = [];
+                flippedCards = [];
+                matchedPairs = 0;
+                
+                // Выбираем 8 уникальных животных
+                const selectedAnimals = [...gameImages.animals]
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 8);
+                
+                // Создаем пары
+                const cardPairs = [...selectedAnimals, ...selectedAnimals]
+                    .sort(() => 0.5 - Math.random());
+                
+                cardPairs.forEach((animal, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'memory-card';
+                    card.dataset.index = index;
+                    card.dataset.animal = animal;
+                    
+                    card.innerHTML = `
+                        <div class="memory-card-face memory-card-front">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <div class="memory-card-face memory-card-back">
+                            <img src="${animal}" alt="Animal">
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', () => {
+                        if (!gameState.games.memory.active || 
+                            flippedCards.length >= 2 || 
+                            card.classList.contains('flipped') || 
+                            card.classList.contains('matched')) return;
+                            
+                        flipCard(card);
+                    });
+                    
+                    memoryGridEl.appendChild(card);
+                    cards.push(card);
+                });
+            }
+
+            function flipCard(card) {
+                card.classList.add('flipped');
+                flippedCards.push(card);
+                
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 500);
+                }
+            }
+
+            function checkMatch() {
+                const [card1, card2] = flippedCards;
+                const isMatch = card1.dataset.animal === card2.dataset.animal;
+                
+                if (isMatch) {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    matchedPairs++;
+                    gameState.games.memory.score++;
+                    
+                    if (matchedPairs === 8) {
+                        // Все пары найдены
+                        endMemoryGame(true);
+                    }
+                } else {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                }
+                
+                flippedCards = [];
+            }
+
+            memoryStartBtn.addEventListener('click', () => {
+                if (gameState.games.memory.cooldown > 0) return;
+                
+                createCards();
+                gameState.games.memory.active = true;
+                gameState.games.memory.score = 0;
+                memoryStartBtn.disabled = true;
+                
+                // Запуск таймера игры
+                let timeLeft = 60;
+                memoryTimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                
+                const gameTimer = setInterval(() => {
+                    timeLeft--;
+                    memoryTimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(gameTimer);
+                        endMemoryGame(false);
+                    }
+                }, 1000);
+            });
+
+            function endMemoryGame(isCompleted) {
+                gameState.games.memory.active = false;
+                memoryStartBtn.disabled = false;
+                
+                // Начисление монет
+                let coinsEarned = gameState.games.memory.score * 5;
+                if (isCompleted) coinsEarned += 20; // Бонус за завершение
+                
+                gameState.coins += coinsEarned;
+                showNotification(`Вы заработали ${coinsEarned} монет в игре "Найди пару"!`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games.memory.cooldown = 180;
+                memoryCooldownEl.style.display = 'flex';
+            }
+        }
+
+        // Игра "Лови животных"
+        function setupCatchGame() {
+            let targets = [];
+            let gameTimer;
+
+            function createTarget(isAnimal) {
+                const target = document.createElement('div');
+                target.className = 'catch-target float-animation';
+                
+                const size = 50 + Math.random() * 30;
+                target.style.width = `${size}px`;
+                target.style.height = `${size}px`;
+                
+                // Позиция
+                const maxX = catchAreaEl.offsetWidth - size;
+                const maxY = catchAreaEl.offsetHeight - size;
+                target.style.left = `${Math.random() * maxX}px`;
+                target.style.top = `${Math.random() * maxY}px`;
+                
+                // Выбор изображения
+                if (isAnimal) {
+                    const animal = gameImages.animals[
+                        Math.floor(Math.random() * gameImages.animals.length)
+                    ];
+                    target.innerHTML = `<img src="${animal}" alt="Animal">`;
+                    target.dataset.type = 'animal';
+                } else {
+                    const visitor = gameImages.visitors[
+                        Math.floor(Math.random() * gameImages.visitors.length)
+                    ];
+                    target.innerHTML = `<img src="${visitor}" alt="Visitor">`;
+                    target.dataset.type = 'visitor';
+                }
+                
+                // Обработчик клика
+                target.addEventListener('click', () => {
+                    if (target.dataset.type === 'animal') {
+                        gameState.games.catch.score++;
+                        catchScoreEl.textContent = gameState.games.catch.score;
+                        gameState.coins += 1;
+                        showNotification('+1 монета за животное!');
+                    } else {
+                        gameState.coins = Math.max(0, gameState.coins - 10);
+                        showNotification('-10 монет за посетителя!', 'error');
+                    }
+                    
+                    target.remove();
+                    updateUI();
+                });
+                
+                // Удаление через время
+                setTimeout(() => {
+                    if (target.parentNode) {
+                        target.remove();
+                    }
+                }, 2000 + Math.random() * 2000);
+                
+                catchAreaEl.appendChild(target);
+                targets.push(target);
+            }
+
+            catchStartBtn.addEventListener('click', () => {
+                if (gameState.games.catch.cooldown > 0) return;
+                
+                // Очистка области
+                catchAreaEl.innerHTML = '';
+                targets = [];
+                gameState.games.catch.score = 0;
+                catchScoreEl.textContent = '0';
+                
+                gameState.games.catch.active = true;
+                catchStartBtn.disabled = true;
+                
+                // Запуск создания целей
+                const targetInterval = setInterval(() => {
+                    if (!gameState.games.catch.active) {
+                        clearInterval(targetInterval);
+                        return;
+                    }
+                    
+                    // 80% животных, 20% посетителей
+                    createTarget(Math.random() < 0.8);
+                }, 800);
+                
+                // Запуск таймера игры
+                let timeLeft = 60;
+                catchTimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                
+                gameTimer = setInterval(() => {
+                    timeLeft--;
+                    catchTimerEl.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(gameTimer);
+                        clearInterval(targetInterval);
+                        endCatchGame();
+                    }
+                }, 1000);
+            });
+
+            function endCatchGame() {
+                gameState.games.catch.active = false;
+                catchStartBtn.disabled = false;
+                catchAreaEl.innerHTML = '';
+                
+                // Начисление монет
+                const coinsEarned = gameState.games.catch.score;
+                gameState.coins += coinsEarned;
+                showNotification(`Вы заработали ${coinsEarned} монет в игре "Лови животных"!`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games.catch.cooldown = 180;
+                catchCooldownEl.style.display = 'flex';
+            }
+        }
+        
+        // Обновление перезарядки игр
+        function updateGameCooldowns() {
+            // Три в ряд
+            if (gameState.games.match3.cooldown > 0) {
+                gameState.games.match3.cooldown--;
+                match3CooldownTimer.textContent = `00:${gameState.games.match3.cooldown.toString().padStart(2, '0')}`;
+                
+                if (gameState.games.match3.cooldown <= 0) {
+                    match3CooldownEl.style.display = 'none';
+                }
+            }
+            
+            // Найди пару
+            if (gameState.games.memory.cooldown > 0) {
+                gameState.games.memory.cooldown--;
+                memoryCooldownTimer.textContent = `00:${gameState.games.memory.cooldown.toString().padStart(2, '0')}`;
+                
+                if (gameState.games.memory.cooldown <= 0) {
+                    memoryCooldownEl.style.display = 'none';
+                }
+            }
+            
+            // Лови животных
+            if (gameState.games.catch.cooldown > 0) {
+                gameState.games.catch.cooldown--;
+                catchCooldownTimer.textContent = `00:${gameState.games.catch.cooldown.toString().padStart(2, '0')}`;
+                
+                if (gameState.games.catch.cooldown <= 0) {
+                    catchCooldownEl.style.display = 'none';
+                }
+            }
+        }
+        
+        // Таймер неактивности
+        function resetInactivityTimer() {
+            gameState.lastActiveTime = Date.now();
+        }
+        
+        // Запуск игры при загрузке страницы
+        window.addEventListener('DOMContentLoaded', initGame);
+        window.addEventListener('beforeunload', saveGame);
+    </script>
+</body>
+</html>
 
