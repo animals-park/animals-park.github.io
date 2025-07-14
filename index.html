@@ -15,9 +15,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #ff0000, #ff9900, #00ff00, #0099ff, #ff00ff);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             color: #333;
             display: flex;
             justify-content: center;
@@ -26,17 +24,11 @@
             transition: background 0.5s ease;
         }
         
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
         .telegram-app {
             width: 100%;
             height: 100vh;
             background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -51,15 +43,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle at center, rgba(173, 216, 230, 0.15) 0%, rgba(255,255,255,0) 70%);
             pointer-events: none;
             z-index: 1;
-            animation: softPulse 8s infinite alternate;
+            animation: neonPulse 3s infinite alternate;
         }
         
-        @keyframes softPulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.6; }
+        @keyframes neonPulse {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.4; }
         }
         
         .glow-effect {
@@ -68,16 +60,16 @@
             left: 50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            background: radial-gradient(circle, rgba(173, 216, 230, 0.2) 0%, rgba(173, 216, 230, 0) 70%);
             transform: translate(-50%, -50%);
-            animation: glowPulse 4s infinite alternate;
+            animation: glowPulse 6s infinite alternate;
             pointer-events: none;
             z-index: 1;
         }
         
         @keyframes glowPulse {
-            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
-            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2); }
+            0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); }
         }
         
         .header {
@@ -614,18 +606,18 @@
         }
         
         /* Темные темы */
-        .dark-red { background: linear-gradient(135deg, #c62828, #b71c1c); }
-        .dark-blue { background: linear-gradient(135deg, #1565c0, #0d47a1); }
-        .dark-green { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
-        .dark-purple { background: linear-gradient(135deg, #6a1b9a, #4a148c); }
-        .dark-yellow { background: linear-gradient(135deg, #f57f17, #e65100); }
+        .dark-red { background: linear-gradient(135deg, #ff6b6b, #ff8e8e); }
+        .dark-blue { background: linear-gradient(135deg, #64b5f6, #90caf9); }
+        .dark-green { background: linear-gradient(135deg, #81c784, #a5d6a7); }
+        .dark-purple { background: linear-gradient(135deg, #ba68c8, #ce93d8); }
+        .dark-yellow { background: linear-gradient(135deg, #ffd54f, #ffec78); }
         
         /* Светлые темы */
-        .light-red { background: linear-gradient(135deg, #ff8a80, #ff5252); }
-        .light-yellow { background: linear-gradient(135deg, #ffff8d, #ffd54f); }
-        .light-lime { background: linear-gradient(135deg, #ccff90, #76ff03); }
-        .light-blue { background: linear-gradient(135deg, #90caf9, #64b5f6); }
-        .light-pink { background: linear-gradient(135deg, #f8bbd0, #f48fb1); }
+        .light-red { background: linear-gradient(135deg, #ffcdd2, #ffebee); }
+        .light-yellow { background: linear-gradient(135deg, #fff9c4, #fffde7); }
+        .light-lime { background: linear-gradient(135deg, #e8f5e9, #f1f8e9); }
+        .light-blue { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+        .light-pink { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
         
         .energy-bar {
             height: 5px;
@@ -670,6 +662,19 @@
         body[data-theme^="light"] .visitors,
         body[data-theme^="light"] .stat-box {
             background: rgba(240, 240, 245, 0.9);
+        }
+        
+        /* Темные темы для текста */
+        body[data-theme^="dark"] .animal-name,
+        body[data-theme^="dark"] .animal-price,
+        body[data-theme^="dark"] .food-name,
+        body[data-theme^="dark"] .food-price,
+        body[data-theme^="dark"] .stat-label,
+        body[data-theme^="dark"] .stat-value,
+        body[data-theme^="dark"] .animal-item-count,
+        body[data-theme^="dark"] .section-title,
+        body[data-theme^="dark"] .visitors p {
+            color: #fff !important;
         }
         
         /* Мобильная адаптация */
@@ -1380,11 +1385,21 @@
         
         // Рассчитать общее количество животных
         function getTotalAnimals() {
-            return gameState.animals.reduce((total, animal) => total + animal.owned, 0);
+            return gameState.animals.reduce((total, animal) => total + (animal.owned || 0), 0);
         }
         
         // Рассчитать цену с учетом инфляции
         function calculatePrice(basePrice, ownedCount, totalAnimals) {
+            // Преобразуем в числа для безопасности
+            basePrice = Number(basePrice);
+            ownedCount = Number(ownedCount);
+            totalAnimals = Number(totalAnimals);
+            
+            // Проверка на NaN
+            if (isNaN(basePrice)) basePrice = 100;
+            if (isNaN(ownedCount)) ownedCount = 0;
+            if (isNaN(totalAnimals)) totalAnimals = 0;
+            
             const inflation = 1 + (totalAnimals * 0.005);
             return Math.floor(basePrice * Math.pow(1.1, ownedCount) * inflation);
         }
@@ -1880,82 +1895,82 @@
             // Определение цветов для разных тем
             const themes = {
                 'dark-red': { 
-                    bodyBg: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)',
-                    headerBg: 'linear-gradient(135deg, #8B0000, #B22222)',
-                    cardColor1: '#4a1c1c', cardColor2: '#5c2727',
-                    headerColor1: '#8B0000', headerColor2: '#B22222',
-                    buttonColor1: '#c62828', buttonColor2: '#b71c1c',
+                    bodyBg: 'linear-gradient(135deg, #ffd3d3, #ffb6b6)',
+                    headerBg: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
+                    cardColor1: '#f8d7da', cardColor2: '#f5c6cb',
+                    headerColor1: '#ff6b6b', headerColor2: '#ff8e8e',
+                    buttonColor1: '#dc3545', buttonColor2: '#bb2d3b',
                     highlightColor: '#ff5252'
                 },
                 'dark-blue': { 
-                    bodyBg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
-                    headerBg: 'linear-gradient(135deg, #0d47a1, #1976d2)',
-                    cardColor1: '#1a2a40', cardColor2: '#2a3a60',
-                    headerColor1: '#0d47a1', headerColor2: '#1976d2',
-                    buttonColor1: '#1565c0', buttonColor2: '#0d47a1',
+                    bodyBg: 'linear-gradient(135deg, #d0ebff, #a5d8ff)',
+                    headerBg: 'linear-gradient(135deg, #64b5f6, #90caf9)',
+                    cardColor1: '#cfe2ff', cardColor2: '#b9d3fe',
+                    headerColor1: '#64b5f6', headerColor2: '#90caf9',
+                    buttonColor1: '#0d6efd', buttonColor2: '#0b5ed7',
                     highlightColor: '#64b5f6'
                 },
                 'dark-green': { 
-                    bodyBg: 'linear-gradient(135deg, #00416a, #799f0c, #ffe000)',
-                    headerBg: 'linear-gradient(135deg, #1b5e20, #388e3c)',
-                    cardColor1: '#1e3329', cardColor2: '#2a453a',
-                    headerColor1: '#1b5e20', headerColor2: '#388e3c',
-                    buttonColor1: '#2e7d32', buttonColor2: '#1b5e20',
+                    bodyBg: 'linear-gradient(135deg, #d1e7dd, #a3cfbb)',
+                    headerBg: 'linear-gradient(135deg, #81c784, #a5d6a7)',
+                    cardColor1: '#d1e7dd', cardColor2: '#bcd0c7',
+                    headerColor1: '#81c784', headerColor2: '#a5d6a7',
+                    buttonColor1: '#198754', buttonColor2: '#157347',
                     highlightColor: '#76ff03'
                 },
                 'dark-purple': { 
-                    bodyBg: 'linear-gradient(135deg, #4b1248, #f0c27b, #7b4397)',
-                    headerBg: 'linear-gradient(135deg, #4a148c, #7b1fa2)',
-                    cardColor1: '#2d1b3d', cardColor2: '#3d2b4d',
-                    headerColor1: '#4a148c', headerColor2: '#7b1fa2',
-                    buttonColor1: '#6a1b9a', buttonColor2: '#4a148c',
+                    bodyBg: 'linear-gradient(135deg, #e2d9f3, #d0c4e9)',
+                    headerBg: 'linear-gradient(135deg, #ba68c8, #ce93d8)',
+                    cardColor1: '#e2d9f3', cardColor2: '#d0c4e9',
+                    headerColor1: '#ba68c8', headerColor2: '#ce93d8',
+                    buttonColor1: '#6f42c1', buttonColor2: '#5a32a3',
                     highlightColor: '#ba68c8'
                 },
                 'dark-yellow': { 
-                    bodyBg: 'linear-gradient(135deg, #3e2723, #ff6f00, #ffd600)',
-                    headerBg: 'linear-gradient(135deg, #e65100, #f57c00)',
-                    cardColor1: '#3e2e1f', cardColor2: '#4e3e2f',
-                    headerColor1: '#e65100', headerColor2: '#f57c00',
-                    buttonColor1: '#f57f17', buttonColor2: '#e65100',
+                    bodyBg: 'linear-gradient(135deg, #fff3cd, #ffe69c)',
+                    headerBg: 'linear-gradient(135deg, #ffd54f, #ffec78)',
+                    cardColor1: '#fff3cd', cardColor2: '#ffe69c',
+                    headerColor1: '#ffd54f', headerColor2: '#ffec78',
+                    buttonColor1: '#ffc107', buttonColor2: '#ffca2c',
                     highlightColor: '#ffd54f'
                 },
                 'light-red': { 
-                    bodyBg: 'linear-gradient(135deg, #ffcdd2, #ef9a9a)',
-                    headerBg: 'linear-gradient(135deg, #ff5252, #ff867f)',
+                    bodyBg: 'linear-gradient(135deg, #ffebee, #ffcdd2)',
+                    headerBg: 'linear-gradient(135deg, #ffcdd2, #ffebee)',
                     cardColor1: '#f5e6e7', cardColor2: '#f0d6d7',
-                    headerColor1: '#ff5252', headerColor2: '#ff867f',
+                    headerColor1: '#ffcdd2', headerColor2: '#ffebee',
                     buttonColor1: '#ff8a80', buttonColor2: '#ff5252',
                     highlightColor: '#ff8a80'
                 },
                 'light-yellow': { 
-                    bodyBg: 'linear-gradient(135deg, #fff9c4, #fff59d)',
-                    headerBg: 'linear-gradient(135deg, #ffd54f, #ffec78)',
+                    bodyBg: 'linear-gradient(135deg, #fffde7, #fff9c4)',
+                    headerBg: 'linear-gradient(135deg, #fff9c4, #fffde7)',
                     cardColor1: '#f8f5e4', cardColor2: '#f3f0df',
-                    headerColor1: '#ffd54f', headerColor2: '#ffec78',
+                    headerColor1: '#fff9c4', headerColor2: '#fffde7',
                     buttonColor1: '#ffff8d', buttonColor2: '#ffd54f',
                     highlightColor: '#ffff8d'
                 },
                 'light-lime': { 
-                    bodyBg: 'linear-gradient(135deg, #f1f8e9, #dcedc8)',
-                    headerBg: 'linear-gradient(135deg, #76ff03, #a7ff56)',
+                    bodyBg: 'linear-gradient(135deg, #f1f8e9, #e8f5e9)',
+                    headerBg: 'linear-gradient(135deg, #e8f5e9, #f1f8e9)',
                     cardColor1: '#f0f5e8', cardColor2: '#ebf0e3',
-                    headerColor1: '#76ff03', headerColor2: '#a7ff56',
+                    headerColor1: '#e8f5e9', headerColor2: '#f1f8e9',
                     buttonColor1: '#ccff90', buttonColor2: '#76ff03',
                     highlightColor: '#ccff90'
                 },
                 'light-blue': { 
                     bodyBg: 'linear-gradient(135deg, #e3f2fd, #bbdefb)',
-                    headerBg: 'linear-gradient(135deg, #64b5f6, #90caf9)',
+                    headerBg: 'linear-gradient(135deg, #bbdefb, #e3f2fd)',
                     cardColor1: '#e8f2f9', cardColor2: '#e3edf4',
-                    headerColor1: '#64b5f6', headerColor2: '#90caf9',
+                    headerColor1: '#bbdefb', headerColor2: '#e3f2fd',
                     buttonColor1: '#90caf9', buttonColor2: '#64b5f6',
                     highlightColor: '#90caf9'
                 },
                 'light-pink': { 
                     bodyBg: 'linear-gradient(135deg, #fce4ec, #f8bbd0)',
-                    headerBg: 'linear-gradient(135deg, #f48fb1, #f8bbd0)',
+                    headerBg: 'linear-gradient(135deg, #f8bbd0, #fce4ec)',
                     cardColor1: '#f9eaf0', cardColor2: '#f4e0e6',
-                    headerColor1: '#f48fb1', headerColor2: '#f8bbd0',
+                    headerColor1: '#f8bbd0', headerColor2: '#fce4ec',
                     buttonColor1: '#f8bbd0', buttonColor2: '#f48fb1',
                     highlightColor: '#f8bbd0'
                 }
@@ -2317,4 +2332,3 @@
     </script>
 </body>
 </html>
-
