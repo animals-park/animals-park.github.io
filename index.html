@@ -245,24 +245,26 @@
         }
         
         .animal-card {
-            background: white;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             z-index: 3;
+            background: linear-gradient(135deg, var(--card-color1), var(--card-color2));
+            transition: all 0.5s ease;
         }
         
         .animal-avatar {
             width: 100%;
-            height: 250px; /* Увеличено в 3 раза */
+            height: 180px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
             overflow: hidden;
             position: relative;
+            background: linear-gradient(135deg, var(--header-color1), var(--header-color2));
+            transition: all 0.5s ease;
         }
         
         .animal-avatar::before {
@@ -272,7 +274,8 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: #0088cc;
+            background: var(--highlight-color);
+            transition: all 0.5s ease;
         }
         
         .animal-avatar img {
@@ -311,6 +314,7 @@
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             overflow: hidden;
+            background: rgba(255, 255, 255, 0.5);
         }
         
         .quantity-btn {
@@ -329,10 +333,11 @@
             font-size: 14px;
             font-weight: 500;
             width: 40px;
+            background: rgba(255, 255, 255, 0.5);
         }
         
         .buy-button {
-            background: linear-gradient(135deg, #00cc88, #00aa66);
+            background: linear-gradient(135deg, var(--button-color1), var(--button-color2));
             color: white;
             border: none;
             border-radius: 8px;
@@ -343,7 +348,7 @@
             width: 100%;
             margin-top: 8px;
             transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(0, 170, 102, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
             z-index: 3;
@@ -357,12 +362,13 @@
         }
         
         .food-card {
-            background: white;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 3;
+            background: linear-gradient(135deg, var(--card-color1), var(--card-color2));
+            transition: all 0.5s ease;
         }
         
         .food-image {
@@ -370,8 +376,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #fff9db, #ffec99);
             overflow: hidden;
+            background: linear-gradient(135deg, var(--header-color1), var(--header-color2));
+            transition: all 0.5s ease;
         }
         
         .food-image img {
@@ -653,16 +660,12 @@
         }
         
         /* Адаптивные цвета слотов */
-        body[data-theme^="dark"] .animal-card,
-        body[data-theme^="dark"] .food-card,
         body[data-theme^="dark"] .my-animals,
         body[data-theme^="dark"] .visitors,
         body[data-theme^="dark"] .stat-box {
-            background: rgba(60, 60, 70, 0.7); /* Сделано светлее */
+            background: rgba(60, 60, 70, 0.7);
         }
         
-        body[data-theme^="light"] .animal-card,
-        body[data-theme^="light"] .food-card,
         body[data-theme^="light"] .my-animals,
         body[data-theme^="light"] .visitors,
         body[data-theme^="light"] .stat-box {
@@ -733,7 +736,7 @@
             }
             
             .animal-avatar {
-                height: 160px; /* Увеличено для мобильных */
+                height: 160px;
             }
             
             .animal-avatar img {
@@ -938,24 +941,24 @@
     <script>
         // Игровые данные
         const animals = [
-            { id: 'cat', name: 'Котёнок', price: 100, income: 1, image: 'cat.gif', owned: 0, food: 0.2 },
-            { id: 'dog', name: 'Щенок', price: 200, income: 3, image: 'dog.gif', owned: 0, food: 0.5 },
-            { id: 'rabbit', name: 'Кролик', price: 300, income: 5, image: 'bunny.gif', owned: 0, food: 0.3 },
-            { id: 'hamster', name: 'Хомяк', price: 500, income: 8, image: 'hamster.gif', owned: 0, food: 0.1 },
-            { id: 'fox', name: 'Лиса', price: 1000, income: 15, image: 'fox.gif', owned: 0, food: 1.0 },
-            { id: 'panda', name: 'Панда', price: 2000, income: 30, image: 'panda.gif', owned: 0, food: 2.0 },
-            { id: 'lion', name: 'Лев', price: 5000, income: 70, image: 'lev.gif', owned: 0, food: 3.0 },
-            { id: 'cow', name: 'Корова', price: 3000, income: 40, image: 'cow.gif', owned: 0, food: 2.5 },
-            { id: 'unicorn', name: 'Единорог', price: 10000, income: 150, image: 'unicorn.gif', owned: 0, food: 4.0 }
+            { id: 'cat', name: 'Котёнок', basePrice: 100, income: 1, image: 'cat.gif', owned: 0, food: 0.2 },
+            { id: 'dog', name: 'Щенок', basePrice: 200, income: 3, image: 'dog.gif', owned: 0, food: 0.5 },
+            { id: 'rabbit', name: 'Кролик', basePrice: 300, income: 5, image: 'bunny.gif', owned: 0, food: 0.3 },
+            { id: 'hamster', name: 'Хомяк', basePrice: 500, income: 8, image: 'hamster.gif', owned: 0, food: 0.1 },
+            { id: 'fox', name: 'Лиса', basePrice: 1000, income: 15, image: 'fox.gif', owned: 0, food: 1.0 },
+            { id: 'panda', name: 'Панда', basePrice: 2000, income: 30, image: 'panda.gif', owned: 0, food: 2.0 },
+            { id: 'lion', name: 'Лев', basePrice: 5000, income: 70, image: 'lev.gif', owned: 0, food: 3.0 },
+            { id: 'cow', name: 'Корова', basePrice: 3000, income: 40, image: 'cow.gif', owned: 0, food: 2.5 },
+            { id: 'unicorn', name: 'Единорог', basePrice: 10000, income: 150, image: 'unicorn.gif', owned: 0, food: 4.0 }
         ];
         
         const foods = [
-            { id: 'carrot', name: 'Морковь', price: 20, amount: 10, image: 'morkov.gif', effect: 'Накормите кроликов' },
-            { id: 'meat', name: 'Мясо', price: 50, amount: 5, image: 'meat.gif', effect: 'Для хищных животных' },
-            { id: 'fish', name: 'Рыба', price: 40, amount: 8, image: 'fish.gif', effect: 'Кошки будут довольны' },
-            { id: 'hay', name: 'Сено', price: 30, amount: 15, image: 'seno.gif', effect: 'Для травоядных животных' },
-            { id: 'fruit', name: 'Фрукты', price: 60, amount: 12, image: 'banana.gif', effect: 'Витамины для всех' },
-            { id: 'premium', name: 'Премиум корм', price: 150, amount: 30, image: 'premi.gif', effect: '+20% к доходу на 1 час' }
+            { id: 'carrot', name: 'Морковь', basePrice: 20, amount: 10, image: 'morkov.gif', effect: 'Накормите кроликов' },
+            { id: 'meat', name: 'Мясо', basePrice: 50, amount: 5, image: 'meat.gif', effect: 'Для хищных животных' },
+            { id: 'fish', name: 'Рыба', basePrice: 40, amount: 8, image: 'fish.gif', effect: 'Кошки будут довольны' },
+            { id: 'hay', name: 'Сено', basePrice: 30, amount: 15, image: 'seno.gif', effect: 'Для травоядных животных' },
+            { id: 'fruit', name: 'Фрукты', basePrice: 60, amount: 12, image: 'banana.gif', effect: 'Витамины для всех' },
+            { id: 'premium', name: 'Премиум корм', basePrice: 150, amount: 30, image: 'premi.gif', effect: '+20% к доходу на 1 час' }
         ];
         
         // Состояние игры
@@ -966,6 +969,7 @@
             maxEnergy: 100,
             lastUpdate: Date.now(),
             animals: JSON.parse(JSON.stringify(animals)),
+            foods: JSON.parse(JSON.stringify(foods)),
             visitors: 0,
             totalVisitors: 0,
             income: 0,
@@ -1016,6 +1020,17 @@
             setInterval(updateFoodConsumption, 5000);
             setInterval(restoreEnergy, 10000);
             setInterval(saveGame, 10000);
+        }
+        
+        // Рассчитать общее количество животных
+        function getTotalAnimals() {
+            return gameState.animals.reduce((total, animal) => total + animal.owned, 0);
+        }
+        
+        // Рассчитать цену с учетом инфляции
+        function calculatePrice(basePrice, ownedCount, totalAnimals) {
+            const inflation = 1 + (totalAnimals * 0.005);
+            return Math.floor(basePrice * Math.pow(1.1, ownedCount) * inflation);
         }
         
         // Настройка обработчиков событий
@@ -1130,8 +1145,11 @@
         function renderAnimals() {
             animalsGridEl.innerHTML = '';
             
+            const totalAnimals = getTotalAnimals();
+            
             gameState.animals.forEach(animal => {
-                const canBuy = gameState.coins >= animal.price;
+                const currentPrice = calculatePrice(animal.basePrice, animal.owned, totalAnimals);
+                const canBuy = gameState.coins >= currentPrice;
                 
                 const animalCard = document.createElement('div');
                 animalCard.className = 'animal-card';
@@ -1142,7 +1160,7 @@
                     <div class="animal-info">
                         <div class="animal-name">
                             ${animal.name}
-                            <span class="animal-price" data-id="${animal.id}">${animal.price} <i class="fas fa-coins"></i></span>
+                            <span class="animal-price" data-id="${animal.id}">${currentPrice} <i class="fas fa-coins"></i></span>
                         </div>
                         <div style="font-size: 12px; color: #777; margin-bottom: 8px;">
                             Доход: ${animal.income} мон/животное | Еда: ${animal.food}/мин
@@ -1196,8 +1214,8 @@
         function renderFood() {
             foodGridEl.innerHTML = '';
             
-            foods.forEach(food => {
-                const canBuy = gameState.coins >= food.price;
+            gameState.foods.forEach(food => {
+                const canBuy = gameState.coins >= food.basePrice;
                 
                 const foodCard = document.createElement('div');
                 foodCard.className = 'food-card';
@@ -1207,7 +1225,7 @@
                     </div>
                     <div class="food-info">
                         <div class="food-name">${food.name}</div>
-                        <div class="food-price">${food.price} <i class="fas fa-coins"></i></div>
+                        <div class="food-price">${food.basePrice} <i class="fas fa-coins"></i></div>
                         <div style="font-size: 12px; color: #777;">
                             Количество: ${food.amount} ед.
                         </div>
@@ -1285,15 +1303,18 @@
         
         // Обновление состояния кнопок покупки
         function updateBuyButtons() {
+            const totalAnimals = getTotalAnimals();
+            
             document.querySelectorAll('.buy-button').forEach(button => {
                 const itemId = button.dataset.id;
                 const animal = gameState.animals.find(a => a.id === itemId);
-                const food = foods.find(f => f.id === itemId);
+                const food = gameState.foods.find(f => f.id === itemId);
                 
                 if (animal) {
-                    button.disabled = gameState.coins < animal.price;
+                    const price = calculatePrice(animal.basePrice, animal.owned, totalAnimals);
+                    button.disabled = gameState.coins < price;
                 } else if (food) {
-                    button.disabled = gameState.coins < food.price;
+                    button.disabled = gameState.coins < food.basePrice;
                 }
             });
         }
@@ -1301,7 +1322,9 @@
         // Покупка животного
         function buyAnimal(animalId, quantity) {
             const animal = gameState.animals.find(a => a.id === animalId);
-            const totalPrice = animal.price * quantity;
+            const totalAnimals = getTotalAnimals();
+            const currentPrice = calculatePrice(animal.basePrice, animal.owned, totalAnimals);
+            const totalPrice = currentPrice * quantity;
             
             if (animal && gameState.coins >= totalPrice) {
                 gameState.coins -= totalPrice;
@@ -1312,36 +1335,20 @@
                 
                 showNotification(`Вы купили ${quantity} ${animal.name.toLowerCase()}!`);
                 
-                // Увеличиваем цену для следующей покупки
-                animal.price = Math.floor(animal.price * 1.1);
-                
-                // Обновляем цену без перезагрузки
-                updateAnimalPrices(animalId);
-                
+                // Обновляем интерфейс
                 updateUI();
+                renderAnimals();
             } else {
                 showNotification(`Недостаточно монет для покупки!`, 'error');
             }
         }
         
-        // Обновление цен животных
-        function updateAnimalPrices(animalId) {
-            const priceElements = document.querySelectorAll(
-                `.animal-price[data-id="${animalId}"]`
-            );
-            
-            priceElements.forEach(el => {
-                const animal = gameState.animals.find(a => a.id === animalId);
-                el.innerHTML = `${animal.price} <i class="fas fa-coins"></i>`;
-            });
-        }
-        
         // Покупка еды
         function buyFood(foodId) {
-            const food = foods.find(f => f.id === foodId);
+            const food = gameState.foods.find(f => f.id === foodId);
             
-            if (food && gameState.coins >= food.price) {
-                gameState.coins -= food.price;
+            if (food && gameState.coins >= food.basePrice) {
+                gameState.coins -= food.basePrice;
                 gameState.food += food.amount;
                 
                 showNotification(`Вы купили ${food.name}!`);
@@ -1435,6 +1442,7 @@
                 energy: gameState.energy,
                 maxEnergy: gameState.maxEnergy,
                 animals: gameState.animals,
+                foods: gameState.foods,
                 visitors: gameState.visitors,
                 totalVisitors: gameState.totalVisitors,
                 lastUpdate: Date.now(),
@@ -1455,6 +1463,7 @@
                     gameState.energy = parsedData.energy || 100;
                     gameState.maxEnergy = parsedData.maxEnergy || 100;
                     gameState.animals = parsedData.animals || JSON.parse(JSON.stringify(animals));
+                    gameState.foods = parsedData.foods || JSON.parse(JSON.stringify(foods));
                     gameState.visitors = parsedData.visitors || 0;
                     gameState.totalVisitors = parsedData.totalVisitors || 0;
                     gameState.lastUpdate = parsedData.lastUpdate || Date.now();
@@ -1509,61 +1518,102 @@
                 'dark-red': { 
                     bodyBg: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)',
                     headerBg: 'linear-gradient(135deg, #8B0000, #B22222)',
-                    cardBg: '#2c3e50'
+                    cardColor1: '#4a1c1c', cardColor2: '#5c2727',
+                    headerColor1: '#8B0000', headerColor2: '#B22222',
+                    buttonColor1: '#c62828', buttonColor2: '#b71c1c',
+                    highlightColor: '#ff5252'
                 },
                 'dark-blue': { 
                     bodyBg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
                     headerBg: 'linear-gradient(135deg, #0d47a1, #1976d2)',
-                    cardBg: '#1e2a38'
+                    cardColor1: '#1a2a40', cardColor2: '#2a3a60',
+                    headerColor1: '#0d47a1', headerColor2: '#1976d2',
+                    buttonColor1: '#1565c0', buttonColor2: '#0d47a1',
+                    highlightColor: '#64b5f6'
                 },
                 'dark-green': { 
                     bodyBg: 'linear-gradient(135deg, #00416a, #799f0c, #ffe000)',
                     headerBg: 'linear-gradient(135deg, #1b5e20, #388e3c)',
-                    cardBg: '#1e3329'
+                    cardColor1: '#1e3329', cardColor2: '#2a453a',
+                    headerColor1: '#1b5e20', headerColor2: '#388e3c',
+                    buttonColor1: '#2e7d32', buttonColor2: '#1b5e20',
+                    highlightColor: '#76ff03'
                 },
                 'dark-purple': { 
                     bodyBg: 'linear-gradient(135deg, #4b1248, #f0c27b, #7b4397)',
                     headerBg: 'linear-gradient(135deg, #4a148c, #7b1fa2)',
-                    cardBg: '#2d1b3d'
+                    cardColor1: '#2d1b3d', cardColor2: '#3d2b4d',
+                    headerColor1: '#4a148c', headerColor2: '#7b1fa2',
+                    buttonColor1: '#6a1b9a', buttonColor2: '#4a148c',
+                    highlightColor: '#ba68c8'
                 },
                 'dark-yellow': { 
                     bodyBg: 'linear-gradient(135deg, #3e2723, #ff6f00, #ffd600)',
                     headerBg: 'linear-gradient(135deg, #e65100, #f57c00)',
-                    cardBg: '#3e2e1f'
+                    cardColor1: '#3e2e1f', cardColor2: '#4e3e2f',
+                    headerColor1: '#e65100', headerColor2: '#f57c00',
+                    buttonColor1: '#f57f17', buttonColor2: '#e65100',
+                    highlightColor: '#ffd54f'
                 },
                 'light-red': { 
                     bodyBg: 'linear-gradient(135deg, #ffcdd2, #ef9a9a)',
                     headerBg: 'linear-gradient(135deg, #ff5252, #ff867f)',
-                    cardBg: '#f5e6e7'
+                    cardColor1: '#f5e6e7', cardColor2: '#f0d6d7',
+                    headerColor1: '#ff5252', headerColor2: '#ff867f',
+                    buttonColor1: '#ff8a80', buttonColor2: '#ff5252',
+                    highlightColor: '#ff8a80'
                 },
                 'light-yellow': { 
                     bodyBg: 'linear-gradient(135deg, #fff9c4, #fff59d)',
                     headerBg: 'linear-gradient(135deg, #ffd54f, #ffec78)',
-                    cardBg: '#f8f5e4'
+                    cardColor1: '#f8f5e4', cardColor2: '#f3f0df',
+                    headerColor1: '#ffd54f', headerColor2: '#ffec78',
+                    buttonColor1: '#ffff8d', buttonColor2: '#ffd54f',
+                    highlightColor: '#ffff8d'
                 },
                 'light-lime': { 
                     bodyBg: 'linear-gradient(135deg, #f1f8e9, #dcedc8)',
                     headerBg: 'linear-gradient(135deg, #76ff03, #a7ff56)',
-                    cardBg: '#f0f5e8'
+                    cardColor1: '#f0f5e8', cardColor2: '#ebf0e3',
+                    headerColor1: '#76ff03', headerColor2: '#a7ff56',
+                    buttonColor1: '#ccff90', buttonColor2: '#76ff03',
+                    highlightColor: '#ccff90'
                 },
                 'light-blue': { 
                     bodyBg: 'linear-gradient(135deg, #e3f2fd, #bbdefb)',
                     headerBg: 'linear-gradient(135deg, #64b5f6, #90caf9)',
-                    cardBg: '#e8f2f9'
+                    cardColor1: '#e8f2f9', cardColor2: '#e3edf4',
+                    headerColor1: '#64b5f6', headerColor2: '#90caf9',
+                    buttonColor1: '#90caf9', buttonColor2: '#64b5f6',
+                    highlightColor: '#90caf9'
                 },
                 'light-pink': { 
                     bodyBg: 'linear-gradient(135deg, #fce4ec, #f8bbd0)',
                     headerBg: 'linear-gradient(135deg, #f48fb1, #f8bbd0)',
-                    cardBg: '#f9eaf0'
+                    cardColor1: '#f9eaf0', cardColor2: '#f4e0e6',
+                    headerColor1: '#f48fb1', headerColor2: '#f8bbd0',
+                    buttonColor1: '#f8bbd0', buttonColor2: '#f48fb1',
+                    highlightColor: '#f8bbd0'
                 }
             };
             
             const theme = themes[themeName] || themes['dark-red'];
+            
+            // Применяем цвета
             document.body.style.background = theme.bodyBg;
             document.body.setAttribute('data-theme', themeName);
             
             const header = document.querySelector('.header');
             header.style.background = theme.headerBg;
+            
+            // Устанавливаем CSS переменные
+            document.documentElement.style.setProperty('--card-color1', theme.cardColor1);
+            document.documentElement.style.setProperty('--card-color2', theme.cardColor2);
+            document.documentElement.style.setProperty('--header-color1', theme.headerColor1);
+            document.documentElement.style.setProperty('--header-color2', theme.headerColor2);
+            document.documentElement.style.setProperty('--button-color1', theme.buttonColor1);
+            document.documentElement.style.setProperty('--button-color2', theme.buttonColor2);
+            document.documentElement.style.setProperty('--highlight-color', theme.highlightColor);
         }
         
         // Запуск игры при загрузке страницы
