@@ -903,7 +903,7 @@
             margin: 10px 0;
             position: relative;
             overflow: hidden;
-            height: 450px; /* Увеличили высоту */
+            height: 450px;
         }
         
         .suika-container {
@@ -1097,8 +1097,8 @@
         /* Стили для Тетриса */
         .tetris-container {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-template-rows: repeat(20, 1fr);
+            grid-template-columns: repeat(15, 1fr); /* 15x15 блоков */
+            grid-template-rows: repeat(15, 1fr);
             gap: 1px;
             width: 100%;
             height: 400px;
@@ -1268,16 +1268,16 @@
         /* Стили для игры Парные карточки */
         .memory-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(6, 1fr); /* Сетка 6x6 */
+            gap: 6px; /* Уменьшен зазор */
             margin: 10px auto;
-            max-width: 500px;
+            max-width: 600px;
         }
         
         .memory-card {
             aspect-ratio: 1/1;
             background: linear-gradient(135deg, #64b5f6, #90caf9);
-            border-radius: 10px;
+            border-radius: 8px; /* Уменьшен радиус */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1285,7 +1285,7 @@
             transform-style: preserve-3d;
             transition: transform 0.6s;
             position: relative;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
         
         .memory-card.flipped {
@@ -1311,7 +1311,7 @@
         
         .memory-card .back {
             transform: rotateY(180deg);
-            padding: 10px;
+            padding: 5px; /* Уменьшен отступ */
         }
         
         .memory-card .back img {
@@ -1492,7 +1492,7 @@
                     <div class="game-board">
                         <div class="memory-stats">
                             <div class="memory-moves">Ходы: <span id="memory-moves">0</span></div>
-                            <div class="memory-pairs">Пары: <span id="memory-pairs">0</span>/8</div>
+                            <div class="memory-pairs">Пары: <span id="memory-pairs">0</span>/18</div>
                         </div>
                         <div class="memory-grid" id="memory-grid">
                             <!-- Карточки будут добавлены через JS -->
@@ -1628,16 +1628,18 @@
             { id: 'premium', name: 'Премиум корм', basePrice: 150, amount: 30, image: 'premi.gif', effect: '+20% к доходу на 1 час' }
         ];
 
-        // Гифки для игр
+        // Гифки для игр (все доступные изображения)
         const gameImages = {
-            animals: [
-                'cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif',
-                'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif'
-            ],
+            animals: animals.map(a => a.image),
+            food: foods.map(f => f.image),
             visitors: ['visitor1.gif', 'visitor2.gif', 'visitor3.gif'],
-            suika: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif', 'unicorn.gif'],
-            tetris: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif'],
-            memory: ['cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif']
+            suika: animals.map(a => a.image),
+            tetris: [...animals.map(a => a.image), ...foods.map(f => f.image)],
+            memory: [
+                ...animals.map(a => a.image),
+                ...foods.map(f => f.image),
+                'visitor1.gif', 'visitor2.gif', 'visitor3.gif'
+            ]
         };
         
         // Промокоды
@@ -2273,7 +2275,7 @@
                 games: gameState.games,
                 usedPromoCodes: gameState.usedPromoCodes
             };
-            localStorage.setItem('lolol', JSON.stringify(saveData));
+            localStorage.setItem('zooGameSave', JSON.stringify(saveData));
         }
         
         // Загрузка игры
@@ -2595,6 +2597,8 @@
         
         // Игра Парные карточки
         function setupMemoryGame() {
+            let canFlip = true; // Флаг разрешения переворота
+            
             function createCard(image, index) {
                 const card = document.createElement('div');
                 card.className = 'memory-card';
@@ -2612,7 +2616,7 @@
             }
             
             function flipCard() {
-                if (!gameState.games.memory.active) return;
+                if (!gameState.games.memory.active || !canFlip) return;
                 
                 const card = this;
                 const index = card.dataset.index;
@@ -2628,6 +2632,7 @@
                 
                 // Проверяем совпадение
                 if (gameState.games.memory.flippedCards.length === 2) {
+                    canFlip = false; // Запрещаем переворот на 1 секунду
                     gameState.games.memory.moves++;
                     memoryMovesEl.textContent = gameState.games.memory.moves;
                     
@@ -2643,7 +2648,7 @@
                     if (firstImage === secondImage) {
                         // Совпадение
                         gameState.games.memory.matchedPairs++;
-                        memoryPairsEl.textContent = `${gameState.games.memory.matchedPairs}/8`;
+                        memoryPairsEl.textContent = `${gameState.games.memory.matchedPairs}/18`;
                         
                         // Награда за пару
                         gameState.coins += 3;
@@ -2653,15 +2658,25 @@
                         gameState.games.memory.flippedCards = [];
                         
                         // Проверяем завершение игры
-                        if (gameState.games.memory.matchedPairs === 8) {
+                        if (gameState.games.memory.matchedPairs === 18) {
                             setTimeout(endMemoryGame, 500);
                         }
+                        
+                        // Разрешаем переворот после задержки
+                        setTimeout(() => {
+                            canFlip = true;
+                        }, 1000);
                     } else {
                         // Не совпали - переворачиваем обратно
                         setTimeout(() => {
                             firstCard.classList.remove('flipped');
                             secondCard.classList.remove('flipped');
                             gameState.games.memory.flippedCards = [];
+                            
+                            // Разрешаем переворот после задержки
+                            setTimeout(() => {
+                                canFlip = true;
+                            }, 1000);
                         }, 1000);
                     }
                 }
@@ -2676,6 +2691,7 @@
             function startMemoryGame() {
                 gameState.games.memory.active = true;
                 memoryStartBtn.disabled = true;
+                canFlip = true;
                 
                 // Сброс игры
                 memoryGridEl.innerHTML = '';
@@ -2685,10 +2701,24 @@
                 gameState.games.memory.moves = 0;
                 
                 memoryMovesEl.textContent = '0';
-                memoryPairsEl.textContent = '0/8';
+                memoryPairsEl.textContent = '0/18';
                 
-                // Создаем пары карточек
-                const cardImages = [...gameImages.memory, ...gameImages.memory];
+                // Создаем пары карточек (18 пар)
+                let cardImages = [];
+                
+                // Создаем копию массива всех изображений
+                let allImages = [...gameImages.memory];
+                
+                // Если изображений меньше 18, дублируем существующие
+                while (allImages.length < 18) {
+                    allImages = [...allImages, ...gameImages.memory];
+                }
+                
+                // Выбираем 18 уникальных изображений
+                const selectedImages = allImages.slice(0, 18);
+                
+                // Создаем пары
+                cardImages = [...selectedImages, ...selectedImages];
                 
                 // Перемешиваем карточки
                 for (let i = cardImages.length - 1; i > 0; i--) {
@@ -2708,17 +2738,14 @@
             
             memoryStartBtn.addEventListener('click', startMemoryGame);
         }
-        
+
         // Игра Suika Game с улучшенной физикой
         function setupSuikaGame() {
             // Порядок животных от маленького к большому
-            const suikaAnimalOrder = [
-                'cat.gif', 'dog.gif', 'bunny.gif', 'hamster.gif', 
-                'fox.gif', 'panda.gif', 'lev.gif', 'cow.gif', 'unicorn.gif'
-            ];
+            const suikaAnimalOrder = gameImages.suika;
             
             // Фиксированные размеры для каждого животного
-            const suikaSizes = [30, 40, 50, 60, 70, 80, 90, 100, 110];
+            const suikaSizes = [30, 35, 40, 45, 50, 55, 60, 65, 70];
             const suikaMass = [1, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 4.0, 5.0];
             
             let suikaObjects = [];
@@ -2869,7 +2896,11 @@
             }
             
             function checkMerge() {
-                // Объединяем только одинаковых животных
+                let merged = false;
+                
+                // Сначала собираем все возможные слияния
+                const merges = [];
+                
                 for (let i = 0; i < suikaObjects.length; i++) {
                     for (let j = i + 1; j < suikaObjects.length; j++) {
                         if (suikaObjects[i].type === suikaObjects[j].type) {
@@ -2877,65 +2908,92 @@
                             const dy = suikaObjects[i].y - suikaObjects[j].y;
                             const distance = Math.sqrt(dx * dx + dy * dy);
                             
-                            const minDistance = (suikaObjects[i].size + suikaObjects[j].size) / 2 * 0.8;
+                            const minDistance = (suikaObjects[i].size + suikaObjects[j].size) / 2 * 0.85;
                             
                             if (distance < minDistance) {
-                                const currentType = suikaObjects[i].type;
-                                const currentIndex = suikaAnimalOrder.indexOf(currentType);
-                                
-                                if (currentIndex < suikaAnimalOrder.length - 1) {
-                                    const newType = suikaAnimalOrder[currentIndex + 1];
-                                    const newSize = suikaSizes[currentIndex + 1];
-                                    const newMass = suikaMass[currentIndex + 1];
-                                    
-                                    // Координаты нового объекта
-                                    const newX = (suikaObjects[i].x + suikaObjects[j].x) / 2;
-                                    const newY = (suikaObjects[i].y + suikaObjects[j].y) / 2;
-                                    
-                                    // Удаляем старые объекты
-                                    suikaObjects[i].element.remove();
-                                    suikaObjects[j].element.remove();
-                                    
-                                    // Создаем новый объект
-                                    const newElement = document.createElement('div');
-                                    newElement.className = 'suika-object suika-merge';
-                                    newElement.style.width = `${newSize}px`;
-                                    newElement.style.height = `${newSize}px`;
-                                    newElement.style.left = `${newX}%`;
-                                    newElement.style.top = `${newY}%`;
-                                    newElement.innerHTML = `<img src="${newType}" alt="Animal">`;
-                                    suikaGameBoard.appendChild(newElement);
-                                    
-                                    // Добавляем в массив
-                                    const newObj = {
-                                        type: newType,
-                                        x: newX,
-                                        y: newY,
-                                        size: newSize,
-                                        mass: newMass,
-                                        vx: 0,
-                                        vy: 0,
-                                        element: newElement
-                                    };
-                                    
-                                    suikaObjects.push(newObj);
-                                    suikaObjects.splice(j, 1);
-                                    suikaObjects.splice(i, 1);
-                                    
-                                    // Обновляем счет
-                                    gameState.games.suika.score += 10;
-                                    suikaScoreEl.textContent = gameState.games.suika.score;
-                                    
-                                    // Начисляем 1 монету за объединение
-                                    gameState.coins += 1;
-                                    updateUI();
-                                }
+                                merges.push({i, j});
                             }
                         }
                     }
                 }
+                
+                // Выполняем слияния
+                merges.forEach(pair => {
+                    const i = pair.i;
+                    const j = pair.j;
+                    
+                    if (!suikaObjects[i] || !suikaObjects[j]) return;
+                    
+                    const currentType = suikaObjects[i].type;
+                    const currentIndex = suikaAnimalOrder.indexOf(currentType);
+                    
+                    if (currentIndex < suikaAnimalOrder.length - 1) {
+                        const newType = suikaAnimalOrder[currentIndex + 1];
+                        const newSize = suikaSizes[currentIndex + 1];
+                        const newMass = suikaMass[currentIndex + 1];
+                        
+                        // Координаты нового объекта
+                        const newX = (suikaObjects[i].x + suikaObjects[j].x) / 2;
+                        const newY = (suikaObjects[i].y + suikaObjects[j].y) / 2;
+                        
+                        // Удаляем старые объекты
+                        suikaObjects[i].element.remove();
+                        suikaObjects[j].element.remove();
+                        
+                        // Создаем новый объект
+                        const newElement = document.createElement('div');
+                        newElement.className = 'suika-object suika-merge';
+                        newElement.style.width = `${newSize}px`;
+                        newElement.style.height = `${newSize}px`;
+                        newElement.style.left = `${newX}%`;
+                        newElement.style.top = `${newY}%`;
+                        newElement.innerHTML = `<img src="${newType}" alt="Animal">`;
+                        suikaGameBoard.appendChild(newElement);
+                        
+                        // Анимация слияния
+                        newElement.animate([
+                            { transform: 'scale(0.5)', opacity: 0 },
+                            { transform: 'scale(1.2)', opacity: 1 },
+                            { transform: 'scale(1)' }
+                        ], {
+                            duration: 500,
+                            easing: 'ease-out'
+                        });
+                        
+                        // Добавляем в массив
+                        const newObj = {
+                            type: newType,
+                            x: newX,
+                            y: newY,
+                            size: newSize,
+                            mass: newMass,
+                            vx: 0,
+                            vy: 0,
+                            element: newElement
+                        };
+                        
+                        suikaObjects.push(newObj);
+                        suikaObjects.splice(j, 1);
+                        suikaObjects.splice(i, 1);
+                        
+                        // Обновляем счет
+                        gameState.games.suika.score += 10;
+                        suikaScoreEl.textContent = gameState.games.suika.score;
+                        
+                        // Начисляем 1 монету за объединение
+                        gameState.coins += 1;
+                        updateUI();
+                        
+                        merged = true;
+                    }
+                });
+                
+                // Если были слияния, проверяем рекурсивно
+                if (merged) {
+                    setTimeout(checkMerge, 200);
+                }
             }
-            
+
             // Обработчики управления
             document.addEventListener('keydown', (e) => {
                 if (!gameState.games.suika.active || !currentAnimal) return;
@@ -3170,8 +3228,9 @@
                 [[1, 1, 0], [0, 1, 1]]  // Z
             ];
             
-            const gridWidth = 10;
-            const gridHeight = 20;
+            // Размер поля 15x15
+            const gridWidth = 15;
+            const gridHeight = 15;
             let tetrisGrid = Array(gridHeight).fill().map(() => Array(gridWidth).fill(0));
             let currentPiece = null;
             let gameInterval;
