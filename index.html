@@ -1646,6 +1646,7 @@
         const promoCodes = {
             'l0-0l': { coins: 100, food: 20, used: false },
             'l0_ol': { coins: 84, food: 48, used: false }
+            'lo_0l': { coins: 48, food: 84, used: false }
         };
         
         // Состояние игры
@@ -2275,12 +2276,12 @@
                 games: gameState.games,
                 usedPromoCodes: gameState.usedPromoCodes
             };
-            localStorage.setItem('pups', JSON.stringify(saveData));
+            localStorage.setItem('cok', JSON.stringify(saveData));
         }
         
         // Загрузка игры
         function loadGame() {
-            const saveData = localStorage.getItem('pups');
+            const saveData = localStorage.getItem('cok');
             
             if (saveData) {
                 try {
