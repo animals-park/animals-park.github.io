@@ -2275,12 +2275,12 @@
                 games: gameState.games,
                 usedPromoCodes: gameState.usedPromoCodes
             };
-            localStorage.setItem('PUUPDFGHERDFGRT', JSON.stringify(saveData));
+            localStorage.setItem('pups', JSON.stringify(saveData));
         }
         
         // Загрузка игры
         function loadGame() {
-            const saveData = localStorage.getItem('zooGameSave');
+            const saveData = localStorage.getItem('pups');
             
             if (saveData) {
                 try {
