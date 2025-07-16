@@ -2630,12 +2630,12 @@
                 games: gameState.games,
                 usedPromoCodes: gameState.usedPromoCodes
             };
-            localStorage.setItem('puk', JSON.stringify(saveData));
+            localStorage.setItem('son', JSON.stringify(saveData));
         }
         
         // Загрузка игры
         function loadGame() {
-            const saveData = localStorage.getItem('puk');
+            const saveData = localStorage.getItem('son');
             
             if (saveData) {
                 try {
