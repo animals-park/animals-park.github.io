@@ -2276,12 +2276,12 @@
                 games: gameState.games,
                 usedPromoCodes: gameState.usedPromoCodes
             };
-            localStorage.setItem('ppp', JSON.stringify(saveData));
+            localStorage.setItem('puk', JSON.stringify(saveData));
         }
         
         // Загрузка игры
         function loadGame() {
-            const saveData = localStorage.getItem('ppp');
+            const saveData = localStorage.getItem('puk');
             
             if (saveData) {
                 try {
