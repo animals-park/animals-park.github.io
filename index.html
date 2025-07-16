@@ -645,6 +645,10 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+
+         @media (min-width: 769px) {
+            #memory-game .game-board {
+                height: 900px;
         
         .coin-animation {
             position: fixed;
@@ -653,6 +657,36 @@
             animation: coinFall 1.5s forwards;
             pointer-events: none;
             text-shadow: 0 0 10px gold;
+        }
+
+            .game-2048-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+        }
+             .game-2048-cell {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-2048-cell img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
         }
         
         @keyframes coinFall {
@@ -1336,6 +1370,31 @@
     </style>
 </head>
 <body>
+    <div class="game-container" id="game-2048">
+        <div class="game-title">
+            <i class="fas fa-dice"></i>2048 с животными
+        </div>
+        <div class="game-description">
+            Соединяйте одинаковых животных, чтобы получить следующее в цепочке! Кошки → Собаки → Кролики → ... Игра длится 5 минут.
+        </div>
+        <div class="game-board">
+            <div class="game-2048-container" id="grid-2048"></div>
+            <div class="score-2048">Очки: <span id="score-2048">0</span></div>
+        </div>
+        <div class="controls-hint">
+            Используйте стрелки для перемещения
+        </div>
+        <div class="game-controls">
+            <button class="game-button" id="start-2048">
+                <i class="fas fa-play"></i>Начать игру
+            </button>
+            <div class="game-timer" id="timer-2048">05:00</div>
+        </div>
+        <div class="game-cooldown" id="cooldown-2048" style="display: none;">
+            <div>Перезарядка</div>
+            <div id="cooldown-timer-2048">03:00</div>
+        </div>
+    </div>
     <div class="telegram-app">
         <div class="neon-overlay"></div>
         <div class="glow-effect"></div>
@@ -1648,6 +1707,301 @@
             'l0_ol': { coins: 84, food: 48, used: false },
             'lo_0l': { coins: 48, food: 84, used: false }
         };
+
+
+        // Реализация игры 2048 с животными
+        function setup2048Game() {
+            const gridSize = 4;
+            let grid = [];
+            let score = 0;
+            let gameActive = false;
+            let gameInterval;
+            let gameTimer;
+            const gridEl = document.getElementById('grid-2048');
+            const scoreEl = document.getElementById('score-2048');
+            const timerEl = document.getElementById('timer-2048');
+            const startBtn = document.getElementById('start-2048');
+            const cooldownEl = document.getElementById('cooldown-2048');
+            const cooldownTimer = document.getElementById('cooldown-timer-2048');
+            
+            // Цепочка животных для 2048
+            const animalChain = [
+                'cat.gif',    // Уровень 0: кошка
+                'dog.gif',    // Уровень 1: собака
+                'bunny.gif',  // Уровень 2: кролик
+                'hamster.gif',// Уровень 3: хомяк
+                'fox.gif',    // Уровень 4: лиса
+                'panda.gif',  // Уровень 5: панда
+                'lev.gif',    // Уровень 6: лев
+                'cow.gif',    // Уровень 7: корова
+                'unicorn.gif' // Уровень 8: единорог
+            ];
+            
+            function initGrid() {
+                gridEl.innerHTML = '';
+                grid = Array(gridSize).fill().map(() => Array(gridSize).fill(null));
+                
+                for (let y = 0; y < gridSize; y++) {
+                    for (let x = 0; x < gridSize; x++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'game-2048-cell';
+                        cell.dataset.x = x;
+                        cell.dataset.y = y;
+                        gridEl.appendChild(cell);
+                    }
+                }
+            }
+            
+            function addRandomAnimal() {
+                const emptyCells = [];
+                
+                for (let y = 0; y < gridSize; y++) {
+                    for (let x = 0; x < gridSize; x++) {
+                        if (grid[y][x] === null) {
+                            emptyCells.push({x, y});
+                        }
+                    }
+                }
+                
+                if (emptyCells.length > 0) {
+                    const {x, y} = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                    grid[y][x] = 0; // Начинаем с кошки (уровень 0)
+                    renderGrid();
+                }
+            }
+            
+            function renderGrid() {
+                document.querySelectorAll('.game-2048-cell').forEach(cell => {
+                    const x = parseInt(cell.dataset.x);
+                    const y = parseInt(cell.dataset.y);
+                    const level = grid[y][x];
+                    
+                    cell.innerHTML = '';
+                    
+                    if (level !== null) {
+                        const img = document.createElement('img');
+                        img.src = animalChain[level];
+                        img.alt = `Animal level ${level}`;
+                        cell.appendChild(img);
+                    }
+                });
+            }
+            
+            function move(direction) {
+                if (!gameActive) return;
+                
+                let moved = false;
+                let prevGrid = JSON.parse(JSON.stringify(grid));
+                
+                // Вверх
+                if (direction === 'up') {
+                    for (let x = 0; x < gridSize; x++) {
+                        for (let y = 1; y < gridSize; y++) {
+                            if (grid[y][x] !== null) {
+                                let newY = y;
+                                while (newY > 0 && grid[newY-1][x] === null) {
+                                    newY--;
+                                }
+                                
+                                if (newY > 0 && grid[newY-1][x] === grid[y][x]) {
+                                    // Объединение
+                                    grid[newY-1][x] = grid[y][x] + 1;
+                                    grid[y][x] = null;
+                                    score += (grid[newY-1][x] + 1) * 10;
+                                    moved = true;
+                                } else if (newY !== y) {
+                                    // Перемещение
+                                    grid[newY][x] = grid[y][x];
+                                    grid[y][x] = null;
+                                    moved = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Вниз
+                if (direction === 'down') {
+                    for (let x = 0; x < gridSize; x++) {
+                        for (let y = gridSize-2; y >= 0; y--) {
+                            if (grid[y][x] !== null) {
+                                let newY = y;
+                                while (newY < gridSize-1 && grid[newY+1][x] === null) {
+                                    newY++;
+                                }
+                                
+                                if (newY < gridSize-1 && grid[newY+1][x] === grid[y][x]) {
+                                    // Объединение
+                                    grid[newY+1][x] = grid[y][x] + 1;
+                                    grid[y][x] = null;
+                                    score += (grid[newY+1][x] + 1) * 10;
+                                    moved = true;
+                                } else if (newY !== y) {
+                                    // Перемещение
+                                    grid[newY][x] = grid[y][x];
+                                    grid[y][x] = null;
+                                    moved = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Влево
+                if (direction === 'left') {
+                    for (let y = 0; y < gridSize; y++) {
+                        for (let x = 1; x < gridSize; x++) {
+                            if (grid[y][x] !== null) {
+                                let newX = x;
+                                while (newX > 0 && grid[y][newX-1] === null) {
+                                    newX--;
+                                }
+                                
+                                if (newX > 0 && grid[y][newX-1] === grid[y][x]) {
+                                    // Объединение
+                                    grid[y][newX-1] = grid[y][x] + 1;
+                                    grid[y][x] = null;
+                                    score += (grid[y][newX-1] + 1) * 10;
+                                    moved = true;
+                                } else if (newX !== x) {
+                                    // Перемещение
+                                    grid[y][newX] = grid[y][x];
+                                    grid[y][x] = null;
+                                    moved = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Вправо
+                if (direction === 'right') {
+                    for (let y = 0; y < gridSize; y++) {
+                        for (let x = gridSize-2; x >= 0; x--) {
+                            if (grid[y][x] !== null) {
+                                let newX = x;
+                                while (newX < gridSize-1 && grid[y][newX+1] === null) {
+                                    newX++;
+                                }
+                                
+                                if (newX < gridSize-1 && grid[y][newX+1] === grid[y][x]) {
+                                    // Объединение
+                                    grid[y][newX+1] = grid[y][x] + 1;
+                                    grid[y][x] = null;
+                                    score += (grid[y][newX+1] + 1) * 10;
+                                    moved = true;
+                                } else if (newX !== x) {
+                                    // Перемещение
+                                    grid[y][newX] = grid[y][x];
+                                    grid[y][x] = null;
+                                    moved = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (moved) {
+                    scoreEl.textContent = score;
+                    addRandomAnimal();
+                    renderGrid();
+                }
+            }
+            
+            function start2048Game() {
+                if (gameState.games['2048'].cooldown > 0) return;
+                
+                initGrid();
+                score = 0;
+                scoreEl.textContent = '0';
+                
+                gameState.games['2048'].active = true;
+                gameActive = true;
+                startBtn.disabled = true;
+                
+                // Добавляем начальных животных
+                addRandomAnimal();
+                addRandomAnimal();
+                
+                // Запуск таймера игры (5 минут)
+                let timeLeft = 300;
+                timerEl.textContent = `05:00`;
+                
+                gameTimer = setInterval(() => {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        end2048Game();
+                    }
+                }, 1000);
+            }
+            
+            function end2048Game() {
+                clearInterval(gameTimer);
+                gameActive = false;
+                gameState.games['2048'].active = false;
+                startBtn.disabled = false;
+                
+                // Начисление монет
+                const coinsEarned = Math.floor(score / 5);
+                gameState.coins += coinsEarned;
+                showNotification(`Игра окончена! Вы заработали ${coinsEarned} монет в 2048!`);
+                updateUI();
+                
+                // Установка перезарядки
+                gameState.games['2048'].cooldown = 180;
+                cooldownEl.style.display = 'flex';
+            }
+            
+            // Обработчики управления
+            document.addEventListener('keydown', (e) => {
+                if (!gameActive) return;
+                
+                switch(e.key) {
+                    case 'ArrowUp': move('up'); break;
+                    case 'ArrowDown': move('down'); break;
+                    case 'ArrowLeft': move('left'); break;
+                    case 'ArrowRight': move('right'); break;
+                }
+            });
+            
+            startBtn.addEventListener('click', start2048Game);
+        }
+
+        // В объекте gameState добавим состояние для 2048
+        gameState.games['2048'] = { active: false, cooldown: 0, score: 0 };
+
+        // В функции initGames добавим вызов setup2048Game
+        function initGames() {
+            setupMemoryGame();
+            setup2048Game(); // Заменили setupSuikaGame на setup2048Game
+            setupCatchGame();
+            setupTetrisGame();
+        }
+
+        // Обновление перезарядки для 2048
+        function updateGameCooldowns() {
+            // ... остальные игры ...
+            
+            // 2048 Game
+            if (gameState.games['2048'].cooldown > 0) {
+                gameState.games['2048'].cooldown--;
+                const minutes = Math.floor(gameState.games['2048'].cooldown / 60);
+                const seconds = gameState.games['2048'].cooldown % 60;
+                document.getElementById('cooldown-timer-2048').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (gameState.games['2048'].cooldown <= 0) {
+                    document.getElementById('cooldown-2048').style.display = 'none';
+                }
+            }
+        }
+
+        // Инициализация игры при загрузке
+        window.addEventListener('DOMContentLoaded', initGame);
         
         // Состояние игры
         let gameState = {
